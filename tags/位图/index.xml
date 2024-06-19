@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>位图 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E4%BD%8D%E5%9B%BE/</link>
+    <description>Recent content in 位图 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 14 Jul 2022 19:20:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E4%BD%8D%E5%9B%BE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BitMap结构实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/bitmap/</link>
+      <pubDate>Thu, 14 Jul 2022 19:20:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/bitmap/</guid>
+      <description>&lt;p&gt;从零实现位图&lt;code&gt;BitMap&lt;/code&gt;，使用实测数据感受其优劣，同时了解&lt;code&gt;BitMap&lt;/code&gt;结构的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
