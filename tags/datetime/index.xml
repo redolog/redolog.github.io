@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>datetime on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/datetime/</link>
+    <description>Recent content in datetime on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 10 Aug 2023 21:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/datetime/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql datetime 秒精度问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</link>
+      <pubDate>Thu, 10 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;datetime&lt;/code&gt;写入 &lt;strong&gt;诡异进位&lt;/strong&gt; 的问题，通过查阅官方文档的方式找到了问题原因。顺带巩固下基础知识。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
