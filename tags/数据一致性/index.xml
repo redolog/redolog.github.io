@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>数据一致性 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/</link>
+    <description>Recent content in 数据一致性 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 07 Oct 2024 22:25:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RocketMQ事务消息原理解析</title>
+      <link>https://redolog.github.io/posts/rd/design/trx-message/</link>
+      <pubDate>Mon, 07 Oct 2024 22:25:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/trx-message/</guid>
+      <description>通过本文，我来讲一下我对RocketMQ事务消息的理解。</description>
+    </item>
+    
+    <item>
+      <title>聊聊月租酒店项目中的交易系统设计</title>
+      <link>https://redolog.github.io/posts/rd/design/case/hotel-project/</link>
+      <pubDate>Sun, 06 Oct 2024 10:25:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/case/hotel-project/</guid>
+      <description>通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。</description>
+    </item>
+    
+  </channel>
+</rss>

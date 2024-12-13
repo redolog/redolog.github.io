@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>线程安全 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</link>
+    <description>Recent content in 线程安全 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 01 Mar 2024 20:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>排查mybatis ognl解析参数值并发设置字段访问性报错问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</link>
+      <pubDate>Fri, 01 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</guid>
+      <description>&lt;p&gt;年后负责一个比较老的服务，报警不少，今天排查的这个问题也只有在老版本&lt;code&gt;MyBatis&lt;/code&gt;下才有机会复现，值此宝贵的线上问题机会，记录一番。&lt;/p&gt;
+&lt;p&gt;低版本&lt;code&gt;MyBatis&lt;/code&gt;中，在高并发情况下，有概率遇到解析&lt;code&gt;private&lt;/code&gt;内部类集合解析抛错的情况。&lt;/p&gt;
+&lt;p&gt;我通过分析异常栈+搜索+分析源码的方式解决了此问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查 ConcurrentModificationException 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</link>
+      <pubDate>Wed, 21 Feb 2024 16:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</guid>
+      <description>&lt;p&gt;排查一则生产环境报 &lt;code&gt;ConcurrentModificationException&lt;/code&gt; 的问题。&lt;/p&gt;
+&lt;p&gt;在相对复杂的工业代码中（绕来绕去，不是简单的一个函数调用），排查「简单问题」也不是一件简单的事。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
