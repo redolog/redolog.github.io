@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>FirstUniqChar on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/firstuniqchar/</link>
+    <description>Recent content in FirstUniqChar on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 06 Jul 2022 14:44:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/firstuniqchar/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 剑指 Offer 50. 第一个只出现一次的字符 题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-unique-char/</link>
+      <pubDate>Wed, 06 Jul 2022 14:44:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-unique-char/</guid>
+      <description>&lt;p&gt;LeetCode 剑指 Offer 50. 第一个只出现一次的字符 题解，简单题也有细节需要注意。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
