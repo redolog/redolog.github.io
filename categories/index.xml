@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/categories/</link>
+    <description>Recent content in Categories on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 08 Feb 2025 16:13:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RD</title>
+      <link>https://redolog.github.io/categories/rd/</link>
+      <pubDate>Sat, 08 Feb 2025 16:13:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/rd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Note</title>
+      <link>https://redolog.github.io/categories/note/</link>
+      <pubDate>Wed, 22 Jan 2025 10:10:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/note/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>methodology</title>
+      <link>https://redolog.github.io/categories/methodology/</link>
+      <pubDate>Fri, 15 Nov 2024 13:49:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/methodology/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>work</title>
+      <link>https://redolog.github.io/categories/work/</link>
+      <pubDate>Fri, 15 Nov 2024 13:49:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/work/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OJ</title>
+      <link>https://redolog.github.io/categories/oj/</link>
+      <pubDate>Sun, 03 Nov 2024 12:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/oj/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DataStructure</title>
+      <link>https://redolog.github.io/categories/datastructure/</link>
+      <pubDate>Sun, 17 Jul 2022 21:55:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/datastructure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Algorithm</title>
+      <link>https://redolog.github.io/categories/algorithm/</link>
+      <pubDate>Sat, 02 Jul 2022 00:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/algorithm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cache</title>
+      <link>https://redolog.github.io/categories/cache/</link>
+      <pubDate>Mon, 27 Jun 2022 15:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/cache/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Log</title>
+      <link>https://redolog.github.io/categories/log/</link>
+      <pubDate>Sun, 06 Feb 2022 16:32:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/log/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Translation</title>
+      <link>https://redolog.github.io/categories/translation/</link>
+      <pubDate>Sun, 06 Feb 2022 16:32:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/translation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>English</title>
+      <link>https://redolog.github.io/categories/english/</link>
+      <pubDate>Thu, 28 Jan 2021 13:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/english/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://redolog.github.io/categories/linux/</link>
+      <pubDate>Thu, 28 Jan 2021 13:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reading</title>
+      <link>https://redolog.github.io/categories/reading/</link>
+      <pubDate>Wed, 18 Apr 2018 16:54:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/categories/reading/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

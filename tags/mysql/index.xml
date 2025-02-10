@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MySQL on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/mysql/</link>
+    <description>Recent content in MySQL on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 10 Aug 2023 21:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql datetime 秒精度问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</link>
+      <pubDate>Thu, 10 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;datetime&lt;/code&gt;写入 &lt;strong&gt;诡异进位&lt;/strong&gt; 的问题，通过查阅官方文档的方式找到了问题原因。顺带巩固下基础知识。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mysql in 查询索引失效问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/index/in-ineffective/</link>
+      <pubDate>Thu, 01 Dec 2022 00:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/index/in-ineffective/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;in&lt;/code&gt;查询传入270个入参则 &lt;strong&gt;索引失效&lt;/strong&gt; 的问题，本文记录分析与解决的过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LRU工业级案例</title>
+      <link>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru-industrial-case/</link>
+      <pubDate>Mon, 27 Jun 2022 15:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru-industrial-case/</guid>
+      <description>&lt;p&gt;了解&lt;code&gt;LRU&lt;/code&gt;工业级实现，以&lt;code&gt;MySQL&lt;/code&gt;、&lt;code&gt;Redis&lt;/code&gt;为例。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL性能优化cheatsheet</title>
+      <link>https://redolog.github.io/posts/rd/storage/mysql/performance-optimization/cheatsheet/</link>
+      <pubDate>Mon, 16 May 2022 21:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/mysql/performance-optimization/cheatsheet/</guid>
+      <description>&lt;p&gt;&lt;code&gt;MySQL&lt;/code&gt;性能优化&lt;code&gt;cheatsheet&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟业务数据缺失问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</link>
+      <pubDate>Mon, 20 Dec 2021 20:12:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，流程业务卡住无法流转，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟消费重试问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</link>
+      <pubDate>Thu, 09 Dec 2021 13:04:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，生产消费未正确处理此类场景，数据消费第一次失败报警，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL业务应用问题汇总</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/biz/</link>
+      <pubDate>Sun, 18 Mar 2018 10:53:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/biz/</guid>
+      <description>&lt;p&gt;后端大部分时候在玩儿&lt;code&gt;MySQL&lt;/code&gt;（或者其他存储），而针对&lt;code&gt;MySQL&lt;/code&gt;我们碰到过各种各样的问题，在此一并整理记录。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

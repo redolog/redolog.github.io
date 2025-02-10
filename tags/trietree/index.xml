@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>TrieTree on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/trietree/</link>
+    <description>Recent content in TrieTree on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 22 Jun 2022 20:35:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/trietree/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>特里树最简实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/trie-tree/</link>
+      <pubDate>Wed, 22 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/trie-tree/</guid>
+      <description>&lt;p&gt;从零实现一个最简单的特里树，同时了解特里树的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>限界上下文 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E9%99%90%E7%95%8C%E4%B8%8A%E4%B8%8B%E6%96%87/</link>
+    <description>Recent content in 限界上下文 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 08 Feb 2025 16:13:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E9%99%90%E7%95%8C%E4%B8%8A%E4%B8%8B%E6%96%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DDD战略设计之供应链服务拆分</title>
+      <link>https://redolog.github.io/posts/rd/ddd/strategy-design/supply-chain-case/</link>
+      <pubDate>Sat, 08 Feb 2025 16:13:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/ddd/strategy-design/supply-chain-case/</guid>
+      <description>本文，我会尝试使用图例表达前几个月在做的供应链项目中使用到的DDD设计方法。</description>
+    </item>
+    
+  </channel>
+</rss>
