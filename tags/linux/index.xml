@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Linux on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/linux/</link>
+    <description>Recent content in Linux on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 06 Feb 2024 12:30:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于IO我所知道的一切都在这里了</title>
+      <link>https://redolog.github.io/posts/rd/design/io/all-about-io/</link>
+      <pubDate>Tue, 06 Feb 2024 12:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/io/all-about-io/</guid>
+      <description>统一整理IO涉及的知识点</description>
+    </item>
+    
+    <item>
+      <title>Linux零拷贝图例一览</title>
+      <link>https://redolog.github.io/posts/rd/linux/zero-copy/legend/</link>
+      <pubDate>Fri, 15 Dec 2023 12:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/zero-copy/legend/</guid>
+      <description>统一整理零拷贝相关图例</description>
+    </item>
+    
+    <item>
+      <title>Latency numbers every programmer should know</title>
+      <link>https://redolog.github.io/posts/rd/linux/data/latency/</link>
+      <pubDate>Thu, 24 Feb 2022 14:13:14 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/data/latency/</guid>
+      <description>&lt;p&gt;Latency numbers every programmer should know.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>研究一下fork函数</title>
+      <link>https://redolog.github.io/posts/rd/linux/fork/</link>
+      <pubDate>Tue, 02 Feb 2021 14:14:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/fork/</guid>
+      <description>了解Unix、Linux系统下的进程控制fork函数</description>
+    </item>
+    
+    <item>
+      <title>研究一下fsync函数</title>
+      <link>https://redolog.github.io/posts/rd/linux/fsync_durability/</link>
+      <pubDate>Fri, 29 Jan 2021 11:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/fsync_durability/</guid>
+      <description>讨论fsync函数细节</description>
+    </item>
+    
+  </channel>
+</rss>

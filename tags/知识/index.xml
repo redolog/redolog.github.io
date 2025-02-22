@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>知识 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E7%9F%A5%E8%AF%86/</link>
+    <description>Recent content in 知识 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>[粤ICP备2021020197号](https://beian.miit.gov.cn/) © 2016 </copyright>
+    <lastBuildDate>Wed, 21 Feb 2018 11:54:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E7%9F%A5%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Knowledge Favorites</title>
+      <link>https://redolog.github.io/posts/reading/favorite/</link>
+      <pubDate>Wed, 21 Feb 2018 11:54:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/reading/favorite/</guid>
+      <description>我的知识收藏夹</description>
+    </item>
+    
+  </channel>
+</rss>

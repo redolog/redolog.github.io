@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AOF on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/aof/</link>
+    <description>Recent content in AOF on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 29 Nov 2022 21:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/aof/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>混部redis写文件竞态严重导致实例获取不到连接问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/asynchronous_aof_fsync_is_taking_too_long/</link>
+      <pubDate>Tue, 29 Nov 2022 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/asynchronous_aof_fsync_is_taking_too_long/</guid>
+      <description>&lt;p&gt;踩坑&lt;code&gt;redis&lt;/code&gt;混部，导致&lt;code&gt;AOF&lt;/code&gt;写磁盘过多，导致影响其他实例。通过与&lt;code&gt;sre&lt;/code&gt;协作、分析日志，解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

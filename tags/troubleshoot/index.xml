@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>troubleshoot on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/troubleshoot/</link>
+    <description>Recent content in troubleshoot on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 15 Nov 2024 13:21:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/troubleshoot/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>复杂对象序列化失败问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/serialization/ddd-entity-redis-down/</link>
+      <pubDate>Fri, 15 Nov 2024 13:21:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/serialization/ddd-entity-redis-down/</guid>
+      <description>&lt;p&gt;踩坑一则复杂对象（领域实体）序列化失败问题。&lt;/p&gt;
+&lt;p&gt;归因：测试环境&lt;code&gt;Redis&lt;/code&gt;连接挂掉，同时对&lt;code&gt;DDD&lt;/code&gt;领域实体序列化，&lt;code&gt;JSON.toJSON()&lt;/code&gt; 封装了异常，导致关键异常栈丢失，后经过正向逆向分析找到了问题原因与解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用分布式锁解决接口互斥性、幂等性问题两例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</link>
+      <pubDate>Wed, 20 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</guid>
+      <description>&lt;p&gt;针对近期处理的两例并发场景引发的「互斥性」「幂等性」问题进行过程分析、输出系统方案。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gitlab MR被revert后，功能分支无法再次merge到主干分支，怎么办？</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/git/revert-mr-and-merge-again/</link>
+      <pubDate>Tue, 12 Mar 2024 12:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/git/revert-mr-and-merge-again/</guid>
+      <description>&lt;p&gt;需求分支首先通过MR合并到了&lt;code&gt;master&lt;/code&gt;分支，部署后发现有问题，于是回滚代码，操作了&lt;code&gt;MR&lt;/code&gt;处的&lt;code&gt;revert&lt;/code&gt;，后面修复了问题，使用原功能分支提新的&lt;code&gt;MR&lt;/code&gt;时，发现变更处是空的，本文来解决此类无法合并情形的问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查mybatis ognl解析参数值并发设置字段访问性报错问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</link>
+      <pubDate>Fri, 01 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</guid>
+      <description>&lt;p&gt;年后负责一个比较老的服务，报警不少，今天排查的这个问题也只有在老版本&lt;code&gt;MyBatis&lt;/code&gt;下才有机会复现，值此宝贵的线上问题机会，记录一番。&lt;/p&gt;
+&lt;p&gt;低版本&lt;code&gt;MyBatis&lt;/code&gt;中，在高并发情况下，有概率遇到解析&lt;code&gt;private&lt;/code&gt;内部类集合解析抛错的情况。&lt;/p&gt;
+&lt;p&gt;我通过分析异常栈+搜索+分析源码的方式解决了此问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查 ConcurrentModificationException 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</link>
+      <pubDate>Wed, 21 Feb 2024 16:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</guid>
+      <description>&lt;p&gt;排查一则生产环境报 &lt;code&gt;ConcurrentModificationException&lt;/code&gt; 的问题。&lt;/p&gt;
+&lt;p&gt;在相对复杂的工业代码中（绕来绕去，不是简单的一个函数调用），排查「简单问题」也不是一件简单的事。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>aviator动态创建类过多导致元空间内存泄漏 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/jvm/memory-leak/aviator/</link>
+      <pubDate>Fri, 15 Sep 2023 09:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/jvm/memory-leak/aviator/</guid>
+      <description>&lt;p&gt;协助同事排查处理了一则&lt;code&gt;aviator&lt;/code&gt;使用不当导致元空间内存泄漏的问题，个人觉得是一则很有价值的案例，因此观摩学习一波。&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;aviator&lt;/code&gt;不启用表达式缓存的情况下，会分别在编译、解析阶段根据时间戳使用&lt;code&gt;asm&lt;/code&gt;动态生成&lt;code&gt;class&lt;/code&gt;，生成过多&lt;code&gt;class&lt;/code&gt;就会撑爆元空间，也就是内存泄漏。&lt;/p&gt;
+&lt;p&gt;除此之外，在分析过程中还发现了&lt;code&gt;aviator&lt;/code&gt;低版本的另一个泄漏问题，非常适合用来巩固&lt;code&gt;jvm&lt;/code&gt;相关知识。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mysql datetime 秒精度问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</link>
+      <pubDate>Thu, 10 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;datetime&lt;/code&gt;写入 &lt;strong&gt;诡异进位&lt;/strong&gt; 的问题，通过查阅官方文档的方式找到了问题原因。顺带巩固下基础知识。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>troubleshooting mybatis-plus parsing whitespaces in SQL</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis-plus/whitespaces_in_sql_err/</link>
+      <pubDate>Mon, 07 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis-plus/whitespaces_in_sql_err/</guid>
+      <description>&lt;p&gt;Since 3.4.1 (less or more), mybatis-plus bring in a bug: when parsing extra whitespaces in SQL, it throws &lt;code&gt;net.sf.jsqlparser.parser.ParseException&lt;/code&gt;. I solved the problem by finding relevant discussions and resources to gain insights into the issue.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用jackson反序列化未忽略未知字段时报错 `UnrecognizedPropertyException` 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/serialization/jackson/unrecognized_property_exception/</link>
+      <pubDate>Tue, 27 Jun 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/serialization/jackson/unrecognized_property_exception/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;Redis&lt;/code&gt;缓存使用&lt;code&gt;Jackson2JsonRedisSerializer&lt;/code&gt;管理序列化，未设置&lt;code&gt;disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)&lt;/code&gt;，上线中新代码写入了新的缓存字段结构，旧代码读到新结构报错&lt;code&gt;UnrecognizedPropertyException&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>踩坑：macOS默认浏览器设置后跳转有误</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/setting/default-browser/</link>
+      <pubDate>Fri, 31 Mar 2023 13:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/setting/default-browser/</guid>
+      <description>&lt;p&gt;记录一则&lt;code&gt;macOS&lt;/code&gt;设置默认浏览器失效的例子。通过尝试解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>踩坑更改了javaagent路径导致idea无法启动问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</link>
+      <pubDate>Fri, 24 Mar 2023 13:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</guid>
+      <description>&lt;p&gt;踩坑，新机器装开发环境，因手动变更了已配置好的&lt;code&gt;idea&lt;/code&gt;启动依赖的&lt;code&gt;agent&lt;/code&gt;路径，导致&lt;code&gt;jetbrains&lt;/code&gt;全系产品无法启动。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>spring-data-redis版本过低，导致并发获取数据为null问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</link>
+      <pubDate>Mon, 27 Feb 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;spring-data-redis&lt;/code&gt;版本过低，导致并发获取数据为&lt;code&gt;null&lt;/code&gt;问题一例，试用&lt;code&gt;phind.com&lt;/code&gt;AI 搜索，快速定位到了问题原因。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mysql in 查询索引失效问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/index/in-ineffective/</link>
+      <pubDate>Thu, 01 Dec 2022 00:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/index/in-ineffective/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;in&lt;/code&gt;查询传入270个入参则 &lt;strong&gt;索引失效&lt;/strong&gt; 的问题，本文记录分析与解决的过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>混部redis写文件竞态严重导致实例获取不到连接问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/asynchronous_aof_fsync_is_taking_too_long/</link>
+      <pubDate>Tue, 29 Nov 2022 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/asynchronous_aof_fsync_is_taking_too_long/</guid>
+      <description>&lt;p&gt;踩坑&lt;code&gt;redis&lt;/code&gt;混部，导致&lt;code&gt;AOF&lt;/code&gt;写磁盘过多，导致影响其他实例。通过与&lt;code&gt;sre&lt;/code&gt;协作、分析日志，解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决iCloud同步卡住的问题</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/</link>
+      <pubDate>Tue, 08 Nov 2022 12:40:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/</guid>
+      <description>&lt;p&gt;居家办公，使用备用机搬砖，发现iCloud有文件没同步过来，排查、咨询客服后通过进入安全模式解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>young gc stw pause引发接口超时问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/</link>
+      <pubDate>Wed, 02 Nov 2022 21:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/</guid>
+      <description>&lt;p&gt;分析排查一则接口超时问题，定位为&lt;code&gt;JVM&lt;/code&gt; &lt;code&gt;Young&lt;/code&gt;区新生代过小引发GC频繁、触发&lt;code&gt;STW&lt;/code&gt;停顿过多。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决MacOS突然无法上网问题</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/network/network-connected-but-cant-browse/</link>
+      <pubDate>Sat, 13 Aug 2022 21:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/network/network-connected-but-cant-browse/</guid>
+      <description>&lt;p&gt;笔记本突然没法上网了，准确地说是能用微信但是浏览器无法上网，简单排查处理了下，这里记录下思路、过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟业务数据缺失问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</link>
+      <pubDate>Mon, 20 Dec 2021 20:12:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，流程业务卡住无法流转，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟消费重试问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</link>
+      <pubDate>Thu, 09 Dec 2021 13:04:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，生产消费未正确处理此类场景，数据消费第一次失败报警，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>事务中调用sleep问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/sleep-in-transaction/</link>
+      <pubDate>Wed, 08 Dec 2021 21:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/sleep-in-transaction/</guid>
+      <description>&lt;p&gt;踩坑事务内循环调用sleep，通过调整线程池参数的方式问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Reflections中反映的Guava版本不兼容问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/reflections/guava_version_incompatible/</link>
+      <pubDate>Fri, 18 Jun 2021 15:13:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/reflections/guava_version_incompatible/</guid>
+      <description>踩坑reflections反射库突然无法通过反射正常加载类，原因竟是Guava未做新老版本兼容</description>
+    </item>
+    
+    <item>
+      <title>Apollo命名空间加载优先级</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/apollo/namespace-priority/</link>
+      <pubDate>Thu, 26 Nov 2020 12:09:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/apollo/namespace-priority/</guid>
+      <description>&lt;p&gt;踩坑Apollo配置namespace加载顺序优先级问题，更具体点应该表述为【踩坑Spring框架中针对多配置属性源取值的逻辑】。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>晋西 != 晋西 ？？？</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/invalid_nonprinting_char/</link>
+      <pubDate>Sat, 13 Jun 2020 12:09:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/invalid_nonprinting_char/</guid>
+      <description>踩坑WebService接入外部非法数据（非打印字符）</description>
+    </item>
+    
+    <item>
+      <title>MySQL业务应用问题汇总</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/biz/</link>
+      <pubDate>Sun, 18 Mar 2018 10:53:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/biz/</guid>
+      <description>&lt;p&gt;后端大部分时候在玩儿&lt;code&gt;MySQL&lt;/code&gt;（或者其他存储），而针对&lt;code&gt;MySQL&lt;/code&gt;我们碰到过各种各样的问题，在此一并整理记录。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

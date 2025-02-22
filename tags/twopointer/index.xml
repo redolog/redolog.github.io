@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>TwoPointer on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/twopointer/</link>
+    <description>Recent content in TwoPointer on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 31 Jul 2022 18:10:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/twopointer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 3. 无重复字符的最长子串 DP/双指针题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/longest-substring-without-repeating-characters/</link>
+      <pubDate>Sun, 31 Jul 2022 18:10:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/longest-substring-without-repeating-characters/</guid>
+      <description>&lt;p&gt;LeetCode 3. 无重复字符的最长子串 ，对比&lt;code&gt;DP&lt;/code&gt;/&lt;code&gt;双指针&lt;/code&gt;不同思路题解。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 2000. 反转单词前缀 双指针模拟题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-prefix-of-word/</link>
+      <pubDate>Sat, 16 Jul 2022 15:42:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-prefix-of-word/</guid>
+      <description>&lt;p&gt;LeetCode 2000. 反转单词前缀 双指针模拟题解，简单题双指针写法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 双指针题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/exchange-odd-even-in-array/</link>
+      <pubDate>Tue, 21 Jun 2022 12:31:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/exchange-odd-even-in-array/</guid>
+      <description>&lt;p&gt;LeetCode 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 双指针题解，简单题熟悉双指针写法。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
