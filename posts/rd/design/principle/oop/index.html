@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>OOP编程原则一览 | 宋惠龙的博客</title>
+<meta name="keywords" content="编程原则, Programming Principle, methodology, 方法论, OOP" />
+<meta name="description" content="软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对OOD。">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/rd/design/principle/oop/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="OOP编程原则一览" />
+<meta property="og:description" content="软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对OOD。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/rd/design/principle/oop/" /><meta property="og:image" content="https://redolog.github.io/avatar.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-20T18:18:25&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-20T23:54:25&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:title" content="OOP编程原则一览"/>
+<meta name="twitter:description" content="软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对OOD。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "OOP编程原则一览",
+      "item": "https://redolog.github.io/posts/rd/design/principle/oop/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OOP编程原则一览",
+  "name": "OOP编程原则一览",
+  "description": "软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对OOD。\n",
+  "keywords": [
+    "编程原则", "Programming Principle", "methodology", "方法论", "OOP"
+  ],
+  "articleBody": "软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对OOD。\n我尽量一句话概括一项原则、法则：\nGRASP GRASP\nGeneral Responsibility Assignment Software Patterns (or Principles), abbreviated GRASP, is a set of “nine fundamental principles in object design and responsibility assignment”\n通用职责分配原则，缩写GRASP，包含九种OOP设计基础原则。\n信息隐藏 | 信息专家 | 封装 信息隐藏 | 信息专家 | 封装\nInformation hiding(Information expert) interchangeable with term Encapsulation\n将具备共同含义、变化频率的部分封装起来，并通过接口隔离实现，通过访问权限隔离访问。\n特性：高内聚、低耦合。\n创建者 | Creator | Factory 创建者 | Creator | Factory\nIn object-oriented programming (OOP), a factory is an object for creating other objects – formally a factory is a function or method that returns objects of a varying prototype or class[1] from some method call, which is assumed to be “new”.[a] More broadly, a subroutine that returns a “new” object may be referred to as a “factory”, as in factory method or factory function.\nOOP中，创建者、工厂，负责特定对象的创建。\nController | 非UI场景 The controller pattern assigns the responsibility of dealing with system events to a non-UI class that represents the overall system or a use case scenario. A controller object is a non-user interface object responsible for receiving or handling a system event.\nController负责接收、处理系统事件。与MVC中的C含义一致。\n相关模式：命令模式、门面模式、分层架构、纯虚构。\n转发 | Indirection The indirection pattern supports low coupling and reuses potential between two elements by assigning the responsibility of mediation between them to an intermediate object.\n转发模式：使用一个中间层转发对接前后的元素或层，解耦了前后元素，并且复用了已有能力，起分配作用。\n特性：低耦合、复用能力。\n低耦合 | Low coupling 低耦合 | Low coupling\nCoupling is a measure of how strongly one element is connected to, has knowledge of, or relies on other elements.\n以上为耦合的定义。而低耦合（松耦合）是一种评估效果的模式：\n类与类之间是否依赖是更少、更低一层的； 对一个类的修改是否对其他类有更少的影响； 有更多复用的可能性； 高内聚 | High cohesion 高内聚 | High cohesion\nHigh cohesion is an evaluative pattern that attempts to keep objects appropriately focused, manageable and understandable.\n与低耦合属于同类，均为评估效果的模式：\n对象职责是否明确、专注； 对象是否更好管理； 代码是否易懂； 多态 | Polymorphism 多态 | Polymorphism\nIn programming language theory and type theory, polymorphism is the provision of a single interface to entities of different types[1] or the use of a single symbol to represent multiple different types.[2] The concept is borrowed from a principle in biology where an organism or species can have many different forms or stages.\n受生物学启发，一个生物或者有机体可以有多种形态、阶段。\n同理：\n在编程语言理论中，多态通过单个接口，提供了多种类型实现。 在类型理论研究中，单一符号可以表示多种类型。 实现分类：\nAd hoc polymorphism 特定多态\n方法、函数、修饰符的重载。\nParametric polymorphism 参数类型多态\n泛型多态。泛型不指定实际调用时的具体类型，而是用通用符号进行函数定义。\nSubtyping 子类型多态\n定义时只指定公共父类符号。\n隔离变化 | 开闭原则 | Protected variations 隔离变化 | 开闭原则 | Protected variations\nThe protected variations pattern protects elements from the variations on other elements (objects, systems, subsystems) by wrapping the focus of instability with an interface and using polymorphism to create various implementations of this interface.\n识别预测可能的变化点，通过接口或者抽象隔离变化。\n纯虚构 | Pure fabrication 纯虚构 | Pure fabrication\nA pure fabrication is a class that does not represent a concept in the problem domain, specially made up to achieve low coupling, high cohesion, and the reuse potential thereof derived (when a solution presented by the information expert pattern does not). This kind of class is called a “service” in domain-driven design.\n虚构层、虚构对象没有对应的领域概念，是为了高内聚、低耦合、复用（内聚了信息专家没有的信息）创造出的代码表示。\nDDD、MVC中我们称虚构层为service。\n特性：高内聚、低耦合。\nSOLID SOLID\n单一职责原则 单一职责原则\nSingle-responsibility principle A class should have one, and only one, reason to change.\n一个类只应该负责一件事。当针对这个类需要变更时，只能由一个理由驱动。\n开闭原则 开闭原则\nOpen–closed principle You should be able to extend a classes behavior, without modifying it.\nOOP背景下，软件实体（类、模块、函数）对拓展开放，对修改封闭。\n当需要增加、修改功能时，不要修改源码（包括原来的二进制文件），通过拓展来完成变更。\n里式替换原则 里式替换原则\nLiskov substitution principle\nLiskov’s notion of a behavioural subtype defines a notion of substitutability for objects; that is, if S is a subtype of T, then objects of type T in a program may be replaced with objects of type S without altering any of the desirable properties of that program (e.g. correctness).\nFunctions that use pointers or references to base classes must be able to use objects of derived classes without knowing it.\nDerived classes must be substitutable for their base classes.\n父类实例可以在不修改任何类属性的前提下，替换为子类实例。\n接口隔离原则 接口隔离原则\nInterface segregation principle\nMany client-specific interfaces are better than one general-purpose interface.\n小的、精确的接口，比大的接口更好。通过约束接口来优化依赖关系。\n依赖倒置原则 依赖倒置原则\nDependency inversion principle\nDepend upon abstractions, [not] concretions.\n依赖接口，不依赖实现。\n组合优于继承 组合优于继承\nComposition over inheritance\n当我们想重用代码或者实现多态时，要优先使用组合的方式。\n迪米特法则 迪米特法则\nLaw of Demeter LOD\n又叫最少知识法则，面向解耦的目的，调用方对被调用方的内部结构、实现知道的越少越好。\n控制反转法则 控制反转法则\nIoC(Inversion of Control)\n通过框架控制对象创建、流程，用于实现拓展性、模块化。\nOOP下的实现方式：\nservice locator pattern 服务定位设计模式 使用抽象层封装了寻找真实业务处理者的逻辑 举例：JNDI dependency injection 依赖注入 Constructor Parameter Setter Interface Method 举例：Spring的依赖注入容器 contextualized lookup 上下文寻址 也叫 Contextualized Dependency Lookup (CDL) todo: Contextualized Dependency Lookup (CDL) is similar, in some respects, to Dependency Pull, but in CDL,lookup is performed against the container that is managing the resource, not from some central registry,and it is usually performed at some set point template method design pattern 模板方法设计模式 strategy design pattern 策略设计模式 KISS KISS, an acronym for keep it simple, stupid, is a design principle noted by the U.S. Navy in 1960.\nThe KISS principle states that most systems work best if they are kept simple rather than made complicated; therefore, simplicity should be a key goal in design, and unnecessary complexity should be avoided.\nKISS法则是说：我们的系统能够运行良好的一大原因是足够简单。因此，简单、简洁、避免不必要的复杂是我们设计的核心目标。\n变体：\nKeep it simple, silly keep it short and simple keep it short and sweet keep it simple and straightforward keep it small and simple keep it simple, soldier keep it simple, sailor keep it sweet and simple DRY “Don’t repeat yourself” (DRY) is a principle of software development aimed at reducing repetition of software patterns,[1] replacing it with abstractions or using data normalization to avoid redundancy.\nThe DRY principle is stated as “Every piece of knowledge must have a single, unambiguous, authoritative representation within a system”. The principle has been formulated by Andy Hunt and Dave Thomas in their book The Pragmatic Programmer. They apply it quite broadly to include “database schemas, test plans, the build system, even documentation”.\n同一系统内的同一知识应该有明确、权威可信的唯一表示。\nWET 反模式 write everything twice write every time waste everyone’s time\n反模式：无脑拷贝、重写代码。\nAHA AHA stands for “avoid hasty abstractions”, described by Kent C. Dodds as optimizing for change first, and avoiding premature optimization.[8] and was influenced by Sandi Metz’s “prefer duplication over the wrong abstraction”.\n避免草率的抽象。面对变更先做修改，避免过早优化。\nYAGNI You aren’t gonna need it\n“You aren’t gonna need it”(YAGNI) is a principle which arose from extreme programming (XP) that states a programmer should not add functionality until deemed necessary. XP co-founder Ron Jeffries has written: “Always implement things when you actually need them, never when you just foresee that you need them.”\n只有在真正需要的时候再去实现新的逻辑，尽可能复用已有代码。\nDocument Your Code Any senior developer will stress the importance of documenting your code with proper comments. All languages offer them; you should make it a habit to write them. Leave comments to explain objects, enhance variable definitions, and make functions easier to understand.\n注释、文档与代码同样重要。使用注释解释对象、变量含义，同时使得函数更易读。\n包管理法则 前三项关注包内聚，即包内应该放什么。 后三项关注包解耦，即关注包与包之间的关系、结构。\n发布等于重用 REP The Release Reuse Equivalency Principle The granule of reuse is the granule of release.\n发布的粒度就是重用的粒度。\n封装变更 CCP The Common Closure Principle Classes that change together are packaged together.\n一起变更的类应该放在同一个包下。即关注类变更的频率、规律。使用包封装这种变化。\n封装重用 CRP The Common Reuse Principle Classes that are used together are packaged together.\n一起使用的类应该放在同一个包下。即关注类被使用的场景。\n没有循环依赖 ADP The Acyclic Dependencies Principle The dependency graph of packages must have no cycles.\n包与包之间的依赖禁止出现环。\n面向稳定的依赖 SDP The Stable Dependencies Principle Depend in the direction of stability.\n保证依赖都是稳定的。\n面向抽象的依赖 SAP The Stable Abstractions Principle Abstractness increases with stability.\n依赖抽象，提高依赖的稳定性「变化的往往是实现」。\nRef UncleBob.PrinciplesOfOod ChenYiming-面向对象编程之我见 ",
+  "wordCount" : "2618",
+  "inLanguage": "en",
+  "datePublished": "2022-03-20T18:18:25+08:00",
+  "dateModified": "2022-03-20T23:54:25+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/rd/design/principle/oop/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      OOP编程原则一览
+    </h1>
+    <div class="post-meta"><span title='2022-03-20 18:18:25 +0800 CST'>March 20, 2022</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#grasp" aria-label="GRASP">GRASP</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%bf%a1%e6%81%af%e9%9a%90%e8%97%8f--%e4%bf%a1%e6%81%af%e4%b8%93%e5%ae%b6--%e5%b0%81%e8%a3%85" aria-label="信息隐藏 | 信息专家 | 封装">信息隐藏 | 信息专家 | 封装</a></li>
+                    <li>
+                        <a href="#%e5%88%9b%e5%bb%ba%e8%80%85--creator--factory" aria-label="创建者 | Creator | Factory">创建者 | Creator | Factory</a></li>
+                    <li>
+                        <a href="#controller--%e9%9d%9eui%e5%9c%ba%e6%99%af" aria-label="Controller | 非UI场景">Controller | 非UI场景</a></li>
+                    <li>
+                        <a href="#%e8%bd%ac%e5%8f%91--indirection" aria-label="转发 | Indirection">转发 | Indirection</a></li>
+                    <li>
+                        <a href="#%e4%bd%8e%e8%80%a6%e5%90%88--low-coupling" aria-label="低耦合 | Low coupling">低耦合 | Low coupling</a></li>
+                    <li>
+                        <a href="#%e9%ab%98%e5%86%85%e8%81%9a--high-cohesion" aria-label="高内聚 | High cohesion">高内聚 | High cohesion</a></li>
+                    <li>
+                        <a href="#%e5%a4%9a%e6%80%81--polymorphism" aria-label="多态 | Polymorphism">多态 | Polymorphism</a></li>
+                    <li>
+                        <a href="#%e9%9a%94%e7%a6%bb%e5%8f%98%e5%8c%96--%e5%bc%80%e9%97%ad%e5%8e%9f%e5%88%99--protected-variations" aria-label="隔离变化 | 开闭原则 | Protected variations">隔离变化 | 开闭原则 | Protected variations</a></li>
+                    <li>
+                        <a href="#%e7%ba%af%e8%99%9a%e6%9e%84--pure-fabrication" aria-label="纯虚构 | Pure fabrication">纯虚构 | Pure fabrication</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#solid" aria-label="SOLID">SOLID</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%8d%95%e4%b8%80%e8%81%8c%e8%b4%a3%e5%8e%9f%e5%88%99" aria-label="单一职责原则">单一职责原则</a></li>
+                    <li>
+                        <a href="#%e5%bc%80%e9%97%ad%e5%8e%9f%e5%88%99" aria-label="开闭原则">开闭原则</a></li>
+                    <li>
+                        <a href="#%e9%87%8c%e5%bc%8f%e6%9b%bf%e6%8d%a2%e5%8e%9f%e5%88%99" aria-label="里式替换原则">里式替换原则</a></li>
+                    <li>
+                        <a href="#%e6%8e%a5%e5%8f%a3%e9%9a%94%e7%a6%bb%e5%8e%9f%e5%88%99" aria-label="接口隔离原则">接口隔离原则</a></li>
+                    <li>
+                        <a href="#%e4%be%9d%e8%b5%96%e5%80%92%e7%bd%ae%e5%8e%9f%e5%88%99" aria-label="依赖倒置原则">依赖倒置原则</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e7%bb%84%e5%90%88%e4%bc%98%e4%ba%8e%e7%bb%a7%e6%89%bf" aria-label="组合优于继承">组合优于继承</a></li>
+                    <li>
+                        <a href="#%e8%bf%aa%e7%b1%b3%e7%89%b9%e6%b3%95%e5%88%99" aria-label="迪米特法则">迪米特法则</a></li>
+                    <li>
+                        <a href="#%e6%8e%a7%e5%88%b6%e5%8f%8d%e8%bd%ac%e6%b3%95%e5%88%99" aria-label="控制反转法则">控制反转法则</a></li>
+                    <li>
+                        <a href="#kiss" aria-label="KISS">KISS</a></li>
+                    <li>
+                        <a href="#dry" aria-label="DRY">DRY</a></li>
+                    <li>
+                        <a href="#wet-%e5%8f%8d%e6%a8%a1%e5%bc%8f" aria-label="WET 反模式">WET 反模式</a></li>
+                    <li>
+                        <a href="#aha" aria-label="AHA">AHA</a></li>
+                    <li>
+                        <a href="#yagni" aria-label="YAGNI">YAGNI</a></li>
+                    <li>
+                        <a href="#document-your-code" aria-label="Document Your Code">Document Your Code</a></li>
+                    <li>
+                        <a href="#%e5%8c%85%e7%ae%a1%e7%90%86%e6%b3%95%e5%88%99" aria-label="包管理法则">包管理法则</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%8f%91%e5%b8%83%e7%ad%89%e4%ba%8e%e9%87%8d%e7%94%a8" aria-label="发布等于重用">发布等于重用</a></li>
+                    <li>
+                        <a href="#%e5%b0%81%e8%a3%85%e5%8f%98%e6%9b%b4" aria-label="封装变更">封装变更</a></li>
+                    <li>
+                        <a href="#%e5%b0%81%e8%a3%85%e9%87%8d%e7%94%a8" aria-label="封装重用">封装重用</a></li>
+                    <li>
+                        <a href="#%e6%b2%a1%e6%9c%89%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96" aria-label="没有循环依赖">没有循环依赖</a></li>
+                    <li>
+                        <a href="#%e9%9d%a2%e5%90%91%e7%a8%b3%e5%ae%9a%e7%9a%84%e4%be%9d%e8%b5%96" aria-label="面向稳定的依赖">面向稳定的依赖</a></li>
+                    <li>
+                        <a href="#%e9%9d%a2%e5%90%91%e6%8a%bd%e8%b1%a1%e7%9a%84%e4%be%9d%e8%b5%96" aria-label="面向抽象的依赖">面向抽象的依赖</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#ref" aria-label="Ref">Ref</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对<code>OOD</code>。</p>
+<p>我尽量一句话概括一项原则、法则：</p>
+<h1 id="grasp">GRASP<a hidden class="anchor" aria-hidden="true" href="#grasp">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)">GRASP</a></p>
+<blockquote>
+<p>General Responsibility Assignment Software Patterns (or Principles), abbreviated GRASP, is a set of &ldquo;nine fundamental principles in object design and responsibility assignment&rdquo;</p>
+</blockquote>
+<p>通用职责分配原则，缩写<code>GRASP</code>，包含九种<code>OOP</code>设计基础原则。</p>
+<h2 id="信息隐藏--信息专家--封装">信息隐藏 | 信息专家 | 封装<a hidden class="anchor" aria-hidden="true" href="#信息隐藏--信息专家--封装">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Information_hiding">信息隐藏 | 信息专家 | 封装</a></p>
+<blockquote>
+<p>Information hiding(Information expert) interchangeable with term Encapsulation</p>
+</blockquote>
+<p>将具备共同含义、变化频率的部分封装起来，并通过接口隔离实现，通过访问权限隔离访问。</p>
+<p>特性：高内聚、低耦合。</p>
+<h2 id="创建者--creator--factory">创建者 | Creator | Factory<a hidden class="anchor" aria-hidden="true" href="#创建者--creator--factory">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)">创建者 | Creator | Factory</a></p>
+<blockquote>
+<p>In object-oriented programming (OOP), a factory is an object for creating other objects – formally a factory is a function or method that returns objects of a varying prototype or class[1] from some method call, which is assumed to be &ldquo;new&rdquo;.[a] More broadly, a subroutine that returns a &ldquo;new&rdquo; object may be referred to as a &ldquo;factory&rdquo;, as in factory method or factory function.</p>
+</blockquote>
+<p><code>OOP</code>中，创建者、工厂，负责特定对象的创建。</p>
+<h2 id="controller--非ui场景">Controller | 非UI场景<a hidden class="anchor" aria-hidden="true" href="#controller--非ui场景">#</a></h2>
+<blockquote>
+<p>The controller pattern assigns the responsibility of dealing with system events to a non-UI class that represents the overall system or a use case scenario. A controller object is a non-user interface object responsible for receiving or handling a system event.</p>
+</blockquote>
+<p><code>Controller</code>负责接收、处理系统事件。与<code>MVC</code>中的<code>C</code>含义一致。</p>
+<p>相关模式：命令模式、门面模式、分层架构、纯虚构。</p>
+<h2 id="转发--indirection">转发 | Indirection<a hidden class="anchor" aria-hidden="true" href="#转发--indirection">#</a></h2>
+<blockquote>
+<p>The indirection pattern supports low coupling and reuses potential between two elements by assigning the responsibility of mediation between them to an intermediate object.</p>
+</blockquote>
+<p>转发模式：使用一个中间层转发对接前后的元素或层，解耦了前后元素，并且复用了已有能力，起分配作用。</p>
+<p>特性：低耦合、复用能力。</p>
+<h2 id="低耦合--low-coupling">低耦合 | Low coupling<a hidden class="anchor" aria-hidden="true" href="#低耦合--low-coupling">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Loose_coupling">低耦合 | Low coupling</a></p>
+<blockquote>
+<p>Coupling is a measure of how strongly one element is connected to, has knowledge of, or relies on other elements.</p>
+</blockquote>
+<p>以上为耦合的定义。而低耦合（松耦合）是一种评估效果的模式：</p>
+<ol>
+<li>类与类之间是否依赖是更少、更低一层的；</li>
+<li>对一个类的修改是否对其他类有更少的影响；</li>
+<li>有更多复用的可能性；</li>
+</ol>
+<h2 id="高内聚--high-cohesion">高内聚 | High cohesion<a hidden class="anchor" aria-hidden="true" href="#高内聚--high-cohesion">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Cohesion_(computer_science)">高内聚 | High cohesion</a></p>
+<blockquote>
+<p>High cohesion is an evaluative pattern that attempts to keep objects appropriately focused, manageable and understandable.</p>
+</blockquote>
+<p>与低耦合属于同类，均为评估效果的模式：</p>
+<ol>
+<li>对象职责是否明确、专注；</li>
+<li>对象是否更好管理；</li>
+<li>代码是否易懂；</li>
+</ol>
+<h2 id="多态--polymorphism">多态 | Polymorphism<a hidden class="anchor" aria-hidden="true" href="#多态--polymorphism">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Polymorphism_in_object-oriented_programming">多态 | Polymorphism</a></p>
+<blockquote>
+<p>In programming language theory and type theory, polymorphism is the provision of a single interface to entities of different types[1] or the use of a single symbol to represent multiple different types.[2] The concept is borrowed from a principle in biology where an organism or species can have many different forms or stages.</p>
+</blockquote>
+<p>受生物学启发，一个生物或者有机体可以有多种形态、阶段。</p>
+<p>同理：</p>
+<ul>
+<li>在编程语言理论中，多态通过单个接口，提供了多种类型实现。</li>
+<li>在类型理论研究中，单一符号可以表示多种类型。</li>
+</ul>
+<p>实现分类：</p>
+<ol>
+<li>
+<p>Ad hoc polymorphism 特定多态</p>
+<p>方法、函数、修饰符的重载。</p>
+</li>
+<li>
+<p>Parametric polymorphism 参数类型多态</p>
+<p>泛型多态。泛型不指定实际调用时的具体类型，而是用通用符号进行函数定义。</p>
+</li>
+<li>
+<p>Subtyping 子类型多态</p>
+<p>定义时只指定公共父类符号。</p>
+</li>
+</ol>
+<h2 id="隔离变化--开闭原则--protected-variations">隔离变化 | 开闭原则 | Protected variations<a hidden class="anchor" aria-hidden="true" href="#隔离变化--开闭原则--protected-variations">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Open/closed_principle">隔离变化 | 开闭原则 | Protected variations</a></p>
+<blockquote>
+<p>The protected variations pattern protects elements from the variations on other elements (objects, systems, subsystems) by wrapping the focus of instability with an interface and using polymorphism to create various implementations of this interface.</p>
+</blockquote>
+<p>识别预测可能的变化点，通过接口或者抽象隔离变化。</p>
+<h2 id="纯虚构--pure-fabrication">纯虚构 | Pure fabrication<a hidden class="anchor" aria-hidden="true" href="#纯虚构--pure-fabrication">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Service_(systems_architecture)">纯虚构 | Pure fabrication</a></p>
+<blockquote>
+<p>A pure fabrication is a class that does not represent a concept in the problem domain, specially made up to achieve low coupling, high cohesion, and the reuse potential thereof derived (when a solution presented by the information expert pattern does not). This kind of class is called a &ldquo;service&rdquo; in domain-driven design.</p>
+</blockquote>
+<p>虚构层、虚构对象没有对应的领域概念，是为了高内聚、低耦合、复用（内聚了信息专家没有的信息）创造出的代码表示。</p>
+<p><code>DDD</code>、<code>MVC</code>中我们称虚构层为<code>service</code>。</p>
+<p>特性：高内聚、低耦合。</p>
+<h1 id="solid">SOLID<a hidden class="anchor" aria-hidden="true" href="#solid">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/SOLID">SOLID</a></p>
+<h2 id="单一职责原则">单一职责原则<a hidden class="anchor" aria-hidden="true" href="#单一职责原则">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Single-responsibility_principle">单一职责原则</a></p>
+<blockquote>
+<p>Single-responsibility principle
+A class should have one, and only one, reason to change.</p>
+</blockquote>
+<p>一个类只应该负责一件事。当针对这个类需要变更时，只能由一个理由驱动。</p>
+<h2 id="开闭原则">开闭原则<a hidden class="anchor" aria-hidden="true" href="#开闭原则">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle">开闭原则</a></p>
+<blockquote>
+<p>Open–closed principle
+You should be able to extend a classes behavior, without modifying it.</p>
+</blockquote>
+<p><code>OOP</code>背景下，软件实体（类、模块、函数）对拓展开放，对修改封闭。</p>
+<p>当需要增加、修改功能时，不要修改源码（包括原来的二进制文件），通过拓展来完成变更。</p>
+<h2 id="里式替换原则">里式替换原则<a hidden class="anchor" aria-hidden="true" href="#里式替换原则">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Liskov_substitution_principle">里式替换原则</a></p>
+<blockquote>
+<p>Liskov substitution principle</p>
+<p>Liskov&rsquo;s notion of a behavioural subtype defines a notion of substitutability for objects; that is, if S is a subtype of T, then objects of type T in a program may be replaced with objects of type S without altering any of the desirable properties of that program (e.g. correctness).</p>
+<p>Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it.</p>
+<p>Derived classes must be substitutable for their base classes.</p>
+</blockquote>
+<p>父类实例可以在不修改任何类属性的前提下，替换为子类实例。</p>
+<h2 id="接口隔离原则">接口隔离原则<a hidden class="anchor" aria-hidden="true" href="#接口隔离原则">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Interface_segregation_principle">接口隔离原则</a></p>
+<blockquote>
+<p>Interface segregation principle</p>
+<p>Many client-specific interfaces are better than one general-purpose interface.</p>
+</blockquote>
+<p>小的、精确的接口，比大的接口更好。通过约束接口来优化依赖关系。</p>
+<h2 id="依赖倒置原则">依赖倒置原则<a hidden class="anchor" aria-hidden="true" href="#依赖倒置原则">#</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">依赖倒置原则</a></p>
+<blockquote>
+<p>Dependency inversion principle</p>
+<p>Depend upon abstractions, [not] concretions.</p>
+</blockquote>
+<p>依赖接口，不依赖实现。</p>
+<h1 id="组合优于继承">组合优于继承<a hidden class="anchor" aria-hidden="true" href="#组合优于继承">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">组合优于继承</a></p>
+<blockquote>
+<p>Composition over inheritance</p>
+</blockquote>
+<p>当我们想重用代码或者实现多态时，要优先使用组合的方式。</p>
+<h1 id="迪米特法则">迪米特法则<a hidden class="anchor" aria-hidden="true" href="#迪米特法则">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Law_of_Demeter">迪米特法则</a></p>
+<blockquote>
+<p>Law of Demeter LOD</p>
+</blockquote>
+<p>又叫最少知识法则，面向解耦的目的，调用方对被调用方的内部结构、实现知道的越少越好。</p>
+<h1 id="控制反转法则">控制反转法则<a hidden class="anchor" aria-hidden="true" href="#控制反转法则">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Inversion_of_control">控制反转法则</a></p>
+<blockquote>
+<p>IoC(Inversion of Control)</p>
+</blockquote>
+<p>通过框架控制对象创建、流程，用于实现拓展性、模块化。</p>
+<p><code>OOP</code>下的实现方式：</p>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Service_locator_pattern">service locator pattern</a>
+<ul>
+<li>服务定位设计模式</li>
+<li>使用抽象层封装了寻找真实业务处理者的逻辑</li>
+<li>举例：<code>JNDI</code></li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>
+<ul>
+<li>依赖注入
+<ol>
+<li>Constructor</li>
+<li>Parameter</li>
+<li>Setter</li>
+<li>Interface</li>
+<li>Method</li>
+</ol>
+</li>
+<li>举例：<code>Spring</code>的依赖注入容器</li>
+</ul>
+</li>
+<li>contextualized lookup
+<ul>
+<li>上下文寻址</li>
+<li>也叫 Contextualized Dependency Lookup (CDL)</li>
+<li>todo: Contextualized Dependency Lookup (CDL) is similar, in some respects, to Dependency Pull, but in CDL,lookup is performed against the container that is managing the resource, not from some central registry,and it is usually performed at some set point</li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Template_method_design_pattern">template method design pattern</a>
+<ul>
+<li>模板方法设计模式</li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Strategy_design_pattern">strategy design pattern</a>
+<ul>
+<li>策略设计模式</li>
+</ul>
+</li>
+</ol>
+<h1 id="kiss">KISS<a hidden class="anchor" aria-hidden="true" href="#kiss">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/KISS_principle">KISS, an acronym for keep it simple, stupid, is a design principle noted by the U.S. Navy in 1960.</a></p>
+<blockquote>
+<p>The KISS principle states that most systems work best if they are kept simple rather than made complicated; therefore, simplicity should be a key goal in design, and unnecessary complexity should be avoided.</p>
+</blockquote>
+<p>KISS法则是说：我们的系统能够运行良好的一大原因是足够简单。因此，简单、简洁、避免不必要的复杂是我们设计的核心目标。</p>
+<p>变体：</p>
+<ul>
+<li>Keep it simple, silly</li>
+<li>keep it short and simple</li>
+<li>keep it short and sweet</li>
+<li>keep it simple and straightforward</li>
+<li>keep it small and simple</li>
+<li>keep it simple, soldier</li>
+<li>keep it simple, sailor</li>
+<li>keep it sweet and simple</li>
+</ul>
+<h1 id="dry">DRY<a hidden class="anchor" aria-hidden="true" href="#dry">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">&ldquo;Don&rsquo;t repeat yourself&rdquo; (DRY) is a principle of software development aimed at reducing repetition of software patterns,[1] replacing it with abstractions or using data normalization to avoid redundancy.</a></p>
+<blockquote>
+<p>The DRY principle is stated as &ldquo;Every piece of knowledge must have a single, unambiguous, authoritative representation within a system&rdquo;. The principle has been formulated by Andy Hunt and Dave Thomas in their book The Pragmatic Programmer. They apply it quite broadly to include &ldquo;database schemas, test plans, the build system, even documentation&rdquo;.</p>
+</blockquote>
+<p>同一系统内的同一知识应该有明确、权威可信的唯一表示。</p>
+<h1 id="wet-反模式">WET 反模式<a hidden class="anchor" aria-hidden="true" href="#wet-反模式">#</a></h1>
+<blockquote>
+<p>write everything twice
+write every time
+waste everyone&rsquo;s time</p>
+</blockquote>
+<p>反模式：无脑拷贝、重写代码。</p>
+<h1 id="aha">AHA<a hidden class="anchor" aria-hidden="true" href="#aha">#</a></h1>
+<blockquote>
+<p>AHA stands for &ldquo;avoid hasty abstractions&rdquo;, described by Kent C. Dodds as optimizing for change first, and avoiding premature optimization.[8] and was influenced by Sandi Metz&rsquo;s &ldquo;prefer duplication over the wrong abstraction&rdquo;.</p>
+</blockquote>
+<p>避免草率的抽象。面对变更先做修改，避免过早优化。</p>
+<h1 id="yagni">YAGNI<a hidden class="anchor" aria-hidden="true" href="#yagni">#</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it#:~:text=%22You%20aren't%20gonna%20need,add%20functionality%20until%20deemed%20necessary.">You aren&rsquo;t gonna need it</a></p>
+<blockquote>
+<p>&ldquo;You aren&rsquo;t gonna need it&rdquo;(YAGNI) is a principle which arose from extreme programming (XP) that states a programmer should not add functionality until deemed necessary. XP co-founder Ron Jeffries has written: &ldquo;Always implement things when you actually need them, never when you just foresee that you need them.&rdquo;</p>
+</blockquote>
+<p>只有在真正需要的时候再去实现新的逻辑，尽可能复用已有代码。</p>
+<h1 id="document-your-code">Document Your Code<a hidden class="anchor" aria-hidden="true" href="#document-your-code">#</a></h1>
+<blockquote>
+<p>Any senior developer will stress the importance of documenting your code with proper comments. All languages offer them; you should make it a habit to write them. Leave comments to explain objects, enhance variable definitions, and make functions easier to understand.</p>
+</blockquote>
+<p>注释、文档与代码同样重要。使用注释解释对象、变量含义，同时使得函数更易读。</p>
+<h1 id="包管理法则">包管理法则<a hidden class="anchor" aria-hidden="true" href="#包管理法则">#</a></h1>
+<p>前三项关注包内聚，即包内应该放什么。
+后三项关注包解耦，即关注包与包之间的关系、结构。</p>
+<h2 id="发布等于重用">发布等于重用<a hidden class="anchor" aria-hidden="true" href="#发布等于重用">#</a></h2>
+<blockquote>
+<p>REP
+The Release Reuse Equivalency Principle
+The granule of reuse is the granule of release.</p>
+</blockquote>
+<p>发布的粒度就是重用的粒度。</p>
+<h2 id="封装变更">封装变更<a hidden class="anchor" aria-hidden="true" href="#封装变更">#</a></h2>
+<blockquote>
+<p>CCP
+The Common Closure Principle
+Classes that change together are packaged together.</p>
+</blockquote>
+<p>一起变更的类应该放在同一个包下。即关注类变更的频率、规律。使用包封装这种变化。</p>
+<h2 id="封装重用">封装重用<a hidden class="anchor" aria-hidden="true" href="#封装重用">#</a></h2>
+<blockquote>
+<p>CRP
+The Common Reuse Principle
+Classes that are used together are packaged together.</p>
+</blockquote>
+<p>一起使用的类应该放在同一个包下。即关注类被使用的场景。</p>
+<h2 id="没有循环依赖">没有循环依赖<a hidden class="anchor" aria-hidden="true" href="#没有循环依赖">#</a></h2>
+<blockquote>
+<p>ADP
+The Acyclic Dependencies Principle
+The dependency graph of packages must have no cycles.</p>
+</blockquote>
+<p>包与包之间的依赖禁止出现环。</p>
+<h2 id="面向稳定的依赖">面向稳定的依赖<a hidden class="anchor" aria-hidden="true" href="#面向稳定的依赖">#</a></h2>
+<blockquote>
+<p>SDP
+The Stable Dependencies Principle
+Depend in the direction of stability.</p>
+</blockquote>
+<p>保证依赖都是稳定的。</p>
+<h2 id="面向抽象的依赖">面向抽象的依赖<a hidden class="anchor" aria-hidden="true" href="#面向抽象的依赖">#</a></h2>
+<blockquote>
+<p>SAP
+The Stable Abstractions Principle
+Abstractness increases with stability.</p>
+</blockquote>
+<p>依赖抽象，提高依赖的稳定性「变化的往往是实现」。</p>
+<h1 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h1>
+<ul>
+<li><a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">UncleBob.PrinciplesOfOod</a></li>
+<li><a href="https://yiming.dev/blog/2019/06/13/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E4%B9%8B%E6%88%91%E8%A7%81/">ChenYiming-面向对象编程之我见</a></li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/%E7%BC%96%E7%A8%8B%E5%8E%9F%E5%88%99/">编程原则</a></li>
+      <li><a href="https://redolog.github.io/tags/programming-principle/">Programming Principle</a></li>
+      <li><a href="https://redolog.github.io/tags/methodology/">methodology</a></li>
+      <li><a href="https://redolog.github.io/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">方法论</a></li>
+      <li><a href="https://redolog.github.io/tags/oop/">OOP</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/design/pattern/index/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>设计模式一览</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/linux/data/latency/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Latency numbers every programmer should know</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share OOP编程原则一览 on twitter"
+        href="https://twitter.com/intent/tweet/?text=OOP%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%e4%b8%80%e8%a7%88&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f&amp;hashtags=%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%2cProgrammingPrinciple%2cmethodology%2c%e6%96%b9%e6%b3%95%e8%ae%ba%2cOOP">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share OOP编程原则一览 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f&amp;title=OOP%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%e4%b8%80%e8%a7%88&amp;summary=OOP%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%e4%b8%80%e8%a7%88&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share OOP编程原则一览 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f&title=OOP%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%e4%b8%80%e8%a7%88">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share OOP编程原则一览 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share OOP编程原则一览 on whatsapp"
+        href="https://api.whatsapp.com/send?text=OOP%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%e4%b8%80%e8%a7%88%20-%20https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share OOP编程原则一览 on telegram"
+        href="https://telegram.me/share/url?text=OOP%e7%bc%96%e7%a8%8b%e5%8e%9f%e5%88%99%e4%b8%80%e8%a7%88&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fprinciple%2foop%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

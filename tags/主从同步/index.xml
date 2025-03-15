@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>主从同步 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/</link>
+    <description>Recent content in 主从同步 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 20 Dec 2021 20:12:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL主从延迟业务数据缺失问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</link>
+      <pubDate>Mon, 20 Dec 2021 20:12:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，流程业务卡住无法流转，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟消费重试问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</link>
+      <pubDate>Thu, 09 Dec 2021 13:04:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，生产消费未正确处理此类场景，数据消费第一次失败报警，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

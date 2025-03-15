@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>关于IO我所知道的一切都在这里了 | 宋惠龙的博客</title>
+<meta name="keywords" content="Linux, Java, IO, 同步, 异步, 阻塞, 非阻塞, Reactor, Proactor, PPC, TPC" />
+<meta name="description" content="统一整理IO涉及的知识点">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/rd/design/io/all-about-io/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="关于IO我所知道的一切都在这里了" />
+<meta property="og:description" content="统一整理IO涉及的知识点" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/rd/design/io/all-about-io/" />
+<meta property="og:image" content="https://redolog.github.io/cover.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-02-06T12:30:25&#43;08:00" />
+<meta property="article:modified_time" content="2024-02-06T12:30:25&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://redolog.github.io/cover.png" />
+<meta name="twitter:title" content="关于IO我所知道的一切都在这里了"/>
+<meta name="twitter:description" content="统一整理IO涉及的知识点"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "关于IO我所知道的一切都在这里了",
+      "item": "https://redolog.github.io/posts/rd/design/io/all-about-io/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "关于IO我所知道的一切都在这里了",
+  "name": "关于IO我所知道的一切都在这里了",
+  "description": "统一整理IO涉及的知识点",
+  "keywords": [
+    "Linux", "Java", "IO", "同步", "异步", "阻塞", "非阻塞", "Reactor", "Proactor", "PPC", "TPC"
+  ],
+  "articleBody": "本文尝试归纳整理作者所了解的IO基础模式、IO架构通用模式，尽可能一篇文章提供IO相关的全景图以及方案优化对比。\n本文使用黑夜模式阅读体验更佳。\n如无特殊说明，本文使用的术语遵从Linux、Java的习惯。\nIO基础概念 Buffer Buffer 是字节流在内存中的表示，是一种数据结构。\n针对读写模式的不同，Java中使用同样的字段不同的使用方式。如图： Channel Channel 则是负责读写IO动作的组件，对接OS层面的文件、网络模块，数据读写到内存中则用Buffer表示。\nScattering Read \u0026 Gathering Write 分散读：一次读调用，从多个IO源中获取数据。\n聚集写：一次写调用，完成多个IO目的地的写入。\nSelector Selector组件是IO多路复用算法的核心组件，单线程（或多线程）单个Selector组件即可完成多个IO数据就绪的监听。\nPipe Pipe表示两个Channel间的单向连接。\nIO基础模式 介绍模式之前，强调一些基础背景：\n我们的服务端程序属于用户态； 操作系统属于内核态； 当程序向操作系统发起IO时，操作系统会经历以下阶段： 数据准备； 从物理设备，通过DMA，复制到内核缓冲区（Kernel Buffer）； 数据就绪； 数据复制（从内核空间复制到用户空间）； 从内核缓冲区，通过CPU，复制到用户空间缓冲区； 数据准备与复制两个阶段的核心作用如图： IO的基础模式解决的是统一抽象了单个IO的流程模式，基础模式是高级模式的基础。\n同步阻塞IO 对于同步阻塞IO来说，从应用程序发起IO调用（图中的read()）后会一直等待，直到操作系统完成数据准备、就绪、复制等动作。\n同步非阻塞IO 对于同步非阻塞IO来说，从应用程序发起IO调用（图中的read()）后，如果此时数据还未就绪，则该干啥干啥去，稍后片刻后再发起read()调用检查数据是否就绪。\n当数据就绪后，应用程序发起的read()会阻塞获取到结果。\n同步非阻塞模式解决了同步阻塞模式下的一直阻塞等待数据准备结果的效率问题。\n异步IO 对于异步IO来说，应用程序发起read()后即时返回，后续数据就绪后，由操作系统通知应用程序结果。\n异步模式提高了同步非阻塞模式下需要多次检查数据准备结果的效率。\nIO多路复用 对于IO多路复用模式，使用一个Selector组件统一接管了多个IO请求的数据准备状态的检查工作。\nIO多路复用技术关键点：\n多条连接共用一个阻塞对象，无需轮询所有连接对象，常见实现方案有 select、epoll、kqueue； 当某条连接有数据响应时，OS通知进程，进而做业务处理； IO高性能模式 理解掌握了IO的基础模式，我们基本可以解决单个IO、简单场景IO的问题。\n但面对工业系统面临的问题时，比如系统承载连接变多、用户并发请求数升高、资源利用率，我们需要做更多的设计，因此需要基于基础模式进行高性能模式的探索。\nPPC: Process Per Connection 一个连接启动一个进程处理，是传统UNIX网络服务器最初始的模式。\n特点：\nfork开销大； 跨进程通信复杂； 支持的并发连接数有限； PPC: prefork 优化1：prefork 进程预热\n系统启动时预先创建好子进程。\n特点：\n通过提前创建子进程优化了原PPC模式下fork开销大的问题； 其他问题依然存在； TPC: Thread Per Connection 一个连接启动一个线程处理。\n特点：\n解决了PPC fork开销大的问题，线程创建开销更小； 但是创建线程的开销依然很大； 解决了跨进程通信复杂的问题，多线程共享了进程内存空间，通信效率较高； 但是线程通信也需要同步，引入了死锁的问题； 多线程间可能会互相影响，比如某个线程出现内存越界时，会导致整个进程退出； TPC: prethread 优化1：prethread 线程预热\n预先创建线程。\n特点：\n相比PPC的prefork更加灵活； 案例：Apache的MPM Worker，多进程+多线程模式，默认支持了 16*25=400 个并发处理线程； PPC、TPC的局限性分析 实现简单，但是无法支持高并发场景。\n问题分析： 进程、线程在不使用的情况下就要销毁，可以考虑使用池化的方式进行资源复用； 单进程处理多个连接，如果多个连接都进行阻塞监听，则有后续连接因前序连接阻塞无法处理的问题，可以考虑使用非阻塞轮询的方式改进，如果连接过多，则轮询的开销也会加大，进一步，可以考虑使用IO多路复用进行改进； 改进方案： 根据以上方面的分析，方案无非是如下三种：\n连接资源池化； 非阻塞IO； IO多路复用； 相比PPC、TPC，下方的Reactor、Proactor模式更擅长应对高并发。\nReactor模式 由上部分的PPC、TPC的局限性分析我们已经得出了改进的方案，而 IO多路复用 + 线程池 = Reactor模式（等同于Dispatcher）。\nReactor架构模式是主流中间件使用的方案！\nReactor我们可以细分为三种模式：\n单Reactor单进程、线程； 单Reactor多线程； 多Reactor多进程、线程； 我们选取其中常用的方案进行优缺点、结构分析。\n单Reactor单进程、线程 优点：\n实现简单； 没有跨进程通信； 没有跨进程资源竞争； 缺点：\n无法利用多核CPU的优势； Handler只有一个进程（线程），当前序任务处理过久时，handler会成为后续任务的瓶颈； 适用场景：业务场景处理快速的场景。\n使用案例：Redis。\n单Reactor多线程 优点：\n可充分利用多核CPU的优势； 缺点：\n多线程数据同步较复杂； 单个Reactor负责所有请求的处理，可能成为瓶颈； Proactor IO操作+业务操作完全异步化 = Proactor模式。\n优点：\n全链路异步化，更高效； 缺点：\n实现复杂； 目前仅Windows系统通过IOCP技术提供了实现，Linux下暂不支持全异步的AIO； 总结 本文介绍了IO的基础概念、基础模式、高性能模式三大板块。\n其中基础模式中，我们将空间明确区分为了内核空间、用户空间。当应用层发起IO调用后，操作系统需要处理数据准备、数据就绪、数据复制三个阶段的工作。 从图例中，可以清晰地判断何为同步、异步，何为阻塞、非阻塞。\n弄清楚基本概念与基础模式后，我们过了一遍主流中间件使用的高性能架构模式。其中Reactor模式最为重点，请重点关注。\n每一个架构模式的设计均是为了解决上一个模式的缺点。\n而解决问题的思路是相似的：\n资源预处理； 非阻塞IO（NIO）； 资源池化； IO多路复用； 异步化（AIO）； 学习、运用本文相关知识，我觉得两点最为关键：\n梳理过程要清晰，配合图例、流程图、文字可以更好地理解一块领域的知识； 解决问题的思路一般不需要重新发明，因此要了解业界、经典著作中的已有方案与解决问题的过程； 以上。\nRef Jakob Jenkov Java NIO 教程 李号双 深入拆解 Tomcat \u0026 Jetty 李运华 从 0 开始学架构 ",
+  "wordCount" : "2638",
+  "inLanguage": "en",
+  "image":"https://redolog.github.io/cover.png","datePublished": "2024-02-06T12:30:25+08:00",
+  "dateModified": "2024-02-06T12:30:25+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/rd/design/io/all-about-io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      关于IO我所知道的一切都在这里了
+    </h1>
+    <div class="post-description">
+      统一整理IO涉及的知识点
+    </div>
+    <div class="post-meta"><span title='2024-02-06 12:30:25 +0800 CST'>February 6, 2024</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="lazy" srcset="https://redolog.github.io/posts/rd/design/io/all-about-io/cover_huaf1c8f52363d1c3238fea055c6964ff0_37058_360x0_resize_box_3.png 360w ,https://redolog.github.io/posts/rd/design/io/all-about-io/cover_huaf1c8f52363d1c3238fea055c6964ff0_37058_480x0_resize_box_3.png 480w ,https://redolog.github.io/posts/rd/design/io/all-about-io/cover_huaf1c8f52363d1c3238fea055c6964ff0_37058_720x0_resize_box_3.png 720w ,https://redolog.github.io/posts/rd/design/io/all-about-io/cover_huaf1c8f52363d1c3238fea055c6964ff0_37058_1080x0_resize_box_3.png 1080w ,https://redolog.github.io/posts/rd/design/io/all-about-io/cover.png 1440w" 
+            sizes="(min-width: 768px) 720px, 100vw" src="https://redolog.github.io/posts/rd/design/io/all-about-io/cover.png" alt="IO高性能常用手段：NIO、多路复用、池化、异步" 
+            width="1440" height="489">
+        <p>IO高性能常用手段：NIO、多路复用、池化、异步</p>
+</figure><aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#io%e5%9f%ba%e7%a1%80%e6%a6%82%e5%bf%b5" aria-label="IO基础概念">IO基础概念</a><ul>
+                            
+                    <li>
+                        <a href="#buffer" aria-label="Buffer">Buffer</a></li>
+                    <li>
+                        <a href="#channel" aria-label="Channel">Channel</a></li>
+                    <li>
+                        <a href="#scattering-read--gathering-write" aria-label="Scattering Read &amp;amp; Gathering Write">Scattering Read &amp; Gathering Write</a></li>
+                    <li>
+                        <a href="#selector" aria-label="Selector">Selector</a></li>
+                    <li>
+                        <a href="#pipe" aria-label="Pipe">Pipe</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#io%e5%9f%ba%e7%a1%80%e6%a8%a1%e5%bc%8f" aria-label="IO基础模式">IO基础模式</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%90%8c%e6%ad%a5%e9%98%bb%e5%a1%9eio" aria-label="同步阻塞IO">同步阻塞IO</a></li>
+                    <li>
+                        <a href="#%e5%90%8c%e6%ad%a5%e9%9d%9e%e9%98%bb%e5%a1%9eio" aria-label="同步非阻塞IO">同步非阻塞IO</a></li>
+                    <li>
+                        <a href="#%e5%bc%82%e6%ad%a5io" aria-label="异步IO">异步IO</a></li>
+                    <li>
+                        <a href="#io%e5%a4%9a%e8%b7%af%e5%a4%8d%e7%94%a8" aria-label="IO多路复用">IO多路复用</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#io%e9%ab%98%e6%80%a7%e8%83%bd%e6%a8%a1%e5%bc%8f" aria-label="IO高性能模式">IO高性能模式</a><ul>
+                            
+                    <li>
+                        <a href="#ppc-process-per-connection" aria-label="PPC: Process Per Connection">PPC: Process Per Connection</a></li>
+                    <li>
+                        <a href="#ppc-prefork" aria-label="PPC: prefork">PPC: prefork</a></li>
+                    <li>
+                        <a href="#tpc-thread-per-connection" aria-label="TPC: Thread Per Connection">TPC: Thread Per Connection</a></li>
+                    <li>
+                        <a href="#tpc-prethread" aria-label="TPC: prethread">TPC: prethread</a></li>
+                    <li>
+                        <a href="#ppctpc%e7%9a%84%e5%b1%80%e9%99%90%e6%80%a7%e5%88%86%e6%9e%90" aria-label="PPC、TPC的局限性分析">PPC、TPC的局限性分析</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%97%ae%e9%a2%98%e5%88%86%e6%9e%90" aria-label="问题分析：">问题分析：</a></li>
+                    <li>
+                        <a href="#%e6%94%b9%e8%bf%9b%e6%96%b9%e6%a1%88" aria-label="改进方案：">改进方案：</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#reactor%e6%a8%a1%e5%bc%8f" aria-label="Reactor模式">Reactor模式</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%8d%95reactor%e5%8d%95%e8%bf%9b%e7%a8%8b%e7%ba%bf%e7%a8%8b" aria-label="单Reactor单进程、线程">单Reactor单进程、线程</a></li>
+                    <li>
+                        <a href="#%e5%8d%95reactor%e5%a4%9a%e7%ba%bf%e7%a8%8b" aria-label="单Reactor多线程">单Reactor多线程</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#proactor" aria-label="Proactor">Proactor</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%80%bb%e7%bb%93" aria-label="总结">总结</a></li>
+                    <li>
+                        <a href="#ref" aria-label="Ref">Ref</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>本文尝试归纳整理作者所了解的<code>IO</code>基础模式、<code>IO</code>架构通用模式，尽可能一篇文章提供<code>IO</code>相关的全景图以及方案优化对比。</p>
+<p><strong>本文使用黑夜模式阅读体验更佳。</strong></p>
+<p>如无特殊说明，本文使用的术语遵从<code>Linux</code>、<code>Java</code>的习惯。</p>
+<h1 id="io基础概念">IO基础概念<a hidden class="anchor" aria-hidden="true" href="#io基础概念">#</a></h1>
+<h2 id="buffer">Buffer<a hidden class="anchor" aria-hidden="true" href="#buffer">#</a></h2>
+<p><code>Buffer</code> 是字节流在内存中的表示，是一种数据结构。</p>
+<p>针对读写模式的不同，<code>Java</code>中使用同样的字段不同的使用方式。如图：
+<img loading="lazy" src="buffer_write_read_mode.png" alt=""  />
+</p>
+<h2 id="channel">Channel<a hidden class="anchor" aria-hidden="true" href="#channel">#</a></h2>
+<p><code>Channel</code> 则是负责读写IO动作的组件，对接<code>OS</code>层面的文件、网络模块，数据读写到内存中则用<code>Buffer</code>表示。</p>
+<p><img loading="lazy" src="channel_operate_buffer.png" alt=""  />
+</p>
+<h2 id="scattering-read--gathering-write">Scattering Read &amp; Gathering Write<a hidden class="anchor" aria-hidden="true" href="#scattering-read--gathering-write">#</a></h2>
+<p>分散读：一次读调用，从多个<code>IO源</code>中获取数据。</p>
+<p>聚集写：一次写调用，完成多个<code>IO目的地</code>的写入。</p>
+<p><img loading="lazy" src="scattering_read_gathering_write.png" alt=""  />
+</p>
+<h2 id="selector">Selector<a hidden class="anchor" aria-hidden="true" href="#selector">#</a></h2>
+<p><code>Selector</code>组件是<code>IO多路复用</code>算法的核心组件，单线程（或多线程）单个<code>Selector</code>组件即可完成多个<code>IO</code>数据就绪的监听。</p>
+<p><img loading="lazy" src="selector.png" alt=""  />
+</p>
+<h2 id="pipe">Pipe<a hidden class="anchor" aria-hidden="true" href="#pipe">#</a></h2>
+<p><code>Pipe</code>表示两个<code>Channel</code>间的单向连接。</p>
+<p><img loading="lazy" src="pipe.png" alt=""  />
+</p>
+<h1 id="io基础模式">IO基础模式<a hidden class="anchor" aria-hidden="true" href="#io基础模式">#</a></h1>
+<p>介绍模式之前，强调一些基础背景：</p>
+<ul>
+<li>我们的服务端程序属于用户态；</li>
+<li>操作系统属于内核态；</li>
+<li>当程序向操作系统发起<code>IO</code>时，操作系统会经历以下阶段：
+<ul>
+<li>数据准备；
+<ul>
+<li>从物理设备，通过<code>DMA</code>，复制到内核缓冲区（<code>Kernel Buffer</code>）；</li>
+</ul>
+</li>
+<li>数据就绪；</li>
+<li>数据复制（从内核空间复制到用户空间）；
+<ul>
+<li>从内核缓冲区，通过<code>CPU</code>，复制到用户空间缓冲区；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>数据准备与复制两个阶段的核心作用如图：
+<img loading="lazy" src="io_prepare_copy_phase.png" alt=""  />
+</p>
+<p>IO的基础模式解决的是统一抽象了单个IO的流程模式，基础模式是高级模式的基础。</p>
+<h2 id="同步阻塞io">同步阻塞IO<a hidden class="anchor" aria-hidden="true" href="#同步阻塞io">#</a></h2>
+<p><img loading="lazy" src="sync_block_io.png" alt=""  />
+</p>
+<p>对于同步阻塞IO来说，从应用程序发起<code>IO</code>调用（图中的<code>read()</code>）后会一直等待，直到操作系统完成数据准备、就绪、复制等动作。</p>
+<h2 id="同步非阻塞io">同步非阻塞IO<a hidden class="anchor" aria-hidden="true" href="#同步非阻塞io">#</a></h2>
+<p><img loading="lazy" src="sync_nonblock_io.png" alt=""  />
+</p>
+<p>对于同步非阻塞IO来说，从应用程序发起<code>IO</code>调用（图中的<code>read()</code>）后，<strong>如果此时数据还未就绪，则该干啥干啥去</strong>，稍后片刻后再发起<code>read()</code>调用检查数据是否就绪。</p>
+<p>当数据就绪后，应用程序发起的<code>read()</code>会阻塞获取到结果。</p>
+<p><strong>同步非阻塞模式解决了同步阻塞模式下的一直阻塞等待数据准备结果的效率问题</strong>。</p>
+<h2 id="异步io">异步IO<a hidden class="anchor" aria-hidden="true" href="#异步io">#</a></h2>
+<p><img loading="lazy" src="async_io.png" alt=""  />
+</p>
+<p>对于异步IO来说，应用程序发起<code>read()</code>后即时返回，后续数据就绪后，由操作系统通知应用程序结果。</p>
+<p><strong>异步模式提高了同步非阻塞模式下需要多次检查数据准备结果的效率</strong>。</p>
+<h2 id="io多路复用">IO多路复用<a hidden class="anchor" aria-hidden="true" href="#io多路复用">#</a></h2>
+<p><img loading="lazy" src="io_multiplexing.png" alt=""  />
+</p>
+<p>对于IO多路复用模式，使用一个<code>Selector</code>组件统一接管了多个<code>IO</code>请求的数据准备状态的检查工作。</p>
+<p>IO多路复用技术关键点：</p>
+<ul>
+<li>多条连接共用一个阻塞对象，无需轮询所有连接对象，常见实现方案有 <code>select</code>、<code>epoll</code>、<code>kqueue</code>；</li>
+<li>当某条连接有数据响应时，OS通知进程，进而做业务处理；</li>
+</ul>
+<h1 id="io高性能模式">IO高性能模式<a hidden class="anchor" aria-hidden="true" href="#io高性能模式">#</a></h1>
+<p>理解掌握了IO的基础模式，我们基本可以解决单个IO、简单场景IO的问题。</p>
+<p>但面对工业系统面临的问题时，比如系统承载连接变多、用户并发请求数升高、资源利用率，我们需要做更多的设计，因此需要基于基础模式进行高性能模式的探索。</p>
+<h2 id="ppc-process-per-connection">PPC: Process Per Connection<a hidden class="anchor" aria-hidden="true" href="#ppc-process-per-connection">#</a></h2>
+<p>一个连接启动一个进程处理，是传统<code>UNIX</code>网络服务器最初始的模式。</p>
+<p>特点：</p>
+<ul>
+<li>fork开销大；</li>
+<li>跨进程通信复杂；</li>
+<li>支持的并发连接数有限；</li>
+</ul>
+<p><img loading="lazy" src="ppc.png" alt=""  />
+</p>
+<h2 id="ppc-prefork">PPC: prefork<a hidden class="anchor" aria-hidden="true" href="#ppc-prefork">#</a></h2>
+<p><strong>优化1：prefork 进程预热</strong></p>
+<p>系统启动时预先创建好子进程。</p>
+<p>特点：</p>
+<ul>
+<li>通过提前创建子进程优化了原PPC模式下fork开销大的问题；</li>
+<li>其他问题依然存在；</li>
+</ul>
+<p><img loading="lazy" src="ppc_prefork.png" alt=""  />
+</p>
+<h2 id="tpc-thread-per-connection">TPC: Thread Per Connection<a hidden class="anchor" aria-hidden="true" href="#tpc-thread-per-connection">#</a></h2>
+<p>一个连接启动一个线程处理。</p>
+<p>特点：</p>
+<ul>
+<li>解决了PPC fork开销大的问题，线程创建开销更小；
+<ul>
+<li>但是创建线程的开销依然很大；</li>
+</ul>
+</li>
+<li>解决了跨进程通信复杂的问题，多线程共享了进程内存空间，通信效率较高；
+<ul>
+<li>但是线程通信也需要同步，引入了死锁的问题；</li>
+<li>多线程间可能会互相影响，比如某个线程出现内存越界时，会导致整个进程退出；</li>
+</ul>
+</li>
+</ul>
+<p><img loading="lazy" src="tpc.png" alt=""  />
+</p>
+<h2 id="tpc-prethread">TPC: prethread<a hidden class="anchor" aria-hidden="true" href="#tpc-prethread">#</a></h2>
+<p><strong>优化1：prethread 线程预热</strong></p>
+<p>预先创建线程。</p>
+<p>特点：</p>
+<ul>
+<li>相比PPC的prefork更加灵活；</li>
+<li>案例：Apache的MPM Worker，多进程+多线程模式，默认支持了 16*25=400 个并发处理线程；</li>
+</ul>
+<p><img loading="lazy" src="tpc_prethread.png" alt=""  />
+</p>
+<h2 id="ppctpc的局限性分析">PPC、TPC的局限性分析<a hidden class="anchor" aria-hidden="true" href="#ppctpc的局限性分析">#</a></h2>
+<p>实现简单，但是无法支持高并发场景。</p>
+<h3 id="问题分析">问题分析：<a hidden class="anchor" aria-hidden="true" href="#问题分析">#</a></h3>
+<ul>
+<li>进程、线程在不使用的情况下就要销毁，可以考虑<strong>使用池化的方式进行资源复用</strong>；</li>
+<li>单进程处理多个连接，如果多个连接都进行阻塞监听，则有后续连接因前序连接阻塞无法处理的问题，可以考虑<strong>使用非阻塞轮询</strong>的方式改进，如果连接过多，则轮询的开销也会加大，进一步，可以考虑<strong>使用IO多路复用</strong>进行改进；</li>
+</ul>
+<h3 id="改进方案">改进方案：<a hidden class="anchor" aria-hidden="true" href="#改进方案">#</a></h3>
+<p>根据以上方面的分析，方案无非是如下三种：</p>
+<ul>
+<li>连接资源池化；</li>
+<li>非阻塞IO；</li>
+<li>IO多路复用；</li>
+</ul>
+<p>相比<code>PPC</code>、<code>TPC</code>，下方的<code>Reactor</code>、<code>Proactor</code>模式更擅长应对高并发。</p>
+<h2 id="reactor模式">Reactor模式<a hidden class="anchor" aria-hidden="true" href="#reactor模式">#</a></h2>
+<p>由上部分的PPC、TPC的局限性分析我们已经得出了改进的方案，而 <strong>IO多路复用 + 线程池 = Reactor模式（等同于Dispatcher）</strong>。</p>
+<p><strong>Reactor架构模式是主流中间件使用的方案！</strong></p>
+<p>Reactor我们可以细分为三种模式：</p>
+<ul>
+<li>单Reactor单进程、线程；</li>
+<li>单Reactor多线程；</li>
+<li>多Reactor多进程、线程；</li>
+</ul>
+<p>我们选取其中常用的方案进行优缺点、结构分析。</p>
+<h3 id="单reactor单进程线程">单Reactor单进程、线程<a hidden class="anchor" aria-hidden="true" href="#单reactor单进程线程">#</a></h3>
+<p>优点：</p>
+<ul>
+<li>实现简单；</li>
+<li>没有跨进程通信；</li>
+<li>没有跨进程资源竞争；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>无法利用多核CPU的优势；</li>
+<li>Handler只有一个进程（线程），当前序任务处理过久时，handler会成为后续任务的瓶颈；</li>
+</ul>
+<p>适用场景：业务场景处理快速的场景。</p>
+<p><strong>使用案例：Redis。</strong></p>
+<p><img loading="lazy" src="single_reactor.png" alt=""  />
+</p>
+<h3 id="单reactor多线程">单Reactor多线程<a hidden class="anchor" aria-hidden="true" href="#单reactor多线程">#</a></h3>
+<p>优点：</p>
+<ul>
+<li>可充分利用多核CPU的优势；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>多线程数据同步较复杂；</li>
+<li>单个Reactor负责所有请求的处理，可能成为瓶颈；</li>
+</ul>
+<p><img loading="lazy" src="multi_thread_reactor.png" alt=""  />
+</p>
+<h2 id="proactor">Proactor<a hidden class="anchor" aria-hidden="true" href="#proactor">#</a></h2>
+<p><strong>IO操作+业务操作完全异步化 = Proactor模式</strong>。</p>
+<p>优点：</p>
+<ul>
+<li>全链路异步化，更高效；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>实现复杂；</li>
+<li>目前仅<code>Windows</code>系统通过<code>IOCP</code>技术提供了实现，<code>Linux</code>下暂不支持全异步的<code>AIO</code>；</li>
+</ul>
+<p><img loading="lazy" src="proactor.png" alt=""  />
+</p>
+<h1 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h1>
+<p>本文介绍了IO的基础概念、基础模式、高性能模式三大板块。</p>
+<p>其中基础模式中，我们将空间明确区分为了内核空间、用户空间。当应用层发起IO调用后，操作系统需要处理数据准备、数据就绪、数据复制三个阶段的工作。
+从图例中，可以清晰地判断何为同步、异步，何为阻塞、非阻塞。</p>
+<p>弄清楚基本概念与基础模式后，我们过了一遍主流中间件使用的高性能架构模式。<strong>其中Reactor模式最为重点，请重点关注</strong>。</p>
+<p>每一个架构模式的设计均是为了解决上一个模式的缺点。</p>
+<p>而解决问题的思路是相似的：</p>
+<ul>
+<li>资源预处理；</li>
+<li>非阻塞IO（NIO）；</li>
+<li>资源池化；</li>
+<li>IO多路复用；</li>
+<li>异步化（AIO）；</li>
+</ul>
+<p>学习、运用本文相关知识，我觉得两点最为关键：</p>
+<ol>
+<li>梳理过程要清晰，配合图例、流程图、文字可以更好地理解一块领域的知识；</li>
+<li>解决问题的思路一般不需要重新发明，因此要了解业界、经典著作中的已有方案与解决问题的过程；</li>
+</ol>
+<p>以上。</p>
+<h1 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h1>
+<ul>
+<li><a href="https://jenkov.com/tutorials/java-nio/index.html">Jakob Jenkov Java NIO 教程</a></li>
+<li><a href="https://time.geekbang.org/column/intro/100027701">李号双 深入拆解 Tomcat &amp; Jetty</a></li>
+<li><a href="https://time.geekbang.org/column/intro/100006601">李运华 从 0 开始学架构</a></li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/linux/">Linux</a></li>
+      <li><a href="https://redolog.github.io/tags/java/">Java</a></li>
+      <li><a href="https://redolog.github.io/tags/io/">IO</a></li>
+      <li><a href="https://redolog.github.io/tags/%E5%90%8C%E6%AD%A5/">同步</a></li>
+      <li><a href="https://redolog.github.io/tags/%E5%BC%82%E6%AD%A5/">异步</a></li>
+      <li><a href="https://redolog.github.io/tags/%E9%98%BB%E5%A1%9E/">阻塞</a></li>
+      <li><a href="https://redolog.github.io/tags/%E9%9D%9E%E9%98%BB%E5%A1%9E/">非阻塞</a></li>
+      <li><a href="https://redolog.github.io/tags/reactor/">Reactor</a></li>
+      <li><a href="https://redolog.github.io/tags/proactor/">Proactor</a></li>
+      <li><a href="https://redolog.github.io/tags/ppc/">PPC</a></li>
+      <li><a href="https://redolog.github.io/tags/tpc/">TPC</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>排查 ConcurrentModificationException 问题一例</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/linux/zero-copy/legend/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Linux零拷贝图例一览</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于IO我所知道的一切都在这里了 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e5%85%b3%e4%ba%8eIO%e6%88%91%e6%89%80%e7%9f%a5%e9%81%93%e7%9a%84%e4%b8%80%e5%88%87%e9%83%bd%e5%9c%a8%e8%bf%99%e9%87%8c%e4%ba%86&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f&amp;hashtags=Linux%2cJava%2cIO%2c%e5%90%8c%e6%ad%a5%2c%e5%bc%82%e6%ad%a5%2c%e9%98%bb%e5%a1%9e%2c%e9%9d%9e%e9%98%bb%e5%a1%9e%2cReactor%2cProactor%2cPPC%2cTPC">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于IO我所知道的一切都在这里了 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f&amp;title=%e5%85%b3%e4%ba%8eIO%e6%88%91%e6%89%80%e7%9f%a5%e9%81%93%e7%9a%84%e4%b8%80%e5%88%87%e9%83%bd%e5%9c%a8%e8%bf%99%e9%87%8c%e4%ba%86&amp;summary=%e5%85%b3%e4%ba%8eIO%e6%88%91%e6%89%80%e7%9f%a5%e9%81%93%e7%9a%84%e4%b8%80%e5%88%87%e9%83%bd%e5%9c%a8%e8%bf%99%e9%87%8c%e4%ba%86&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于IO我所知道的一切都在这里了 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f&title=%e5%85%b3%e4%ba%8eIO%e6%88%91%e6%89%80%e7%9f%a5%e9%81%93%e7%9a%84%e4%b8%80%e5%88%87%e9%83%bd%e5%9c%a8%e8%bf%99%e9%87%8c%e4%ba%86">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于IO我所知道的一切都在这里了 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于IO我所知道的一切都在这里了 on whatsapp"
+        href="https://api.whatsapp.com/send?text=%e5%85%b3%e4%ba%8eIO%e6%88%91%e6%89%80%e7%9f%a5%e9%81%93%e7%9a%84%e4%b8%80%e5%88%87%e9%83%bd%e5%9c%a8%e8%bf%99%e9%87%8c%e4%ba%86%20-%20https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 关于IO我所知道的一切都在这里了 on telegram"
+        href="https://telegram.me/share/url?text=%e5%85%b3%e4%ba%8eIO%e6%88%91%e6%89%80%e7%9f%a5%e9%81%93%e7%9a%84%e4%b8%80%e5%88%87%e9%83%bd%e5%9c%a8%e8%bf%99%e9%87%8c%e4%ba%86&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fio%2fall-about-io%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

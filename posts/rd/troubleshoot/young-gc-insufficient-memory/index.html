@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>young gc stw pause引发接口超时问题一例 | 宋惠龙的博客</title>
+<meta name="keywords" content="JVM, GC, YoungGC, 年轻代, NPC, 问题排查, troubleshoot" />
+<meta name="description" content="分析排查一则接口超时问题，定位为JVM Young区新生代过小引发GC频繁、触发STW停顿过多。">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="young gc stw pause引发接口超时问题一例" />
+<meta property="og:description" content="分析排查一则接口超时问题，定位为JVM Young区新生代过小引发GC频繁、触发STW停顿过多。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/" /><meta property="og:image" content="https://redolog.github.io/avatar.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-02T21:30:25&#43;08:00" />
+<meta property="article:modified_time" content="2022-11-02T21:30:25&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:title" content="young gc stw pause引发接口超时问题一例"/>
+<meta name="twitter:description" content="分析排查一则接口超时问题，定位为JVM Young区新生代过小引发GC频繁、触发STW停顿过多。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "young gc stw pause引发接口超时问题一例",
+      "item": "https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "young gc stw pause引发接口超时问题一例",
+  "name": "young gc stw pause引发接口超时问题一例",
+  "description": "分析排查一则接口超时问题，定位为JVM Young区新生代过小引发GC频繁、触发STW停顿过多。\n",
+  "keywords": [
+    "JVM", "GC", "YoungGC", "年轻代", "NPC", "问题排查", "troubleshoot"
+  ],
+  "articleBody": "分析排查一则接口超时问题，定位为JVM Young区新生代过小引发GC频繁、触发STW停顿过多。\n背景 系统关系 b服务调用a服务接口x，接口超时。我负责a服务。 业务场景 其中b服务业务场景是B端营销活动场景，存在类似抢购的操作。 时间 2022-10-13 特征 调用端接口超时；偶现（大约一天出现两次）； 机器配置 传统化机器套餐：标准型S4X6(4 cores cpu 6G mem)；我们的服务配置的是4GB堆，500MB元空间； Linux版本 3.10.0-862.14.4.el7.x86_64 Java版本 1.8.0_181 服务QPS 低峰：20*9；高峰 70*9； 第一次简单排查 首先排查了一遍常规日志，没有明确结论。\n尝试在b服务侧增加了redis缓存。\n之后几天没有同样的报警。\n第二次排查 2022-11-01 同样的接口出现了超时。\n晚上八点出头，同事看到GC出现了1.79s的收集停顿时长。\n于是，2号上午开始埋头排查：一定要查出个究竟。\nJVM参数解读 完整参数：CommandLine flags: -XX:AutoBoxCacheMax=20000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:CompressedClassSpaceSize=528482304 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=4294967296 -XX:+ManagementServer -XX:MaxHeapSize=4294967296 -XX:MaxMetaspaceSize=536870912 -XX:MaxNewSize=1073741824 -XX:MaxTenuringThreshold=6 -XX:MetaspaceSize=536870912 -XX:NewSize=1073741824 -XX:OldPLABSize=16 -XX:-OmitStackTraceInFastThrow -XX:+PrintCommandLineFlags -XX:+PrintGC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCCause -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintPromotionFailure -XX:-UseBiasedLocking -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseFastAccessorMethods -XX:+UseParNewGC :+UseParNewGC 使用了ParNew收集器 :MaxHeapSize=4294967296 堆最大4GB :MaxMetaspaceSize=536870912 元空间最大 0.54GB :MaxNewSize=1073741824 young区最大1GB :MaxTenuringThreshold=6 young区对象晋升到old区age阈值 :MetaspaceSize=536870912 元空间 0.54GB :NewSize=1073741824 young区1GB :OldPLABSize=16 上面提到停顿了一秒多的gc log 2022-11-01T20:08:44.272+0800: 49.429: [GC (Allocation Failure) 2022-11-01T20:08:44.272+0800: 49.429: [ParNew: 764866K-\u003e43858K(943744K), 1.7194357 secs] 834581K-\u003e377754K(4089472K), 1.7195128 secs] [Times: user=6.91 sys=0.20, real=1.72 secs] 2022-11-01T20:08:45.992+0800: 51.149: Total time for which application threads were stopped: 1.7198275 seconds, Stopping threads took: 0.0000787 seconds 定量分析 重新描述问题：2022-11-01T20:08:44.272+0800: 49.429 时间点发生了 1.7198275s 的STW停顿。\n同时，我跑到对应机器上把一秒前后的log拿下来，使用 gceasy 查看内存分布： 可以看到元空间与old区空间完全够，而young区接近满的状态。\n严谨起见，我们将监控时段拉到25号-3号，查看jvm old区内存峰值占用情况： old区谷值占用情况： 可看到所有实例堆最大配了4GB，其中1GB左右被young区使用，而old区内存最多分配2GB出头，gc回收后仅占用不到1GB。说明我们的实例对象大部分生命周期都不长。\n目前其实已经得出一些定量结论：我们服务中大部分对象的生命周期并不长。\n查看监控大盘上的jvm信息 本着严谨的态度，我们需要做一些定性分析。\n定性分析 大盘上对应出问题实例jvm内存： 这里的秒、毫秒级别略有偏差，原因可能是监控取的是近似值（统计值）。\n可以看到gc次数相对较稳定，但是在8、9、10分时略有上升，将时间跨度拉大后，这里就是一个突刺。 无fullGC，触发的都是youngGC，并且会有突刺、上升趋势。\n观察线程状态： 结合每分钟gc次数： 可以发现在监控 16:34 开始gc次数变多，曲线攀升一直持续到 16:37 ，此处从5升到了8.5/9次每分钟。\n定量分析 三四分钟的时间，每台机器上的gc次数都近乎翻了一倍，激增。（gc次数频繁） 疑点：到底是哪些线程变多？ 上面观察线程状态的趋势图，可以看到deamon thread变多。\n我们需要研究下这里的后台线程究竟是哪部分的。这里我用arthas观测了线程分布，以及配合分析了qps趋势。\n利用平台提供的arthas工具，看了下线程分布，可以看到大多数daemon线程为http-nio，即都是tomat在处理http请求。\n配合观察四点多时段的qps走势，可以得出结论：此时由于qps爬升，请求变多，tomat启动了更多了nio线程。\n这部分线程我最开始怀疑是gc线程，查阅资料后，发现可以确认，young区parnew回收器使用多线程复制算法，并且以STW的方式运行，其线程数可通过命令确认：\n1 java -XX:+PrintFlagsFinal | grep ParallelGCThreads 这里在我们服务机器上输出：\n1 uintx ParallelGCThreads = 33 {product} 所以增多的gc线程最多也只有33个，因此，这里线程数的提升主要是tomat nio线程。\n附一个知识点：\nParallel New (ParNew) Collector (invoked by “-XX:+UseConcMarkSweepGC” option) The ParNew collector for Young generation uses the “Copy (also called Scavenge)” algorithm parallelly using multiple CPU processors (multiple threads) in a stop-the-world fashion.\nThe ParNew collector for Young (new) generation uses the same algorithm as the PS collector, except that it has an internal ‘callback’ that allows an old generation collector to operate on the objects it collects (really written to work with the concurrent collector), as described by Jack Shirazi in “Oracle JVM Garbage Collectors Available From JDK 1.7.0_04 And After”. The ParNew collector for Young generation can be identified in GC log messages with the “ParNew” label, as in this example: “ParNew: 1068K-\u003e63K(1152K)”. In JVM 9 and older releases, the ParNew collector for Young generation can be invoked explicitly using the “-XX:+UseParNewGC” option. But this option has been removed from JVM 10.\n疑点：加内存为什么能解决问题？ 这里主要是需要扩大young区内存，前面分析得出，我们服务中的大部分对象生命周期都较短，因此需要扩充young区。\n一次Minor GC，主要分两步：\nT1(扫描新生代) T2(复制存活对象) 其中 T2»T1，复制成本更高。\n当扩大了young区后，Minor GC频率会变低，触发Minor GC更晚后，此时需要复制、晋升的对象就变少了，因此节省了T2的成本。\n整体而言，这里会提升性能。\n具体细节可参考：从实际案例聊聊Java应用的GC优化 。\n疑点：使用G1的优势与条件？ 经过综合评估，我们最后将堆调成了8GB，同时切换CMS为G1。\n前提： 使用G1有一个前提：堆不能太小，堆如果太小，会出现频繁full GC。原理简单来说，就是实现G1算法需要额外的空间占用（维护关系、状态、对象年龄…），如果堆太小，则对象迅速堆满堆空间触发full GC。\n优势：\n网格化，精细管控 G1对空间进行了网格化，每个网格叫region，默认是2MB，分配、回收空间在region的粒度上操作，将处理链路打散，各自处理各自内部的逻辑； 类比：就像存储领域的分区，数据根据路由key存到某个分区、分片上，存储系统整体的拓展性、性能、稳定性都得以提升；也很像疫情防控，出现阳性只封控对应楼，而不是一下子把整个区封掉，网格化管理更加灵活； 并行回收 多线程并行处理，充分利用多核机器的优势 年轻代动态调整 默认young区为整堆大小的5%，通过-XX:G1NewSizePercent设定 最大可调整到整堆大小的60%，通过-XX:GlMaxNewSizePercent设定。年轻代回收暂停期间，会计算扩容还是缩容 设置了-XX:NewRatio、-Xmn比例或者大小时，G1会忽略此设置 这个特性非常适合我们的服务，整堆大小够用，当较短平快的接口QPS上升时young区可自动扩容，当长生命周期对象较多时，空间可以让给old区 控制最大停顿时长 通过-XX:MaxGCPauseMills设定，默认为200ms，大部分应用这个值完全够用 单独管理大对象 大对象不会占用默认的region，而是使用额外的空间管理，这样彼此不影响 综上，整体而言，G1在我们有8GB堆的情况下，能够更加动态灵活、分区管理、分离大对象，这些比人工调优更适应线上runtime环境。\n因此G1很棒。\n结论 目前为止，我们可以得出如下结论：\n11-01 16:34 开始gc次数变多，gc次数整体一直持续到九点后才出现明显的下降趋势。晚上08:08分出现了二次激增，每分钟gc次数达到了 18 次。 随着gc次数变多，jvm内的daemon thread数量变多（用于gc的线程+tomcat nio为daemon thread），业务线程并没有变多。 gc均触发的是young gc，说明业务请求，此时更多的是需要年轻代的空间，即对象生命周期较短。 b服务的缓存一定程度上减少了部分打到a的请求量，但是a这一层的进程暂停问题依然存在。 young区整体接近满的状态，而日志中出现 allocation failure，说明eden区没有足够空间容纳新对象，因此young区整体可以扩大，对应eden区也需要扩大。 方案 基于以上分析，可以有如下方案：\n方案 优点 缺点 增加应用实例数 可解决此类问题；程序不需要改动； 消耗云、机器资源 增大young区内存 可解决此类问题；修改成本小； 调整gc collector，从cms调为g1 可解决此类问题；G1可以应对更大业务量、低延迟的业务场景；； 略微更消耗内存； 各区容量参考算法：\n空间 倍数 总大小 3-4 倍活跃数据的大小 新生代 1-1.5 活跃数据的大小 永久代 1.2-1.5 倍Full GC后的永久代空间占用 老年代 2-3 倍活跃数据的大小 小结 当前问题通过定性、定量分析，得出了解决结论： 增大young区内存配置 或者使用G1，动态智能扩充young区 npc问题：network delay、process pause、clock drift 一般不容易碰到，碰到此类问题需重视，解决后可提升个人、团队能力。 通过case study方式，加以积累，可有效地将问题解决转化为工程师能力、团队能力。 心得：\n解决问题不能靠猜，需要有理论、数据依据。 尝试性方案可以作为逼近答案的方式。 知识点需要系统化学习，结合实践加强理解。 Ref 自动化回归环境搭建复盘 What is Daemon thread in Java and Difference to Non daemon thread JVM Parameters https://stackoverflow.com/questions/13543468/maxtenuringthreshold-how-exactly-it-works https://reins.altervista.org/java/A_Collection_of_JVM_Options_MP.html https://stackoverflow.com/questions/28342736/java-gc-allocation-failure https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html 小米Talos GC性能调优实践 从实际案例聊聊Java应用的GC优化 工具gceasy http://www.herongyang.com/Java-GC/Collector-Young-Generation-Collectors.html 关于生产环境改用G1垃圾收集器的思考 G1 Garbage Collector – Java 9 ",
+  "wordCount" : "3430",
+  "inLanguage": "en",
+  "datePublished": "2022-11-02T21:30:25+08:00",
+  "dateModified": "2022-11-02T21:30:25+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      young gc stw pause引发接口超时问题一例
+    </h1>
+    <div class="post-meta"><span title='2022-11-02 21:30:25 +0800 CST'>November 2, 2022</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e7%ac%ac%e4%b8%80%e6%ac%a1%e7%ae%80%e5%8d%95%e6%8e%92%e6%9f%a5" aria-label="第一次简单排查">第一次简单排查</a></li>
+                    <li>
+                        <a href="#%e7%ac%ac%e4%ba%8c%e6%ac%a1%e6%8e%92%e6%9f%a5" aria-label="第二次排查">第二次排查</a><ul>
+                            
+                    <li>
+                        <a href="#jvm%e5%8f%82%e6%95%b0%e8%a7%a3%e8%af%bb" aria-label="JVM参数解读">JVM参数解读</a></li>
+                    <li>
+                        <a href="#%e4%b8%8a%e9%9d%a2%e6%8f%90%e5%88%b0%e5%81%9c%e9%a1%bf%e4%ba%86%e4%b8%80%e7%a7%92%e5%a4%9a%e7%9a%84gc-log" aria-label="上面提到停顿了一秒多的gc log">上面提到停顿了一秒多的gc log</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%ae%9a%e9%87%8f%e5%88%86%e6%9e%90" aria-label="定量分析">定量分析</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%9f%a5%e7%9c%8b%e7%9b%91%e6%8e%a7%e5%a4%a7%e7%9b%98%e4%b8%8a%e7%9a%84jvm%e4%bf%a1%e6%81%af" aria-label="查看监控大盘上的jvm信息">查看监控大盘上的jvm信息</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%ae%9a%e6%80%a7%e5%88%86%e6%9e%90" aria-label="定性分析">定性分析</a></li>
+                    <li>
+                        <a href="#%e5%ae%9a%e9%87%8f%e5%88%86%e6%9e%90-1" aria-label="定量分析">定量分析</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e7%96%91%e7%82%b9%e5%88%b0%e5%ba%95%e6%98%af%e5%93%aa%e4%ba%9b%e7%ba%bf%e7%a8%8b%e5%8f%98%e5%a4%9a" aria-label="疑点：到底是哪些线程变多？">疑点：到底是哪些线程变多？</a></li>
+                    <li>
+                        <a href="#%e7%96%91%e7%82%b9%e5%8a%a0%e5%86%85%e5%ad%98%e4%b8%ba%e4%bb%80%e4%b9%88%e8%83%bd%e8%a7%a3%e5%86%b3%e9%97%ae%e9%a2%98" aria-label="疑点：加内存为什么能解决问题？">疑点：加内存为什么能解决问题？</a></li>
+                    <li>
+                        <a href="#%e7%96%91%e7%82%b9%e4%bd%bf%e7%94%a8g1%e7%9a%84%e4%bc%98%e5%8a%bf%e4%b8%8e%e6%9d%a1%e4%bb%b6" aria-label="疑点：使用G1的优势与条件？">疑点：使用G1的优势与条件？</a></li>
+                    <li>
+                        <a href="#%e7%bb%93%e8%ae%ba" aria-label="结论">结论</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88" aria-label="方案">方案</a></li>
+                    <li>
+                        <a href="#%e5%b0%8f%e7%bb%93" aria-label="小结">小结</a></li>
+                    <li>
+                        <a href="#ref" aria-label="Ref">Ref</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>分析排查一则接口超时问题，定位为<code>JVM</code> <code>Young</code>区新生代过小引发GC频繁、触发<code>STW</code>停顿过多。</p>
+<h1 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>系统关系</td>
+<td>b服务调用a服务接口x，接口超时。我负责a服务。</td>
+</tr>
+<tr>
+<td>业务场景</td>
+<td>其中b服务业务场景是B端营销活动场景，存在类似抢购的操作。</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>2022-10-13</td>
+</tr>
+<tr>
+<td>特征</td>
+<td>调用端接口超时；偶现（大约一天出现两次）；</td>
+</tr>
+<tr>
+<td>机器配置</td>
+<td>传统化机器套餐：标准型S4X6(4 cores cpu 6G mem)；我们的服务配置的是<code>4GB</code>堆，<code>500MB</code>元空间；</td>
+</tr>
+<tr>
+<td>Linux版本</td>
+<td>3.10.0-862.14.4.el7.x86_64</td>
+</tr>
+<tr>
+<td>Java版本</td>
+<td>1.8.0_181</td>
+</tr>
+<tr>
+<td>服务QPS</td>
+<td>低峰：<code>20*9</code>；高峰 <code>70*9</code>；</td>
+</tr>
+</tbody>
+</table>
+<h1 id="第一次简单排查">第一次简单排查<a hidden class="anchor" aria-hidden="true" href="#第一次简单排查">#</a></h1>
+<p>首先排查了一遍常规日志，没有明确结论。</p>
+<p>尝试在b服务侧增加了<code>redis</code>缓存。</p>
+<p>之后几天没有同样的报警。</p>
+<h1 id="第二次排查">第二次排查<a hidden class="anchor" aria-hidden="true" href="#第二次排查">#</a></h1>
+<p>2022-11-01 同样的接口出现了超时。</p>
+<p>晚上八点出头，同事看到<code>GC</code>出现了<code>1.79s</code>的收集停顿时长。</p>
+<p>于是，2号上午开始埋头排查：一定要查出个究竟。</p>
+<h2 id="jvm参数解读">JVM参数解读<a hidden class="anchor" aria-hidden="true" href="#jvm参数解读">#</a></h2>
+<pre tabindex="0"><code class="language-log" data-lang="log">
+完整参数：CommandLine flags: -XX:AutoBoxCacheMax=20000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:CompressedClassSpaceSize=528482304 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=4294967296 -XX:+ManagementServer -XX:MaxHeapSize=4294967296 -XX:MaxMetaspaceSize=536870912 -XX:MaxNewSize=1073741824 -XX:MaxTenuringThreshold=6 -XX:MetaspaceSize=536870912 -XX:NewSize=1073741824 -XX:OldPLABSize=16 -XX:-OmitStackTraceInFastThrow -XX:+PrintCommandLineFlags -XX:+PrintGC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCCause -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintPromotionFailure -XX:-UseBiasedLocking -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseFastAccessorMethods -XX:+UseParNewGC
+ 
+ 
+:+UseParNewGC 使用了ParNew收集器
+:MaxHeapSize=4294967296 堆最大4GB
+:MaxMetaspaceSize=536870912 元空间最大 0.54GB
+:MaxNewSize=1073741824 young区最大1GB
+:MaxTenuringThreshold=6 young区对象晋升到old区age阈值
+:MetaspaceSize=536870912  元空间 0.54GB
+:NewSize=1073741824 young区1GB
+:OldPLABSize=16
+</code></pre><h2 id="上面提到停顿了一秒多的gc-log">上面提到停顿了一秒多的gc log<a hidden class="anchor" aria-hidden="true" href="#上面提到停顿了一秒多的gc-log">#</a></h2>
+<pre tabindex="0"><code class="language-log" data-lang="log">2022-11-01T20:08:44.272+0800: 49.429: [GC (Allocation Failure) 2022-11-01T20:08:44.272+0800: 49.429: [ParNew: 764866K-&gt;43858K(943744K), 1.7194357 secs] 834581K-&gt;377754K(4089472K), 1.7195128 secs] [Times: user=6.91 sys=0.20, real=1.72 secs]
+2022-11-01T20:08:45.992+0800: 51.149: Total time for which application threads were stopped: 1.7198275 seconds, Stopping threads took: 0.0000787 seconds
+</code></pre><h3 id="定量分析">定量分析<a hidden class="anchor" aria-hidden="true" href="#定量分析">#</a></h3>
+<p><strong>重新描述问题：<code>2022-11-01T20:08:44.272+0800: 49.429</code> 时间点发生了 <code>1.7198275s</code> 的<code>STW</code>停顿</strong>。</p>
+<p>同时，我跑到对应机器上把一秒前后的<code>log</code>拿下来，使用 <a href="https://gceasy.io/">gceasy</a> 查看内存分布：
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/gceasy_visual_jvm_mem.png" alt="gceasy查看此时的内存分布"  />
+</p>
+<p>可以看到元空间与<code>old</code>区空间完全够，而<code>young</code>区接近满的状态。</p>
+<p>严谨起见，我们将监控时段拉到25号-3号，查看<code>jvm old</code>区内存峰值占用情况：
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/cms_old_gen_peak_mem.jpg" alt="old区峰值"  />
+</p>
+<p><code>old</code>区谷值占用情况：
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/cms_old_gen_bottom_mem.jpg" alt="old区峰值"  />
+</p>
+<p>可看到所有实例堆最大配了<code>4GB</code>，其中<code>1GB</code>左右被young区使用，而<code>old</code>区内存最多分配<code>2GB</code>出头，gc回收后仅占用不到<code>1GB</code>。<strong>说明我们的实例对象大部分生命周期都不长。</strong></p>
+<p>目前其实已经得出一些定量结论：<strong>我们服务中大部分对象的生命周期并不长</strong>。</p>
+<h2 id="查看监控大盘上的jvm信息">查看监控大盘上的jvm信息<a hidden class="anchor" aria-hidden="true" href="#查看监控大盘上的jvm信息">#</a></h2>
+<p>本着严谨的态度，我们需要做一些定性分析。</p>
+<h3 id="定性分析">定性分析<a hidden class="anchor" aria-hidden="true" href="#定性分析">#</a></h3>
+<p>大盘上对应出问题实例jvm内存：
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/dashboard_jvm_mem.jpg" alt="大盘上对应出问题实例jvm内存"  />
+
+这里的秒、毫秒级别略有偏差，原因可能是监控取的是近似值（统计值）。</p>
+<p>可以看到<code>gc</code>次数相对较稳定，但是在8、9、10分时略有上升，将时间跨度拉大后，这里就是一个突刺。
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/gc_count_strike.jpg" alt="gc次数突刺"  />
+
+无<code>fullGC</code>，触发的都是<code>youngGC</code>，并且会有突刺、上升趋势。</p>
+<p>观察线程状态：
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/target_machine_thread_states.jpg" alt="问题机器上的线程状态"  />
+</p>
+<p>结合每分钟<code>gc</code>次数：
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/gc_count_per_minute.jpg" alt="问题机器上的线程状态"  />
+
+可以发现在监控 <code>16:34</code> 开始<code>gc</code>次数变多，曲线攀升一直持续到 <code>16:37</code> ，此处从<code>5</code>升到了<code>8.5/9</code>次每分钟。</p>
+<h3 id="定量分析-1">定量分析<a hidden class="anchor" aria-hidden="true" href="#定量分析-1">#</a></h3>
+<p>三四分钟的时间，每台机器上的gc次数都近乎翻了一倍，激增。<strong>（gc次数频繁）</strong>
+<img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/young_gc_frequent.jpg" alt=""  />
+</p>
+<h2 id="疑点到底是哪些线程变多">疑点：到底是哪些线程变多？<a hidden class="anchor" aria-hidden="true" href="#疑点到底是哪些线程变多">#</a></h2>
+<p>上面观察线程状态的趋势图，可以看到<code>deamon thread</code>变多。</p>
+<p>我们需要研究下这里的后台线程究竟是哪部分的。这里我用<code>arthas</code>观测了线程分布，以及配合分析了<code>qps</code>趋势。</p>
+<p><img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/housecenter_arthas_thread.png" alt=""  />
+
+利用平台提供的<code>arthas</code>工具，看了下线程分布，可以看到大多数<code>daemon</code>线程为<code>http-nio</code>，即都是<code>tomat</code>在处理<code>http</code>请求。</p>
+<p><img loading="lazy" src="/posts/rd/troubleshoot/young-gc-insufficient-memory/qps_rise.png" alt=""  />
+
+配合观察四点多时段的<code>qps</code>走势，可以得出结论：此时由于<code>qps</code>爬升，请求变多，<code>tomat</code>启动了更多了<code>nio</code>线程。</p>
+<p>这部分线程我最开始怀疑是<code>gc</code>线程，查阅资料后，发现可以确认，<code>young</code>区<code>parnew</code>回收器使用多线程复制算法，并且以<code>STW</code>的方式运行，其线程数可通过命令确认：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>java -XX:+PrintFlagsFinal | grep ParallelGCThreads
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里在我们服务机器上输出：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span> uintx ParallelGCThreads <span style="color:#f92672">=</span> <span style="color:#ae81ff">33</span> <span style="color:#f92672">{</span>product<span style="color:#f92672">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以增多的<code>gc</code>线程最多也只有33个，因此，<strong>这里线程数的提升主要是</strong><code>tomat nio</code>线程。</p>
+<p>附一个知识点：</p>
+<blockquote>
+<p>Parallel New (ParNew) Collector (invoked by &ldquo;-XX:+UseConcMarkSweepGC&rdquo; option)
+The ParNew collector for Young generation uses the &ldquo;Copy (also called Scavenge)&rdquo; algorithm parallelly using multiple CPU processors (multiple threads) in a stop-the-world fashion.</p>
+<p>The ParNew collector for Young (new) generation uses the same algorithm as the PS collector, except that it has an internal &lsquo;callback&rsquo; that allows an old generation collector to operate on the objects it collects (really written to work with the concurrent collector), as described by Jack Shirazi in &ldquo;Oracle JVM Garbage Collectors Available From JDK 1.7.0_04 And After&rdquo;. The ParNew collector for Young generation can be identified in GC log messages with the &ldquo;ParNew&rdquo; label, as in this example: &ldquo;ParNew: 1068K-&gt;63K(1152K)&rdquo;. In JVM 9 and older releases, the ParNew collector for Young generation can be invoked explicitly using the &ldquo;-XX:+UseParNewGC&rdquo; option. But this option has been removed from JVM 10.</p>
+</blockquote>
+<h2 id="疑点加内存为什么能解决问题">疑点：加内存为什么能解决问题？<a hidden class="anchor" aria-hidden="true" href="#疑点加内存为什么能解决问题">#</a></h2>
+<p>这里主要是需要扩大<code>young</code>区内存，前面分析得出，我们服务中的大部分对象生命周期都较短，因此需要扩充<code>young</code>区。</p>
+<p>一次<code>Minor GC</code>，主要分两步：</p>
+<ol>
+<li><code>T1</code>(扫描新生代)</li>
+<li><code>T2</code>(复制存活对象)</li>
+</ol>
+<p>其中 <code>T2</code>&raquo;<code>T1</code>，复制成本更高。</p>
+<p>当扩大了<code>young</code>区后，<code>Minor GC</code>频率会变低，触发<code>Minor GC</code>更晚后，此时需要复制、晋升的对象就变少了，因此节省了<code>T2</code>的成本。</p>
+<p>整体而言，这里会提升性能。</p>
+<p>具体细节可参考：<a href="https://tech.meituan.com/2017/12/29/jvm-optimize.html">从实际案例聊聊Java应用的GC优化</a> 。</p>
+<h2 id="疑点使用g1的优势与条件">疑点：使用G1的优势与条件？<a hidden class="anchor" aria-hidden="true" href="#疑点使用g1的优势与条件">#</a></h2>
+<p>经过综合评估，我们最后将堆调成了8GB，同时切换<code>CMS</code>为<code>G1</code>。</p>
+<p>前提：
+使用<code>G1</code>有一个前提：堆不能太小，堆如果太小，会出现频繁<code>full GC</code>。原理简单来说，就是实现<code>G1</code>算法需要额外的空间占用（维护关系、状态、对象年龄&hellip;），如果堆太小，则对象迅速堆满堆空间触发<code>full GC</code>。</p>
+<p>优势：</p>
+<ul>
+<li>网格化，精细管控
+<ul>
+<li><code>G1</code>对空间进行了网格化，每个网格叫<code>region</code>，默认是<code>2MB</code>，分配、回收空间在<code>region</code>的粒度上操作，将处理链路打散，各自处理各自内部的逻辑；</li>
+<li>类比：就像存储领域的分区，数据根据路由key存到某个分区、分片上，存储系统整体的拓展性、性能、稳定性都得以提升；也很像疫情防控，出现阳性只封控对应楼，而不是一下子把整个区封掉，网格化管理更加灵活；</li>
+</ul>
+</li>
+<li>并行回收
+<ul>
+<li>多线程并行处理，充分利用多核机器的优势</li>
+</ul>
+</li>
+<li>年轻代动态调整
+<ul>
+<li>默认<code>young</code>区为整堆大小的5%，通过<code>-XX:G1NewSizePercent</code>设定</li>
+<li>最大可调整到整堆大小的60%，通过<code>-XX:GlMaxNewSizePercent</code>设定。年轻代回收暂停期间，会计算扩容还是缩容</li>
+<li>设置了<code>-XX:NewRatio</code>、<code>-Xmn</code>比例或者大小时，<code>G1</code>会忽略此设置</li>
+<li>这个特性非常适合我们的服务，整堆大小够用，当较短平快的接口<code>QPS</code>上升时<code>young</code>区可自动扩容，当长生命周期对象较多时，空间可以让给<code>old</code>区</li>
+</ul>
+</li>
+<li>控制最大停顿时长
+<ul>
+<li>通过<code>-XX:MaxGCPauseMills</code>设定，默认为200ms，大部分应用这个值完全够用</li>
+</ul>
+</li>
+<li>单独管理大对象
+<ul>
+<li>大对象不会占用默认的<code>region</code>，而是使用额外的空间管理，这样彼此不影响</li>
+</ul>
+</li>
+</ul>
+<p>综上，整体而言，<code>G1</code>在我们有<code>8GB</code>堆的情况下，能够更加动态灵活、分区管理、分离大对象，这些比人工调优更适应线上<code>runtime</code>环境。</p>
+<p>因此<code>G1</code>很棒。</p>
+<h2 id="结论">结论<a hidden class="anchor" aria-hidden="true" href="#结论">#</a></h2>
+<p>目前为止，我们可以得出如下结论：</p>
+<ol>
+<li><code>11-01 16:34</code> 开始<code>gc</code>次数变多，<code>gc</code>次数整体一直持续到九点后才出现明显的下降趋势。晚上<code>08:08</code>分出现了二次激增，每分钟<code>gc</code>次数达到了 <strong>18</strong> 次。</li>
+<li>随着<code>gc</code>次数变多，<code>jvm</code>内的<code>daemon thread</code>数量变多（用于<code>gc</code>的线程+<code>tomcat nio</code>为<code>daemon thread</code>），业务线程并没有变多。</li>
+<li><code>gc</code>均触发的是<code>young gc</code>，说明业务请求，此时更多的是需要年轻代的空间，即对象生命周期较短。</li>
+<li><code>b</code>服务的缓存一定程度上减少了部分打到a的请求量，但是<code>a</code>这一层的进程暂停问题依然存在。</li>
+<li><code>young</code>区整体接近满的状态，而日志中出现 <code>allocation failure</code>，说明<code>eden</code>区没有足够空间容纳新对象，因此<code>young</code>区整体可以扩大，对应<code>eden</code>区也需要扩大。</li>
+</ol>
+<h1 id="方案">方案<a hidden class="anchor" aria-hidden="true" href="#方案">#</a></h1>
+<p>基于以上分析，可以有如下方案：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增加应用实例数</td>
+<td>可解决此类问题；程序不需要改动；</td>
+<td>消耗云、机器资源</td>
+</tr>
+<tr>
+<td>增大<code>young</code>区内存</td>
+<td>可解决此类问题；修改成本小；</td>
+<td></td>
+</tr>
+<tr>
+<td>调整<code>gc collector</code>，从<code>cms</code>调为<code>g1</code></td>
+<td>可解决此类问题；<code>G1</code>可以应对更大业务量、低延迟的业务场景；；</td>
+<td>略微更消耗内存；</td>
+</tr>
+</tbody>
+</table>
+<p>各区容量参考算法：</p>
+<table>
+<thead>
+<tr>
+<th>空间</th>
+<th>倍数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>总大小</td>
+<td>3-4 倍活跃数据的大小</td>
+</tr>
+<tr>
+<td>新生代</td>
+<td>1-1.5 活跃数据的大小</td>
+</tr>
+<tr>
+<td>永久代</td>
+<td>1.2-1.5 倍Full GC后的永久代空间占用</td>
+</tr>
+<tr>
+<td>老年代</td>
+<td>2-3 倍活跃数据的大小</td>
+</tr>
+</tbody>
+</table>
+<h1 id="小结">小结<a hidden class="anchor" aria-hidden="true" href="#小结">#</a></h1>
+<ol>
+<li>当前问题通过<strong>定性、定量分析</strong>，得出了解决结论：
+<ul>
+<li>增大<code>young</code>区内存配置</li>
+<li>或者使用G1，动态智能扩充<code>young</code>区</li>
+</ul>
+</li>
+<li><strong>npc问题</strong>：<code>network delay</code>、<code>process pause</code>、<code>clock drift</code> 一般不容易碰到，<strong>碰到此类问题需重视</strong>，解决后可提升个人、团队能力。</li>
+<li><strong>通过case study方式，加以积累</strong>，可有效地将问题解决转化为工程师能力、团队能力。</li>
+</ol>
+<p>心得：</p>
+<ol>
+<li>解决问题不能靠猜，需要有理论、数据依据。</li>
+<li>尝试性方案可以作为逼近答案的方式。</li>
+<li>知识点需要系统化学习，结合实践加强理解。</li>
+</ol>
+<h1 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h1>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/8yhZmprSEucJhVSytcyQcg">自动化回归环境搭建复盘</a></li>
+<li><a href="https://javarevisited.blogspot.com/2012/03/what-is-daemon-thread-in-java-and.html">What is Daemon thread in Java and Difference to Non daemon thread</a></li>
+<li><a href="https://www.javadevjournal.com/java/jvm-parameters/">JVM Parameters</a></li>
+<li><a href="https://stackoverflow.com/questions/13543468/maxtenuringthreshold-how-exactly-it-works">https://stackoverflow.com/questions/13543468/maxtenuringthreshold-how-exactly-it-works</a></li>
+<li><a href="https://reins.altervista.org/java/A_Collection_of_JVM_Options_MP.html">https://reins.altervista.org/java/A_Collection_of_JVM_Options_MP.html</a></li>
+<li><a href="https://stackoverflow.com/questions/28342736/java-gc-allocation-failure">https://stackoverflow.com/questions/28342736/java-gc-allocation-failure</a></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html</a></li>
+<li><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1667308373&amp;ver=4140&amp;signature=FGh6DLiszKdvQP*XRYziRpa65a*oj6ZaUWJYQTKYevKXrvMPeYFoSHeiI0RBOQISvLoK7dlG-HtmHWjHV8llbPC0rFMoopI-DuYKzlSgUR0Ms78ryTZmRzEHghYO6krY&amp;new=1">小米Talos GC性能调优实践</a></li>
+<li><a href="https://tech.meituan.com/2017/12/29/jvm-optimize.html">从实际案例聊聊Java应用的GC优化</a></li>
+<li><a href="https://gceasy.io/">工具gceasy</a></li>
+<li><a href="http://www.herongyang.com/Java-GC/Collector-Young-Generation-Collectors.html">http://www.herongyang.com/Java-GC/Collector-Young-Generation-Collectors.html</a></li>
+<li><a href="https://mp.weixin.qq.com/s/i6Iyxiubh7Sox_o-UD95YA">关于生产环境改用G1垃圾收集器的思考</a></li>
+<li><a href="https://www.dynatrace.com/support/help/technology-support/application-software/java/g1-garbage-collector-java-9">G1 Garbage Collector – Java 9</a></li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/jvm/">jvm</a></li>
+      <li><a href="https://redolog.github.io/tags/gc/">GC</a></li>
+      <li><a href="https://redolog.github.io/tags/younggc/">YoungGC</a></li>
+      <li><a href="https://redolog.github.io/tags/%E5%B9%B4%E8%BD%BB%E4%BB%A3/">年轻代</a></li>
+      <li><a href="https://redolog.github.io/tags/npc/">NPC</a></li>
+      <li><a href="https://redolog.github.io/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">问题排查</a></li>
+      <li><a href="https://redolog.github.io/tags/troubleshoot/">troubleshoot</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>解决iCloud同步卡住的问题</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>使用「原地哈希」解决一类问题</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share young gc stw pause引发接口超时问题一例 on twitter"
+        href="https://twitter.com/intent/tweet/?text=young%20gc%20stw%20pause%e5%bc%95%e5%8f%91%e6%8e%a5%e5%8f%a3%e8%b6%85%e6%97%b6%e9%97%ae%e9%a2%98%e4%b8%80%e4%be%8b&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f&amp;hashtags=JVM%2cGC%2cYoungGC%2c%e5%b9%b4%e8%bd%bb%e4%bb%a3%2cNPC%2c%e9%97%ae%e9%a2%98%e6%8e%92%e6%9f%a5%2ctroubleshoot">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share young gc stw pause引发接口超时问题一例 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f&amp;title=young%20gc%20stw%20pause%e5%bc%95%e5%8f%91%e6%8e%a5%e5%8f%a3%e8%b6%85%e6%97%b6%e9%97%ae%e9%a2%98%e4%b8%80%e4%be%8b&amp;summary=young%20gc%20stw%20pause%e5%bc%95%e5%8f%91%e6%8e%a5%e5%8f%a3%e8%b6%85%e6%97%b6%e9%97%ae%e9%a2%98%e4%b8%80%e4%be%8b&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share young gc stw pause引发接口超时问题一例 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f&title=young%20gc%20stw%20pause%e5%bc%95%e5%8f%91%e6%8e%a5%e5%8f%a3%e8%b6%85%e6%97%b6%e9%97%ae%e9%a2%98%e4%b8%80%e4%be%8b">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share young gc stw pause引发接口超时问题一例 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share young gc stw pause引发接口超时问题一例 on whatsapp"
+        href="https://api.whatsapp.com/send?text=young%20gc%20stw%20pause%e5%bc%95%e5%8f%91%e6%8e%a5%e5%8f%a3%e8%b6%85%e6%97%b6%e9%97%ae%e9%a2%98%e4%b8%80%e4%be%8b%20-%20https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share young gc stw pause引发接口超时问题一例 on telegram"
+        href="https://telegram.me/share/url?text=young%20gc%20stw%20pause%e5%bc%95%e5%8f%91%e6%8e%a5%e5%8f%a3%e8%b6%85%e6%97%b6%e9%97%ae%e9%a2%98%e4%b8%80%e4%be%8b&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2ftroubleshoot%2fyoung-gc-insufficient-memory%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

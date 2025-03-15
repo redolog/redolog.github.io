@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>EPOLL | 宋惠龙的博客</title>
+<meta name="keywords" content="" />
+<meta name="description" content="宋惠龙的博客">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/tags/epoll/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://redolog.github.io/tags/epoll/index.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="EPOLL" />
+<meta property="og:description" content="宋惠龙的博客" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://redolog.github.io/tags/epoll/" /><meta property="og:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:title" content="EPOLL"/>
+<meta name="twitter:description" content="宋惠龙的博客"/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/tags/">Tags</a></div>
+  <h1>EPOLL</h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>【译】简析Linux IO多路复用模型
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Ref 原文：LINUX – IO MULTIPLEXING – SELECT VS POLL VS EPOLL。 正文 对于Unix（Linux）系统我们有一个基本的设定：系统中的任何对象都是个文件everyt...</p>
+  </section>
+  <footer class="entry-footer"><span title='2021-01-18 11:03:50 +0800 CST'>January 18, 2021</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;DragonSong</footer>
+  <a class="entry-link" aria-label="post link to 【译】简析Linux IO多路复用模型" href="https://redolog.github.io/posts/english/translation/linux_io_multiplexing/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

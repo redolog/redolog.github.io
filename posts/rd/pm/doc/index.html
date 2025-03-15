@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>我自用的项目管理文档模板 | 宋惠龙的博客</title>
+<meta name="keywords" content="PM, 项目管理, 进度推进, 风险把控" />
+<meta name="description" content="作为RD，除了搞好技术方案、实现，也要搞好项目管理。
+大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。
+如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/rd/pm/doc/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="我自用的项目管理文档模板" />
+<meta property="og:description" content="作为RD，除了搞好技术方案、实现，也要搞好项目管理。
+大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。
+如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/rd/pm/doc/" /><meta property="og:image" content="https://redolog.github.io/avatar.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-18T20:24:25&#43;08:00" />
+<meta property="article:modified_time" content="2022-02-18T20:24:25&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:title" content="我自用的项目管理文档模板"/>
+<meta name="twitter:description" content="作为RD，除了搞好技术方案、实现，也要搞好项目管理。
+大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。
+如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "我自用的项目管理文档模板",
+      "item": "https://redolog.github.io/posts/rd/pm/doc/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "我自用的项目管理文档模板",
+  "name": "我自用的项目管理文档模板",
+  "description": "作为RD，除了搞好技术方案、实现，也要搞好项目管理。 大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。 如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。\n",
+  "keywords": [
+    "PM", "项目管理", "进度推进", "风险把控"
+  ],
+  "articleBody": "作为RD，除了搞好技术方案、实现，也要搞好项目管理。 大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。 如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。\n背景 正统的项目管理可以学习PMP课程，但是结合我几年的工作经验，实际中我们并不需要那么完整、繁琐的流程、工具。\n我们需要的工具，只是一份简单的模板即可，关注关键点，解决关键问题即可推进进度。\n要点：\n这个项目做什么？【需求范围】 什么时候要？【关键时间点】 谁来负责？谁来参与？【干系人】 出现疑问、异常如何解决？谁来推动？【问题处理】 关键节点有无风险？【资源拉通】 实操基本原则 可根据对应的需求、项目做调整、内容丰富； 创建工单前，一定要确认需求，明确初期疑问点，资源要对齐（如多端）； 及时做好各方各端各个干系人的信息同步； 模板正文 以下是我自用的PM文档模板：\n需求背景 事 描述项目的需求背景和目标。 关联相关资料，如产品文档、技术重构文档。 卡点 关键时间点。 干系人。 设计部分 业务流程 形式：文字+流程图。 梳理、表达业务流程，如： https://www.processon.com/view/link/5f8cfe265653bb06ef068e34\n架构设计 形式：文字+架构关系图。 梳理、表达架构关系（模块、系统、层级结构）、其他领域划分设计、UML图、ER图等，如：\n架构图： 实现部分 使用的技术组件 存储选型 MySQL MQ ES Redis 框架选型 web框架 IO框架 定时任务 调度 关键技术 接口 关键对接信息，接口维护建议使用api管理系统。\n协议（http/dubbo） 接口名称 能力作用 入参 出参 mock示例 对接交付时间点 资源部分 资源申请 平台资源（数据库、缓存、队列） 量级预估、评审，扩容预估 依赖资源 接口依赖（是否需要新开发？排期资源是否OK？） 相关端是否对齐拉通？ 预案 风控 提前预估可能出现的风险，提前确认、对齐资源与方案。\n回滚 出现问题提前准备回滚预案。\n上线 checklist：\n代码改动（合并、打包） 业务数据配置 定时任务配置 依赖方资源 数据存储schema改动 对接外部是否需要注意ip黑白名单 etc 会议部分 会议记录 2022年x月xx日 xxx功能需要依赖第三方xxx… xxx功能由服务端给出xxx数据，5端前端配合展示逻辑和实现交互逻辑 xxx功能避免耗费服务端带宽，前端做好相应本地缓存… xxx功能存在风险点，需要看具体情况而定 ",
+  "wordCount" : "975",
+  "inLanguage": "en",
+  "datePublished": "2022-02-18T20:24:25+08:00",
+  "dateModified": "2022-02-18T20:24:25+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/rd/pm/doc/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      我自用的项目管理文档模板
+    </h1>
+    <div class="post-meta"><span title='2022-02-18 20:24:25 +0800 CST'>February 18, 2022</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e5%ae%9e%e6%93%8d%e5%9f%ba%e6%9c%ac%e5%8e%9f%e5%88%99" aria-label="实操基本原则">实操基本原则</a></li>
+                    <li>
+                        <a href="#%e6%a8%a1%e6%9d%bf%e6%ad%a3%e6%96%87" aria-label="模板正文">模板正文</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%9c%80%e6%b1%82%e8%83%8c%e6%99%af" aria-label="需求背景">需求背景</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%ba%8b" aria-label="事">事</a></li>
+                    <li>
+                        <a href="#%e5%8d%a1%e7%82%b9" aria-label="卡点">卡点</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%ae%be%e8%ae%a1%e9%83%a8%e5%88%86" aria-label="设计部分">设计部分</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%b8%9a%e5%8a%a1%e6%b5%81%e7%a8%8b" aria-label="业务流程">业务流程</a></li>
+                    <li>
+                        <a href="#%e6%9e%b6%e6%9e%84%e8%ae%be%e8%ae%a1" aria-label="架构设计">架构设计</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%ae%9e%e7%8e%b0%e9%83%a8%e5%88%86" aria-label="实现部分">实现部分</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%bd%bf%e7%94%a8%e7%9a%84%e6%8a%80%e6%9c%af%e7%bb%84%e4%bb%b6" aria-label="使用的技术组件">使用的技术组件</a></li>
+                    <li>
+                        <a href="#%e6%8e%a5%e5%8f%a3" aria-label="接口">接口</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%b5%84%e6%ba%90%e9%83%a8%e5%88%86" aria-label="资源部分">资源部分</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%b5%84%e6%ba%90%e7%94%b3%e8%af%b7" aria-label="资源申请">资源申请</a></li>
+                    <li>
+                        <a href="#%e4%be%9d%e8%b5%96%e8%b5%84%e6%ba%90" aria-label="依赖资源">依赖资源</a></li>
+                    <li>
+                        <a href="#%e9%a2%84%e6%a1%88" aria-label="预案">预案</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%a3%8e%e6%8e%a7" aria-label="风控">风控</a></li>
+                    <li>
+                        <a href="#%e5%9b%9e%e6%bb%9a" aria-label="回滚">回滚</a></li>
+                    <li>
+                        <a href="#%e4%b8%8a%e7%ba%bf" aria-label="上线">上线</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e4%bc%9a%e8%ae%ae%e9%83%a8%e5%88%86" aria-label="会议部分">会议部分</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%bc%9a%e8%ae%ae%e8%ae%b0%e5%bd%95" aria-label="会议记录">会议记录</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>作为RD，除了搞好技术方案、实现，也要搞好项目管理。
+大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。
+如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。</p>
+<h1 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h1>
+<p>正统的项目管理可以学习PMP课程，但是结合我几年的工作经验，实际中我们并不需要那么完整、繁琐的流程、工具。</p>
+<p>我们需要的工具，只是一份简单的模板即可，关注关键点，解决关键问题即可推进进度。</p>
+<p>要点：</p>
+<ol>
+<li>这个项目做什么？【需求范围】</li>
+<li>什么时候要？【关键时间点】</li>
+<li>谁来负责？谁来参与？【干系人】</li>
+<li>出现疑问、异常如何解决？谁来推动？【问题处理】</li>
+<li>关键节点有无风险？【资源拉通】</li>
+</ol>
+<h1 id="实操基本原则">实操基本原则<a hidden class="anchor" aria-hidden="true" href="#实操基本原则">#</a></h1>
+<ol>
+<li>可根据对应的需求、项目做调整、内容丰富；</li>
+<li>创建工单前，一定要确认需求，明确初期疑问点，资源要对齐（如多端）；</li>
+<li>及时做好各方各端各个干系人的信息同步；</li>
+</ol>
+<hr>
+<h1 id="模板正文">模板正文<a hidden class="anchor" aria-hidden="true" href="#模板正文">#</a></h1>
+<p>以下是我自用的PM文档模板：</p>
+<h2 id="需求背景">需求背景<a hidden class="anchor" aria-hidden="true" href="#需求背景">#</a></h2>
+<h3 id="事">事<a hidden class="anchor" aria-hidden="true" href="#事">#</a></h3>
+<ul>
+<li>描述项目的需求背景和目标。</li>
+<li>关联相关资料，如产品文档、技术重构文档。</li>
+</ul>
+<h3 id="卡点">卡点<a hidden class="anchor" aria-hidden="true" href="#卡点">#</a></h3>
+<ul>
+<li>关键时间点。</li>
+<li>干系人。</li>
+</ul>
+<h1 id="设计部分">设计部分<a hidden class="anchor" aria-hidden="true" href="#设计部分">#</a></h1>
+<h2 id="业务流程">业务流程<a hidden class="anchor" aria-hidden="true" href="#业务流程">#</a></h2>
+<p>形式：文字+流程图。
+梳理、表达业务流程，如：
+<a href="https://www.processon.com/view/link/5f8cfe265653bb06ef068e34">https://www.processon.com/view/link/5f8cfe265653bb06ef068e34</a></p>
+<h2 id="架构设计">架构设计<a hidden class="anchor" aria-hidden="true" href="#架构设计">#</a></h2>
+<p>形式：文字+架构关系图。
+梳理、表达架构关系（模块、系统、层级结构）、其他领域划分设计、UML图、ER图等，如：</p>
+<p>架构图：
+<img loading="lazy" src="/posts/rd/pm/doc/tech_arch.png" alt="tech_arch"  />
+</p>
+<h1 id="实现部分">实现部分<a hidden class="anchor" aria-hidden="true" href="#实现部分">#</a></h1>
+<h2 id="使用的技术组件">使用的技术组件<a hidden class="anchor" aria-hidden="true" href="#使用的技术组件">#</a></h2>
+<ul>
+<li>存储选型
+<ul>
+<li>MySQL</li>
+<li>MQ</li>
+<li>ES</li>
+<li>Redis</li>
+</ul>
+</li>
+<li>框架选型
+<ul>
+<li>web框架</li>
+<li>IO框架</li>
+<li>定时任务</li>
+<li>调度</li>
+</ul>
+</li>
+<li>关键技术</li>
+</ul>
+<h2 id="接口">接口<a hidden class="anchor" aria-hidden="true" href="#接口">#</a></h2>
+<p>关键对接信息，接口维护建议使用api管理系统。</p>
+<ul>
+<li>协议（http/dubbo）</li>
+<li>接口名称</li>
+<li>能力作用</li>
+<li>入参</li>
+<li>出参</li>
+<li>mock示例</li>
+<li>对接交付时间点</li>
+</ul>
+<h1 id="资源部分">资源部分<a hidden class="anchor" aria-hidden="true" href="#资源部分">#</a></h1>
+<h2 id="资源申请">资源申请<a hidden class="anchor" aria-hidden="true" href="#资源申请">#</a></h2>
+<ul>
+<li>平台资源（数据库、缓存、队列）</li>
+<li>量级预估、评审，扩容预估</li>
+</ul>
+<h2 id="依赖资源">依赖资源<a hidden class="anchor" aria-hidden="true" href="#依赖资源">#</a></h2>
+<ul>
+<li>接口依赖（是否需要新开发？排期资源是否OK？）</li>
+<li>相关端是否对齐拉通？</li>
+</ul>
+<h2 id="预案">预案<a hidden class="anchor" aria-hidden="true" href="#预案">#</a></h2>
+<h3 id="风控">风控<a hidden class="anchor" aria-hidden="true" href="#风控">#</a></h3>
+<p>提前预估可能出现的风险，提前确认、对齐资源与方案。</p>
+<h3 id="回滚">回滚<a hidden class="anchor" aria-hidden="true" href="#回滚">#</a></h3>
+<p>出现问题提前准备回滚预案。</p>
+<h3 id="上线">上线<a hidden class="anchor" aria-hidden="true" href="#上线">#</a></h3>
+<p>checklist：</p>
+<ul>
+<li>代码改动（合并、打包）</li>
+<li>业务数据配置</li>
+<li>定时任务配置</li>
+<li>依赖方资源</li>
+<li>数据存储schema改动</li>
+<li>对接外部是否需要注意ip黑白名单</li>
+<li>etc</li>
+</ul>
+<h1 id="会议部分">会议部分<a hidden class="anchor" aria-hidden="true" href="#会议部分">#</a></h1>
+<h2 id="会议记录">会议记录<a hidden class="anchor" aria-hidden="true" href="#会议记录">#</a></h2>
+<ul>
+<li>2022年x月xx日
+<ol>
+<li>xxx功能需要依赖第三方xxx&hellip;</li>
+<li>xxx功能由服务端给出xxx数据，5端前端配合展示逻辑和实现交互逻辑</li>
+<li>xxx功能避免耗费服务端带宽，前端做好相应本地缓存&hellip;</li>
+<li>xxx功能存在风险点，需要看具体情况而定</li>
+</ol>
+</li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/pm/">PM</a></li>
+      <li><a href="https://redolog.github.io/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">项目管理</a></li>
+      <li><a href="https://redolog.github.io/tags/%E8%BF%9B%E5%BA%A6%E6%8E%A8%E8%BF%9B/">进度推进</a></li>
+      <li><a href="https://redolog.github.io/tags/%E9%A3%8E%E9%99%A9%E6%8A%8A%E6%8E%A7/">风险把控</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/mapping/reality/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>技术概念与现实的映射</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/log/translation/what-every-software-engineer-should-know-about-real-time-datas-unifying/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>译---日志：每个软件工程师都应该知道的有关实时数据的统一抽象</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 我自用的项目管理文档模板 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e6%88%91%e8%87%aa%e7%94%a8%e7%9a%84%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%e6%96%87%e6%a1%a3%e6%a8%a1%e6%9d%bf&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f&amp;hashtags=PM%2c%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%2c%e8%bf%9b%e5%ba%a6%e6%8e%a8%e8%bf%9b%2c%e9%a3%8e%e9%99%a9%e6%8a%8a%e6%8e%a7">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 我自用的项目管理文档模板 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f&amp;title=%e6%88%91%e8%87%aa%e7%94%a8%e7%9a%84%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%e6%96%87%e6%a1%a3%e6%a8%a1%e6%9d%bf&amp;summary=%e6%88%91%e8%87%aa%e7%94%a8%e7%9a%84%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%e6%96%87%e6%a1%a3%e6%a8%a1%e6%9d%bf&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 我自用的项目管理文档模板 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f&title=%e6%88%91%e8%87%aa%e7%94%a8%e7%9a%84%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%e6%96%87%e6%a1%a3%e6%a8%a1%e6%9d%bf">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 我自用的项目管理文档模板 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 我自用的项目管理文档模板 on whatsapp"
+        href="https://api.whatsapp.com/send?text=%e6%88%91%e8%87%aa%e7%94%a8%e7%9a%84%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%e6%96%87%e6%a1%a3%e6%a8%a1%e6%9d%bf%20-%20https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 我自用的项目管理文档模板 on telegram"
+        href="https://telegram.me/share/url?text=%e6%88%91%e8%87%aa%e7%94%a8%e7%9a%84%e9%a1%b9%e7%9b%ae%e7%ae%a1%e7%90%86%e6%96%87%e6%a1%a3%e6%a8%a1%e6%9d%bf&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fpm%2fdoc%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

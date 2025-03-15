@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>English on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/categories/english/</link>
+    <description>Recent content in English on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 28 Jan 2021 13:03:50 +0800</lastBuildDate><atom:link href="https://redolog.github.io/categories/english/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【译】用户态网络协议栈之DPDK</title>
+      <link>https://redolog.github.io/posts/english/translation/dpdk/</link>
+      <pubDate>Thu, 28 Jan 2021 13:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/dpdk/</guid>
+      <description>了解下DPDK技术基本原理</description>
+    </item>
+    
+    <item>
+      <title>【译】简析Linux IO多路复用模型</title>
+      <link>https://redolog.github.io/posts/english/translation/linux_io_multiplexing/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/linux_io_multiplexing/</guid>
+      <description>简析Linux下IO多路复用的设计，理解epoll的优势</description>
+    </item>
+    
+    <item>
+      <title>Linux中的swap空间</title>
+      <link>https://redolog.github.io/posts/english/translation/all_about_linux_swap_space/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/all_about_linux_swap_space/</guid>
+      <description>解析Linux文件系统swap交换区</description>
+    </item>
+    
+    <item>
+      <title>什么是NUMA架构？</title>
+      <link>https://redolog.github.io/posts/english/translation/what_is_numa/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/what_is_numa/</guid>
+      <description>解析非统一内存访问架构（Non-Uniform Memory Access，NUMA 架构）</description>
+    </item>
+    
+    <item>
+      <title>译---在Redis中存储亿万级的简单KV数据</title>
+      <link>https://redolog.github.io/posts/english/translation/storing_hundreds_of_millions_of_simple_key_value_pairs_in_redis/</link>
+      <pubDate>Fri, 15 Jan 2021 13:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/storing_hundreds_of_millions_of_simple_key_value_pairs_in_redis/</guid>
+      <description>原文：Storing hundreds of millions of simple key-value pairs in Redis 。 背景：本文讲的是Instagram团队2011年时碰到的一个技术场景。新旧系统迁移，需要做一些脚手架</description>
+    </item>
+    
+    <item>
+      <title>译---LinkedIn如何高效进行代码评审</title>
+      <link>https://redolog.github.io/posts/english/translation/linkedin_code_review/</link>
+      <pubDate>Sat, 04 May 2019 09:20:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/linkedin_code_review/</guid>
+      <description>译作。对原文做核心理念的意译。 linkedin-code-review LinkedIn 针对高效代码评审的几条建议 Preface LinkedIn 刚刚完成了百万行代码审查的里程碑式的工程。其团队负责开发工具（效率）的领导</description>
+    </item>
+    
+  </channel>
+</rss>
