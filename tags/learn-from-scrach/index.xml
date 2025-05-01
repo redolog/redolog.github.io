@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>learn-from-scrach on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/learn-from-scrach/</link>
+    <description>Recent content in learn-from-scrach on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 19 Jul 2021 09:51:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/learn-from-scrach/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>小白学SQL</title>
+      <link>https://redolog.github.io/posts/rd/language/sql/learn_from_scratch/</link>
+      <pubDate>Mon, 19 Jul 2021 09:51:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/sql/learn_from_scratch/</guid>
+      <description>写给非CS/CE背景的同学（数据分析、运营、商分）的SQL入门教程</description>
+    </item>
+    
+  </channel>
+</rss>

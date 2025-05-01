@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>设计模式一览 | 宋惠龙的博客</title>
+<meta name="keywords" content="设计模式, Design Pattern, 设计, 模式" />
+<meta name="description" content="设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。
+使用的时候重点是识别面临的问题的场景，识破问题关键，挑选适当的模式进行编码。
+识别这一步最为关键。">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/rd/design/pattern/index/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="设计模式一览" />
+<meta property="og:description" content="设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。
+使用的时候重点是识别面临的问题的场景，识破问题关键，挑选适当的模式进行编码。
+识别这一步最为关键。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/rd/design/pattern/index/" /><meta property="og:image" content="https://redolog.github.io/avatar.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-21T18:18:25&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-21T23:54:25&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:title" content="设计模式一览"/>
+<meta name="twitter:description" content="设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。
+使用的时候重点是识别面临的问题的场景，识破问题关键，挑选适当的模式进行编码。
+识别这一步最为关键。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "设计模式一览",
+      "item": "https://redolog.github.io/posts/rd/design/pattern/index/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "设计模式一览",
+  "name": "设计模式一览",
+  "description": "设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。 使用的时候重点是识别面临的问题的场景，识破问题关键，挑选适当的模式进行编码。 识别这一步最为关键。\n",
+  "keywords": [
+    "设计模式", "Design Pattern", "设计", "模式"
+  ],
+  "articleBody": "设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。 使用的时候重点是识别面临的问题的场景，识破问题关键，挑选适当的模式进行编码。 识别这一步最为关键。\nwiki/Software_design_pattern 针对软件设计模式的发展历史有详细说明，简单来说，GoF四人帮大佬们在1994年发布了书籍 Design Patterns: Elements of Reusable Object-Oriented Software ，这本书对于设计模式的工业落地、推广具有重大意义。\n设计模式在工业界实践已久，但是长久以来未能取得进展。\n本文以GoF版本为准，这也是工业界使用最广泛的标准化解释。本文使用Java示例，示例仓库：design-pattern-java。\n设计模式一共23种，分三个大类：\nCreational 创建型\n「不直接创建对象，定义对应的创建逻辑」，解耦对象的创建、使用。\nStructural 结构型\n「关注类、对象间如何组合，一般利用语言特性（比如继承、实现、组合）或者平台特性（agent、字节码）进行结构组装」，解耦不同功能。\nBehavioral 行为型\n「关注对象间如何交互、通信」，解耦不同行为。\n编程指导原则参见 编程原则一览。\nCreational 创建型 Singleton 单例 Singleton 单例\nrestricts object creation for a class to only one instance.\n用于创建全局唯一的对象。\n全局可区分不同粒度：\n线程 进程 集群 目的：限制对象个数。\nPrototype 原型 Prototype 原型\ncreates objects by cloning an existing object.\n描述：\n基于一个已有对象实例，克隆、复制一个新的对象。\n适用场景：\n新旧实例有很多相似之处，可以复制； 新实例重新创建有过多开销； 提供一定的业务语义，比如XNew对象来源于XOld对象，有关联性； 此时可考虑原型。\n使用\n实现接口Cloneable，重写clone方法。\njava本身提供的clone调用的是本地方法，有性能优势，缺点是默认只支持浅拷贝。需要深拷贝一般通过序列化、反序列化实现。\nBuilder 构建者 Builder 构建者\nconstructs complex objects by separating construction and representation.\n描述： 分离构造与表示，以此来创建复杂对象。\n支持一步步构建对象，将构建过程细化，支持创建多种不同属性值的实例。\n适用场景：\n对象属性过多时，使用构建者替换构造器，更加清晰、灵活； 使用\n推荐直接使用@Lombok注解@Builder，利用 JSR269 插件化注解处理的接口，帮我们在生成字节码之前通过注解自动生成代码。\nFactory method 工厂方法 creates objects without specifying the exact class to create.\nAbstract factory 抽象工厂 groups object factories that have a common theme.\n描述：\n工厂方法：不指定特定类，将实例创建交给工厂。 抽象工厂：将具有共同主题的工厂组合起来。 工厂模式用于创建不同但是同类型的对象（OOP中的接口或者父类）。\n相比工厂方法，抽象工厂中的抽象我理解是抽象了共性、层次 工厂创建的对象有共性，工厂也有共性。\n比如轮胎有多种品牌、型号，生产轮胎的厂商也有多个。\n而厂商除了轮胎，还可以生产底盘。轮胎、底盘、厂商，有层次。 在生产汽车的工厂中，定义的接口可能是：生产轮胎，生产底盘。产品间也有层次，汽车是他们共同的主题。\n中文语境下的简单工厂、工厂方法、抽象工厂其实本质上只是所需工厂的复杂度、维度不同。越往后，复杂度、对象层次维度越高。\n目的：解耦对象的创建、使用。\nStructural 结构型 Adapter 适配器 allows classes with incompatible interfaces to work together by wrapping its own interface around that of an already existing class.\n描述： 适配器模式通过包装已有接口的方式利用已有功能，使得新旧不兼容的接口能够对接生效。\n适用场景：\n新老接口定义不兼容（签名不一致）；\n有一种情况是有一个接口设计有缺陷。\n新接口可复用老接口功能实现；\n统一多个接口；\n适配器目的主要是补救、兼容。\n现实举例： 电源适配器，不同地区标准不同的转接头。 场景举例： 我买了一台港版MacBook，一般的电源适配器负责对接笔记本与电源接口，而港版的电脑如果想充电，我就需要再买一个转接头。\n内地电源插线板对应我们的老接口；InlandPatchBoardI 港版插头对应我们的新接口；HongkongPlugI 这个国标转接头对应我们这里的适配器；HongkongPowerAdaper 也就是说，我们先有一个老接口（国标插线板），然后新需求产生了一个新接口（港版插头），此时新增一个国标转接头，新老接口就完成了对接，我们的改动成本也相对可控。\n图例 通过图、代码的方式对比下类适配器与对象适配器的区别。\n类适配器： 对象适配器： 使用入口：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 public class AdapterApp { // 插线板通电 public static void main(String[] args) { // 内地默认逻辑 InlandPatchBoardI inlandPatchBoardGeneral = new InlandPatchBoardImpl(); inlandPatchBoardGeneral.powerOn(); // 港版，class型适配器 InlandPatchBoardI hongkongPatchClsPlug = new HongkongClsAdapter(); hongkongPatchClsPlug.powerOn(); // 港版，object型适配器 InlandPatchBoardI hongkongPatchObjectPlug = new HongkongObjectAdapter(new HongkongPlugImpl()); hongkongPatchObjectPlug.powerOn(); } } 可以看到二者区别为： 类模式使用继承的方式交互，对象模式使用组合的方式交互。一般推荐使用组合，即对象模式实现适配器。\n使用举例\nSpringMVC-WebMvcConfigurerAdapter\n使用SpringMVC的工程如果需要增加拦截器，我们可以实现接口 WebMvcConfigurer，由于Java以前接口必须实现所有非默认方法，所以实现类中必须写出所有接口方法，如果继承 WebMvcConfigurerAdapter，则只需要覆写 addInterceptors 一个方法。\n由于Java8支持了interface提供默认方法，关键字 default ，默认方法实现类无需必须实现。因此后续SpringMVC废弃了 WebMvcConfigurerAdapter。\nApacheCommonsIO-FileAlterationListenerAdaptor\napache的commons-io包下FileAlterationListener，提供了查看文件状态变更的接口。FileAlterationListenerAdaptor 则是对应的适配器实现。\n当我们想要监控文件状态变更时，继承FileAlterationListenerAdaptor是一个更好的选择。\n小结\n适配器最简单的为默认适配器（上述框架使用例子）； 对象模式与类模式，一般推荐使用组合，即对象模式实现适配器； 与代理模式简单对比： 比较对象适配器模式和代理模式。在代码结构上，它们很相似，都需要一个具体的实现类的实例。但是它们的目的不一样，代理模式做的是控制访问原方法的活；适配器做的是适配的活，为的是提供“把港版电源线包装成国标的线，然后当做国标电源来使用”，而港版的电源和国标电源之间原本没有继承关系。 Bridge 桥接 decouples an abstraction from its implementation so that the two can vary independently.\n通过抽象接口，与实现解耦，以此达到互相变化不影响的目的。\nComposite 组合 composes zero-or-more similar objects so that they can be manipulated as one object. GoF: Compose objects into tree structure to represent part-whole hierarchies.Composite lets client treat individual objects and compositions of objects uniformly.\n组合多个相似对象为树形结构，表示：「部分、整体」的层次。简化使用方的调用。\n注意：组合模式与OOP中的组合两个类不一样！\n场景：\n操作系统的文件元信息表示是INode，本质上「目录-文件」是树形结构； InnoDB的索引结构是B+树，也是树形结构； 我们的业务应用一般有菜单，菜单一般是树形； 我们的人员组织架构，一般是树形； 代码示例： design-pattern-java Composite\n在这里例子中，我们的部门与员工统一表示为组织节点OrgNode，员工+部门组成树形结构，其中员工、部门分别是「部分」表示，组合在一起形成「整体」。我们的操作统一到了OrgNode中，简化了调用。\nDecorator 装饰 dynamically adds/overrides behaviour in an existing method of an object.\nFacade 门面 provides a simplified interface to a large body of code.\nFlyweight 享元模式 reduces the cost of creating and manipulating a large number of similar objects.\n针对不可变对象：\n复用对象 减少内存开销 减少创建开销 适用场景：\n系统中存在大量重复对象，并且对象是不可变的，此时可实现对象实例的享元，即一个对象大家共用。 在不同的粒度可以实现不同的享元，如细化到属性维度。 目的：复用对象、节省内存。\nProxy 代理 provides a placeholder for another object to control access, reduce cost, and reduce complexity.\n代理对象持有原对象的引用，用于：\n控制访问； 降低开销； 降低复杂度； Behavioral 行为型 Chain of responsibility 职责链 delegates commands to a chain of processing objects. Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it.\n将命令委派到处理器的链条上。 通过「将请求交给多个对象处理」的方式，来避免耦合请求的生产者、消费者。 消费者将请求在链条上逐个传递。「GoF定义」 链条可选择某个消费者处理后终止，或者继续传递直到所有消费者都处理完毕。 「变体」 优势：\n复用逻辑。 使用扩展的方式增加功能：高内聚、低耦合「灵活」。 应用：\nFilter Servlet Filter javax.servlet.Filter 对应 IHandler处理器接口。 javax.servlet.FilterChain 对应 HandlerChain链条。 ApplicationFilterChain 对应为Tomcat中对Servlet规范的实现。 Interceptor SpringMVC Interceptor HandlerInterceptor 对应 IHandler处理器接口。 HandlerExecutionChain 对应 HandlerChain链条实现。 Command 命令 creates objects that encapsulate actions and parameters. The command pattern encapsulates a request as an object, thereby letting us parameterize other objects with different requests, queue or log requests, and support undoable operations.\n使用对象封装行为、参数。 命令模式将请求封装成对象，不同的请求对应不同对象，从而将参数内聚到某个类中。支持队列操作、日志记录、回滚「附加功能」。 核心作用：为命令执行增加功能。 Interpreter 解释器 implements a specialized language. Interpreter pattern is used to defines a grammatical representation for a language and provides an interpreter to deal with this grammar.\n描述：\n实现特定语言。 解释器模式用于为一种特定语言提供语法表示，提供解析语法的解释器。 应用偏小众：编译器、规则引擎、正则表达式。 实现：\n解释器主要实现语法解析。 针对负责解析，遵循大拆小的基本策略。 Iterator 迭代器 accesses the elements of an object sequentially without exposing its underlying representation.\nMediator 中介 allows loose coupling between classes by being the only class that has detailed knowledge of their methods. Mediator pattern defines a separate object that encapsulates the interaction between a set of objects and the objects delegate their interaction to a mediator object instead of interacting with each other directly.\n描述：\n中介作为唯一知道上下游对接细节的类「对象」，从而做到解耦上下游对接。 中介模式定义一个中介对象，封装对接双方交互的逻辑，对接双方不直接交互，只能通过中介操作。 现实举例：\n飞机间互相通信，统一通过塔台调度。 多端数据互相同步，统一通过log数据平台交互。 优点：\n集中化管理交互逻辑，简化交互调用。 缺点：\n中介类可能变为「上帝类」，复杂而庞杂。 Memento provides the ability to restore an object to its previous state (undo). Captures and externalize an object’s internal state so that it can be restored later, all without violating encapsulation.\n备忘录模式，aka快照模式「snapshot」。 赋予对象回滚状态的能力。 在不违背封装原则的前提下，捕获一个对象的内部状态，以便后续回滚状态使用。 类比：\nRedis中的RDB、AOF。是典型的高频增量、低频全量快照优化实现。 存储系统中的wal预写日志。 Observer 观察者 is a publish/subscribe pattern, which allows a number of observer objects to see an event. Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.\n描述：\n一种发布订阅模式，实现了一组观察者对象，用于监听事件变化。 定义对象间的一对多关系，当前者对象状态发生变化时，后者对象组可自动收到通知。 结构、叫法：\n被观察者 Observable Subject Publisher Producer EventEmitter Dispatcher 观察者 Observer Observer Subscriber Consumer EventListener Listener 目的：解耦观察者、被观察者。\n复杂实现：Google EventBus、Spring event。\nState 状态 allows an object to alter its behavior when its internal state changes.\nStrategy 策略 allows one of a family of algorithms to be selected on-the-fly at runtime. Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.\n定义：\n运行时选择具体执行的算法。 定义封装一组算法，彼此可替换。策略模式允许使用侧与算法的变化互相独立。 目的：解耦策略的定义、创建、使用。\nTemplate method 模板方法 defines the skeleton of an algorithm as an abstract class, allowing its subclasses to provide concrete behavior.\n定义： 通过抽象类的方式定义类骨架，通过子类实现具体算法。\n目的：\n骨架：复用结构。 子类实现：拓展逻辑。 示例： 定义骨架、规范：\nInputStream.read() AbstractList.addAll() 拓展：\njavax.servlet.http.HttpServlet service()中定义了根据不同header执行对应方法的骨架「定义了处理请求的流程」，而例如doPost/doGet都交给实现类去实现。 Junit在不使用注解的方式下，使用继承TestCase的方式编码UT 这种方式是比较老的设计，现在基本都用注解了，会比较灵活。 TestCase 中定义了UT单测跑起来的基本架子， runBare() 定义架子，runTest() 交给子类也就是具体业务来实现。 Visitor separates an algorithm from an object structure by moving the hierarchy of methods into one object.\n对比 设计模式最大的区分在于设计意图、应用场景。回到本文最开始的观点：重点是识别面临的问题的场景，识破问题关键。\n享元 vs 单例 vs 缓存 vs 池 设计意图 享元 复用对象「共享一个对象的同时使用权」、节省内存 单例、多例 限制对象个数 缓存 提高访问效率 池 重复使用「共享一个对象的非同时使用权」、节省时间 代理 vs 桥接 vs 装饰器 vs 适配器 设计意图 代理 控制访问 桥接 分离接口与实现，隔离变化 装饰器 增强原接口功能 适配器 事后补救，兼容新老接口 模板方法 vs 同步回调 vs 异步回调 应用场景 代码实现 优点 模板方法 定义骨架，定制逻辑 基于继承，子类重写父类方法 同步回调 定义骨架，定制逻辑 基于组合，传递回调对象 灵活 异步回调 与观察者模式一致 基于组合，传递回调对象 灵活 策略 vs 工厂 vs 命令 应用场景、设计意图 策略 vs 工厂 策略 vs 命令 策略 解决根据运行时状态从一组策略中选择不同策略的问题 包含策略的定义、创建、使用。结构与工厂类似 不同策略可互相替换，结果一致 工厂 封装对象创建过程 命令 控制命令的执行：异步、延迟、队列、回滚、日志 将函数封装成对象。 不同命令不可互相替换，结果不一致 中介 vs 观察者 应用场景 区别 中介 交互复杂，解耦对象间的交互 交互关系复杂，上下游流向可互相转换，如a-\u003eb 转换为 b-\u003ea 观察者 明确的一对多关系下，解耦观察者、被观察者 观察者被观察者关系明确，上下游流向固定不可变 Ref wiki/Software_design_pattern wiki/Design_Patterns wiki/Creational_pattern tutorialspoint.com/design_pattern ",
+  "wordCount" : "4980",
+  "inLanguage": "en",
+  "datePublished": "2022-03-21T18:18:25+08:00",
+  "dateModified": "2022-03-21T23:54:25+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/rd/design/pattern/index/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      设计模式一览
+    </h1>
+    <div class="post-meta"><span title='2022-03-21 18:18:25 +0800 CST'>March 21, 2022</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#creational-%e5%88%9b%e5%bb%ba%e5%9e%8b" aria-label="Creational 创建型">Creational 创建型</a><ul>
+                            
+                    <li>
+                        <a href="#singleton-%e5%8d%95%e4%be%8b" aria-label="Singleton 单例">Singleton 单例</a></li>
+                    <li>
+                        <a href="#prototype-%e5%8e%9f%e5%9e%8b" aria-label="Prototype 原型">Prototype 原型</a></li>
+                    <li>
+                        <a href="#builder-%e6%9e%84%e5%bb%ba%e8%80%85" aria-label="Builder 构建者">Builder 构建者</a></li>
+                    <li>
+                        <a href="#factory-method-%e5%b7%a5%e5%8e%82%e6%96%b9%e6%b3%95" aria-label="Factory method 工厂方法">Factory method 工厂方法</a></li>
+                    <li>
+                        <a href="#abstract-factory-%e6%8a%bd%e8%b1%a1%e5%b7%a5%e5%8e%82" aria-label="Abstract factory 抽象工厂">Abstract factory 抽象工厂</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#structural-%e7%bb%93%e6%9e%84%e5%9e%8b" aria-label="Structural 结构型">Structural 结构型</a><ul>
+                            
+                    <li>
+                        <a href="#adapter-%e9%80%82%e9%85%8d%e5%99%a8adapter" aria-label="Adapter 适配器"><a href="./adapter">Adapter 适配器</a></a></li>
+                    <li>
+                        <a href="#bridge-%e6%a1%a5%e6%8e%a5" aria-label="Bridge 桥接">Bridge 桥接</a></li>
+                    <li>
+                        <a href="#composite-%e7%bb%84%e5%90%88" aria-label="Composite 组合">Composite 组合</a></li>
+                    <li>
+                        <a href="#decorator-%e8%a3%85%e9%a5%b0" aria-label="Decorator 装饰">Decorator 装饰</a></li>
+                    <li>
+                        <a href="#facade-%e9%97%a8%e9%9d%a2" aria-label="Facade 门面">Facade 门面</a></li>
+                    <li>
+                        <a href="#flyweight-%e4%ba%ab%e5%85%83%e6%a8%a1%e5%bc%8f" aria-label="Flyweight 享元模式">Flyweight 享元模式</a></li>
+                    <li>
+                        <a href="#proxy-%e4%bb%a3%e7%90%86" aria-label="Proxy 代理">Proxy 代理</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#behavioral-%e8%a1%8c%e4%b8%ba%e5%9e%8b" aria-label="Behavioral 行为型">Behavioral 行为型</a><ul>
+                            
+                    <li>
+                        <a href="#chain-of-responsibility-%e8%81%8c%e8%b4%a3%e9%93%be" aria-label="Chain of responsibility 职责链">Chain of responsibility 职责链</a></li>
+                    <li>
+                        <a href="#command-%e5%91%bd%e4%bb%a4" aria-label="Command 命令">Command 命令</a></li>
+                    <li>
+                        <a href="#interpreter-%e8%a7%a3%e9%87%8a%e5%99%a8" aria-label="Interpreter 解释器">Interpreter 解释器</a></li>
+                    <li>
+                        <a href="#iterator-%e8%bf%ad%e4%bb%a3%e5%99%a8" aria-label="Iterator 迭代器">Iterator 迭代器</a></li>
+                    <li>
+                        <a href="#mediator-%e4%b8%ad%e4%bb%8b" aria-label="Mediator 中介">Mediator 中介</a></li>
+                    <li>
+                        <a href="#memento" aria-label="Memento">Memento</a></li>
+                    <li>
+                        <a href="#observer-%e8%a7%82%e5%af%9f%e8%80%85" aria-label="Observer 观察者">Observer 观察者</a></li>
+                    <li>
+                        <a href="#state-%e7%8a%b6%e6%80%81" aria-label="State 状态">State 状态</a></li>
+                    <li>
+                        <a href="#strategy-%e7%ad%96%e7%95%a5" aria-label="Strategy 策略">Strategy 策略</a></li>
+                    <li>
+                        <a href="#template-method-%e6%a8%a1%e6%9d%bf%e6%96%b9%e6%b3%95" aria-label="Template method 模板方法">Template method 模板方法</a></li>
+                    <li>
+                        <a href="#visitor" aria-label="Visitor">Visitor</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%af%b9%e6%af%94" aria-label="对比">对比</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%ba%ab%e5%85%83-vs-%e5%8d%95%e4%be%8b-vs-%e7%bc%93%e5%ad%98-vs-%e6%b1%a0" aria-label="享元 vs 单例 vs 缓存 vs 池">享元 vs 单例 vs 缓存 vs 池</a></li>
+                    <li>
+                        <a href="#%e4%bb%a3%e7%90%86-vs-%e6%a1%a5%e6%8e%a5-vs-%e8%a3%85%e9%a5%b0%e5%99%a8-vs-%e9%80%82%e9%85%8d%e5%99%a8" aria-label="代理 vs 桥接 vs 装饰器 vs 适配器">代理 vs 桥接 vs 装饰器 vs 适配器</a></li>
+                    <li>
+                        <a href="#%e6%a8%a1%e6%9d%bf%e6%96%b9%e6%b3%95-vs-%e5%90%8c%e6%ad%a5%e5%9b%9e%e8%b0%83-vs-%e5%bc%82%e6%ad%a5%e5%9b%9e%e8%b0%83" aria-label="模板方法 vs 同步回调 vs 异步回调">模板方法 vs 同步回调 vs 异步回调</a></li>
+                    <li>
+                        <a href="#%e7%ad%96%e7%95%a5-vs-%e5%b7%a5%e5%8e%82-vs-%e5%91%bd%e4%bb%a4" aria-label="策略 vs 工厂 vs 命令">策略 vs 工厂 vs 命令</a></li>
+                    <li>
+                        <a href="#%e4%b8%ad%e4%bb%8b-vs-%e8%a7%82%e5%af%9f%e8%80%85" aria-label="中介 vs 观察者">中介 vs 观察者</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#ref" aria-label="Ref">Ref</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。
+使用的时候重点是<em>识别面临的问题的场景，识破问题关键</em>，挑选适当的模式进行编码。
+<strong>识别</strong>这一步最为关键。</p>
+<p><a href="https://en.wikipedia.org/wiki/Software_design_pattern">wiki/Software_design_pattern</a> 针对软件设计模式的发展历史有详细说明，简单来说，<code>GoF</code>四人帮大佬们在1994年发布了书籍<a href="https://en.wikipedia.org/wiki/Design_Patterns"> Design Patterns: Elements of Reusable Object-Oriented Software </a>，这本书对于设计模式的工业落地、推广具有重大意义。</p>
+<blockquote>
+<p>设计模式在工业界实践已久，但是长久以来未能取得进展。</p>
+</blockquote>
+<p>本文以<code>GoF</code>版本为准，这也是工业界使用最广泛的标准化解释。本文使用<code>Java</code>示例，示例仓库：<a href="https://github.com/redolog/design-pattern-java">design-pattern-java</a>。</p>
+<p>设计模式一共23种，分三个大类：</p>
+<ul>
+<li>
+<p>Creational 创建型</p>
+<p>「不直接创建对象，定义对应的创建逻辑」，解耦对象的创建、使用。</p>
+</li>
+<li>
+<p>Structural 结构型</p>
+<p>「关注类、对象间如何组合，一般利用语言特性（比如继承、实现、组合）或者平台特性（<code>agent</code>、字节码）进行结构组装」，解耦不同功能。</p>
+</li>
+<li>
+<p>Behavioral 行为型</p>
+<p>「关注对象间如何交互、通信」，解耦不同行为。</p>
+</li>
+</ul>
+<p>编程指导原则参见 <a href="./../principle/oop">编程原则一览</a>。</p>
+<h1 id="creational-创建型">Creational 创建型<a hidden class="anchor" aria-hidden="true" href="#creational-创建型">#</a></h1>
+<h2 id="singleton-单例">Singleton 单例<a hidden class="anchor" aria-hidden="true" href="#singleton-单例">#</a></h2>
+<p><a href="./singleton">Singleton 单例</a></p>
+<blockquote>
+<p>restricts object creation for a class to only one instance.</p>
+</blockquote>
+<p>用于创建全局唯一的对象。</p>
+<p>全局可区分不同粒度：</p>
+<ul>
+<li>线程</li>
+<li>进程</li>
+<li>集群</li>
+</ul>
+<p>目的：限制对象个数。</p>
+<h2 id="prototype-原型">Prototype 原型<a hidden class="anchor" aria-hidden="true" href="#prototype-原型">#</a></h2>
+<p><a href="./prototype">Prototype 原型</a></p>
+<blockquote>
+<p>creates objects by cloning an existing object.</p>
+</blockquote>
+<p>描述：</p>
+<p>基于一个已有对象实例，克隆、复制一个新的对象。</p>
+<p>适用场景：</p>
+<ol>
+<li>新旧实例有很多相似之处，可以复制；</li>
+<li>新实例重新创建有过多开销；</li>
+<li>提供一定的业务语义，比如<code>XNew</code>对象来源于<code>XOld</code>对象，有关联性；</li>
+</ol>
+<p>此时可考虑原型。</p>
+<p>使用</p>
+<p>实现接口<code>Cloneable</code>，重写<code>clone</code>方法。</p>
+<p><code>java</code>本身提供的<code>clone</code>调用的是本地方法，有性能优势，缺点是默认只支持浅拷贝。<em>需要深拷贝一般通过序列化、反序列化实现。</em></p>
+<h2 id="builder-构建者">Builder 构建者<a hidden class="anchor" aria-hidden="true" href="#builder-构建者">#</a></h2>
+<p><a href="./builder">Builder 构建者</a></p>
+<blockquote>
+<p>constructs complex objects by separating construction and representation.</p>
+</blockquote>
+<p>描述：
+分离构造与表示，以此来创建复杂对象。</p>
+<p>支持一步步构建对象，将构建过程细化，支持创建多种不同属性值的实例。</p>
+<p>适用场景：</p>
+<ol>
+<li>对象属性过多时，使用构建者替换构造器，更加清晰、灵活；</li>
+</ol>
+<p>使用</p>
+<p>推荐直接使用<code>@Lombok</code>注解<code>@Builder</code>，利用 <a href="https://jcp.org/en/jsr/detail?id=269">JSR269</a> 插件化注解处理的接口，帮我们在生成字节码之前通过注解自动生成代码。</p>
+<h2 id="factory-method-工厂方法">Factory method 工厂方法<a hidden class="anchor" aria-hidden="true" href="#factory-method-工厂方法">#</a></h2>
+<blockquote>
+<p>creates objects without specifying the exact class to create.</p>
+</blockquote>
+<h2 id="abstract-factory-抽象工厂">Abstract factory 抽象工厂<a hidden class="anchor" aria-hidden="true" href="#abstract-factory-抽象工厂">#</a></h2>
+<blockquote>
+<p>groups object factories that have a common theme.</p>
+</blockquote>
+<p>描述：</p>
+<ul>
+<li>工厂方法：不指定特定类，将实例创建交给工厂。</li>
+<li>抽象工厂：将具有共同主题的工厂组合起来。</li>
+</ul>
+<p>工厂模式用于创建不同但是同类型的对象（<code>OOP</code>中的接口或者父类）。</p>
+<p>相比工厂方法，抽象工厂中的抽象我理解是抽象了共性、层次
+工厂创建的对象有共性，工厂也有共性。</p>
+<p>比如轮胎有多种品牌、型号，生产轮胎的厂商也有多个。</p>
+<p>而厂商除了轮胎，还可以生产底盘。轮胎、底盘、厂商，有层次。
+在生产汽车的工厂中，定义的接口可能是：生产轮胎，生产底盘。产品间也有层次，汽车是他们共同的主题。</p>
+<p>中文语境下的简单工厂、工厂方法、抽象工厂其实本质上只是所需工厂的复杂度、维度不同。越往后，复杂度、对象层次维度越高。</p>
+<p>目的：解耦对象的创建、使用。</p>
+<h1 id="structural-结构型">Structural 结构型<a hidden class="anchor" aria-hidden="true" href="#structural-结构型">#</a></h1>
+<h2 id="adapter-适配器adapter"><a href="./adapter">Adapter 适配器</a><a hidden class="anchor" aria-hidden="true" href="#adapter-适配器adapter">#</a></h2>
+<blockquote>
+<p>allows classes with incompatible interfaces to work together by wrapping its own interface around that of an already existing class.</p>
+</blockquote>
+<p>描述：
+适配器模式通过包装已有接口的方式利用已有功能，使得新旧不兼容的接口能够对接生效。</p>
+<p>适用场景：</p>
+<ol>
+<li>
+<p>新老接口定义不兼容（签名不一致）；</p>
+<p>有一种情况是有一个接口设计有缺陷。</p>
+</li>
+<li>
+<p>新接口可复用老接口功能实现；</p>
+</li>
+<li>
+<p>统一多个接口；</p>
+</li>
+</ol>
+<p>适配器目的主要是补救、兼容。</p>
+<p>现实举例：
+电源适配器，不同地区标准不同的转接头。
+<img loading="lazy" src="https://github.com/redolog/design-pattern-java/blob/main/src/main/java/tech/dragonsong/adapter/diagram/HongkongPower.png?raw=true" alt="港版mbp电源适配器"  />
+</p>
+<p>场景举例：
+我买了一台港版<code>MacBook</code>，一般的电源适配器负责对接笔记本与电源接口，而港版的电脑如果想充电，我就需要再买一个转接头。</p>
+<ul>
+<li>内地电源插线板对应我们的老接口；<code>InlandPatchBoardI</code></li>
+<li>港版插头对应我们的新接口；<code>HongkongPlugI</code></li>
+<li>这个国标转接头对应我们这里的适配器；<code>HongkongPowerAdaper</code></li>
+</ul>
+<p>也就是说，我们先有一个老接口（国标插线板），然后新需求产生了一个新接口（港版插头），此时新增一个国标转接头，新老接口就完成了对接，我们的改动成本也相对可控。</p>
+<p>图例
+通过图、代码的方式对比下类适配器与对象适配器的区别。</p>
+<p>类适配器：
+<img loading="lazy" src="https://github.com/redolog/design-pattern-java/blob/main/src/main/java/tech/dragonsong/adapter/diagram/HongkongClsAdapter.png?raw=true" alt="HongkongClsAdapter"  />
+</p>
+<p>对象适配器：
+<img loading="lazy" src="https://github.com/redolog/design-pattern-java/blob/main/src/main/java/tech/dragonsong/adapter/diagram/HongkongObjectAdapter.png?raw=true" alt="HongkongObjectAdapter"  />
+</p>
+<p>使用入口：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AdapterApp</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 插线板通电
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 内地默认逻辑
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        InlandPatchBoardI inlandPatchBoardGeneral <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InlandPatchBoardImpl<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        inlandPatchBoardGeneral<span style="color:#f92672">.</span><span style="color:#a6e22e">powerOn</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 港版，class型适配器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        InlandPatchBoardI hongkongPatchClsPlug <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HongkongClsAdapter<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        hongkongPatchClsPlug<span style="color:#f92672">.</span><span style="color:#a6e22e">powerOn</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 港版，object型适配器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        InlandPatchBoardI hongkongPatchObjectPlug <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HongkongObjectAdapter<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HongkongPlugImpl<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        hongkongPatchObjectPlug<span style="color:#f92672">.</span><span style="color:#a6e22e">powerOn</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到二者区别为：
+类模式使用继承的方式交互，对象模式使用组合的方式交互。一般推荐使用组合，即对象模式实现适配器。</p>
+<p>使用举例</p>
+<p>SpringMVC-WebMvcConfigurerAdapter</p>
+<p>使用<code>SpringMVC</code>的工程如果需要增加拦截器，我们可以实现接口 <code>WebMvcConfigurer</code>，由于<code>Java</code>以前接口必须实现所有非默认方法，所以实现类中必须写出所有接口方法，如果继承 <code>WebMvcConfigurerAdapter</code>，则只需要覆写 <code>addInterceptors</code> 一个方法。</p>
+<p>由于<code>Java8</code>支持了<code>interface</code>提供默认方法，关键字 <code>default</code> ，默认方法实现类无需必须实现。因此后续<code>SpringMVC</code>废弃了 <code>WebMvcConfigurerAdapter</code>。</p>
+<p>ApacheCommonsIO-FileAlterationListenerAdaptor</p>
+<p>apache的<code>commons-io</code>包下<code>FileAlterationListener</code>，提供了查看文件状态变更的接口。<code>FileAlterationListenerAdaptor</code> 则是对应的适配器实现。</p>
+<p>当我们想要监控文件状态变更时，继承<code>FileAlterationListenerAdaptor</code>是一个更好的选择。</p>
+<p>小结</p>
+<ul>
+<li>适配器最简单的为默认适配器（上述框架使用例子）；</li>
+<li>对象模式与类模式，一般推荐使用组合，即对象模式实现适配器；</li>
+<li>与代理模式简单对比：
+<ul>
+<li>比较对象适配器模式和代理模式。在代码结构上，它们很相似，都需要一个具体的实现类的实例。但是它们的目的不一样，代理模式做的是控制访问原方法的活；适配器做的是适配的活，为的是提供“把港版电源线包装成国标的线，然后当做国标电源来使用”，而港版的电源和国标电源之间原本没有继承关系。</li>
+</ul>
+</li>
+</ul>
+<h2 id="bridge-桥接">Bridge 桥接<a hidden class="anchor" aria-hidden="true" href="#bridge-桥接">#</a></h2>
+<blockquote>
+<p>decouples an abstraction from its implementation so that the two can vary independently.</p>
+</blockquote>
+<p>通过抽象接口，与实现解耦，以此达到互相变化不影响的目的。</p>
+<h2 id="composite-组合">Composite 组合<a hidden class="anchor" aria-hidden="true" href="#composite-组合">#</a></h2>
+<blockquote>
+<p>composes zero-or-more similar objects so that they can be manipulated as one object.
+GoF: Compose objects into tree structure to represent part-whole hierarchies.Composite lets client treat individual objects and compositions of objects uniformly.</p>
+</blockquote>
+<p>组合多个相似对象为树形结构，表示：「部分、整体」的层次。简化使用方的调用。</p>
+<blockquote>
+<p>注意：组合模式与<code>OOP</code>中的组合两个类不一样！</p>
+</blockquote>
+<p>场景：</p>
+<ul>
+<li>操作系统的文件元信息表示是<code>INode</code>，本质上「目录-文件」是树形结构；</li>
+<li><code>InnoDB</code>的索引结构是<code>B+</code>树，也是树形结构；</li>
+<li>我们的业务应用一般有菜单，菜单一般是树形；</li>
+<li>我们的人员组织架构，一般是树形；</li>
+</ul>
+<p>代码示例：
+<a href="https://github.com/redolog/design-pattern-java/commit/58f7af9a5f061ed92169cdb374336b0cb63a2be6">design-pattern-java Composite</a></p>
+<p>在这里例子中，我们的部门与员工统一表示为组织节点<code>OrgNode</code>，员工+部门组成树形结构，其中员工、部门分别是「部分」表示，组合在一起形成「整体」。我们的操作统一到了<code>OrgNode</code>中，简化了调用。</p>
+<h2 id="decorator-装饰">Decorator 装饰<a hidden class="anchor" aria-hidden="true" href="#decorator-装饰">#</a></h2>
+<blockquote>
+<p>dynamically adds/overrides behaviour in an existing method of an object.</p>
+</blockquote>
+<h2 id="facade-门面">Facade 门面<a hidden class="anchor" aria-hidden="true" href="#facade-门面">#</a></h2>
+<blockquote>
+<p>provides a simplified interface to a large body of code.</p>
+</blockquote>
+<h2 id="flyweight-享元模式">Flyweight 享元模式<a hidden class="anchor" aria-hidden="true" href="#flyweight-享元模式">#</a></h2>
+<!-- 中文语境前人翻译为了「享元模式」。 -->
+<blockquote>
+<p>reduces the cost of creating and manipulating a large number of similar objects.</p>
+</blockquote>
+<p>针对不可变对象：</p>
+<ul>
+<li>复用对象</li>
+<li>减少内存开销</li>
+<li>减少创建开销</li>
+</ul>
+<p>适用场景：</p>
+<ul>
+<li>系统中存在大量重复对象，并且对象是不可变的，此时可实现对象实例的享元，即一个对象大家共用。</li>
+<li>在不同的粒度可以实现不同的享元，如细化到属性维度。</li>
+</ul>
+<p>目的：复用对象、节省内存。</p>
+<h2 id="proxy-代理">Proxy 代理<a hidden class="anchor" aria-hidden="true" href="#proxy-代理">#</a></h2>
+<blockquote>
+<p>provides a placeholder for another object to control access, reduce cost, and reduce complexity.</p>
+</blockquote>
+<p>代理对象持有原对象的引用，用于：</p>
+<ul>
+<li>控制访问；</li>
+<li>降低开销；</li>
+<li>降低复杂度；</li>
+</ul>
+<h1 id="behavioral-行为型">Behavioral 行为型<a hidden class="anchor" aria-hidden="true" href="#behavioral-行为型">#</a></h1>
+<h2 id="chain-of-responsibility-职责链">Chain of responsibility 职责链<a hidden class="anchor" aria-hidden="true" href="#chain-of-responsibility-职责链">#</a></h2>
+<blockquote>
+<p>delegates commands to a chain of processing objects.
+Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it.</p>
+</blockquote>
+<ol>
+<li>将命令委派到处理器的链条上。</li>
+<li>通过「将请求交给多个对象处理」的方式，来避免耦合请求的生产者、消费者。
+<ul>
+<li>消费者将请求在链条上逐个传递。「GoF定义」</li>
+<li>链条可选择某个消费者处理后终止，或者继续传递直到所有消费者都处理完毕。 「变体」</li>
+</ul>
+</li>
+</ol>
+<p>优势：</p>
+<ul>
+<li>复用逻辑。</li>
+<li>使用扩展的方式增加功能：高内聚、低耦合「灵活」。</li>
+</ul>
+<p>应用：</p>
+<ul>
+<li>Filter
+<ul>
+<li>Servlet Filter
+<ul>
+<li><a href="https://github.com/javaee/servlet-spec/blob/master/src/main/java/javax/servlet/Filter.java">javax.servlet.Filter</a> 对应 <code>IHandler</code>处理器接口。</li>
+<li><a href="https://github.com/javaee/servlet-spec/blob/master/src/main/java/javax/servlet/FilterChain.java">javax.servlet.FilterChain</a> 对应 <code>HandlerChain</code>链条。
+<ul>
+<li><a href="https://github.com/apache/tomcat/blob/main/java/org/apache/catalina/core/ApplicationFilterChain.java">ApplicationFilterChain</a> 对应为<code>Tomcat</code>中对<code>Servlet</code>规范的实现。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Interceptor
+<ul>
+<li>SpringMVC Interceptor
+<ul>
+<li><a href="https://github.com/spring-projects/spring-framework/blob/main/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerInterceptor.java">HandlerInterceptor</a>  对应 <code>IHandler</code>处理器接口。</li>
+<li><a href="https://github.com/spring-projects/spring-framework/blob/main/spring-webmvc/src/main/java/org/springframework/web/servlet/HandlerExecutionChain.java">HandlerExecutionChain</a> 对应 <code>HandlerChain</code>链条实现。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="command-命令">Command 命令<a hidden class="anchor" aria-hidden="true" href="#command-命令">#</a></h2>
+<blockquote>
+<p>creates objects that encapsulate actions and parameters.
+The command pattern encapsulates a request as an object, thereby letting us parameterize other objects with different requests, queue or log requests, and support undoable operations.</p>
+</blockquote>
+<ol>
+<li>使用对象封装行为、参数。</li>
+<li>命令模式将请求封装成对象，不同的请求对应不同对象，从而将参数内聚到某个类中。支持队列操作、日志记录、回滚「附加功能」。</li>
+<li>核心作用：为命令执行增加功能。</li>
+</ol>
+<h2 id="interpreter-解释器">Interpreter 解释器<a hidden class="anchor" aria-hidden="true" href="#interpreter-解释器">#</a></h2>
+<blockquote>
+<p>implements a specialized language.
+Interpreter pattern is used to defines a grammatical representation for a language and provides an interpreter to deal with this grammar.</p>
+</blockquote>
+<p>描述：</p>
+<ol>
+<li>实现特定语言。</li>
+<li>解释器模式用于为一种特定语言提供语法表示，提供解析语法的解释器。</li>
+<li>应用偏小众：编译器、规则引擎、正则表达式。</li>
+</ol>
+<p>实现：</p>
+<ol>
+<li>解释器主要实现语法解析。</li>
+<li>针对负责解析，遵循大拆小的基本策略。</li>
+</ol>
+<h2 id="iterator-迭代器">Iterator 迭代器<a hidden class="anchor" aria-hidden="true" href="#iterator-迭代器">#</a></h2>
+<blockquote>
+<p>accesses the elements of an object sequentially without exposing its underlying representation.</p>
+</blockquote>
+<h2 id="mediator-中介">Mediator 中介<a hidden class="anchor" aria-hidden="true" href="#mediator-中介">#</a></h2>
+<blockquote>
+<p>allows loose coupling between classes by being the only class that has detailed knowledge of their methods.
+Mediator pattern defines a separate object that encapsulates the interaction between a set of objects and the objects delegate their interaction to a mediator object instead of interacting with each other directly.</p>
+</blockquote>
+<p>描述：</p>
+<ol>
+<li>中介作为唯一知道上下游对接细节的类「对象」，从而做到解耦上下游对接。</li>
+<li>中介模式定义一个中介对象，封装对接双方交互的逻辑，对接双方不直接交互，只能通过中介操作。</li>
+</ol>
+<p>现实举例：</p>
+<ol>
+<li>飞机间互相通信，统一通过塔台调度。</li>
+<li>多端数据互相同步，统一通过<code>log</code>数据平台交互。</li>
+</ol>
+<p>优点：</p>
+<ol>
+<li>集中化管理交互逻辑，简化交互调用。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>中介类可能变为「上帝类」，复杂而庞杂。</li>
+</ol>
+<h2 id="memento">Memento<a hidden class="anchor" aria-hidden="true" href="#memento">#</a></h2>
+<blockquote>
+<p>provides the ability to restore an object to its previous state (undo).
+Captures and externalize an object&rsquo;s internal state so that it can be restored later, all without violating encapsulation.</p>
+</blockquote>
+<ul>
+<li>备忘录模式，aka快照模式「snapshot」。</li>
+<li>赋予对象回滚状态的能力。</li>
+<li>在不违背封装原则的前提下，捕获一个对象的内部状态，以便后续回滚状态使用。</li>
+</ul>
+<p>类比：</p>
+<ul>
+<li>Redis中的RDB、AOF。是典型的高频增量、低频全量快照优化实现。</li>
+<li>存储系统中的<code>wal</code>预写日志。</li>
+</ul>
+<h2 id="observer-观察者">Observer 观察者<a hidden class="anchor" aria-hidden="true" href="#observer-观察者">#</a></h2>
+<blockquote>
+<p>is a publish/subscribe pattern, which allows a number of observer objects to see an event.
+Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.</p>
+</blockquote>
+<p>描述：</p>
+<ul>
+<li>一种发布订阅模式，实现了一组观察者对象，用于监听事件变化。</li>
+<li>定义对象间的一对多关系，当前者对象状态发生变化时，后者对象组可自动收到通知。</li>
+</ul>
+<p>结构、叫法：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>被观察者</td>
+<td>Observable</td>
+<td>Subject</td>
+<td>Publisher</td>
+<td>Producer</td>
+<td>EventEmitter</td>
+<td>Dispatcher</td>
+</tr>
+<tr>
+<td>观察者</td>
+<td>Observer</td>
+<td>Observer</td>
+<td>Subscriber</td>
+<td>Consumer</td>
+<td>EventListener</td>
+<td>Listener</td>
+</tr>
+</tbody>
+</table>
+<p>目的：解耦观察者、被观察者。</p>
+<p>复杂实现：<code>Google EventBus</code>、<code>Spring event</code>。</p>
+<h2 id="state-状态">State 状态<a hidden class="anchor" aria-hidden="true" href="#state-状态">#</a></h2>
+<blockquote>
+<p>allows an object to alter its behavior when its internal state changes.</p>
+</blockquote>
+<h2 id="strategy-策略">Strategy 策略<a hidden class="anchor" aria-hidden="true" href="#strategy-策略">#</a></h2>
+<blockquote>
+<p>allows one of a family of algorithms to be selected on-the-fly at runtime.
+Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.</p>
+</blockquote>
+<p>定义：</p>
+<ul>
+<li>运行时选择具体执行的算法。</li>
+<li>定义封装一组算法，彼此可替换。策略模式允许使用侧与算法的变化互相独立。</li>
+</ul>
+<p>目的：解耦策略的定义、创建、使用。</p>
+<h2 id="template-method-模板方法">Template method 模板方法<a hidden class="anchor" aria-hidden="true" href="#template-method-模板方法">#</a></h2>
+<blockquote>
+<p>defines the skeleton of an algorithm as an abstract class, allowing its subclasses to provide concrete behavior.</p>
+</blockquote>
+<p>定义：
+通过抽象类的方式定义类骨架，通过子类实现具体算法。</p>
+<p>目的：</p>
+<ul>
+<li>骨架：复用结构。</li>
+<li>子类实现：拓展逻辑。</li>
+</ul>
+<p>示例：
+定义骨架、规范：</p>
+<ul>
+<li><a href="https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/io/InputStream.java">InputStream.read()</a></li>
+<li><a href="https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/AbstractList.java">AbstractList.addAll()</a></li>
+</ul>
+<p>拓展：</p>
+<ul>
+<li><a href="https://github.com/javaee/servlet-spec/blob/master/src/main/java/javax/servlet/http/HttpServlet.java">javax.servlet.http.HttpServlet</a>
+<ul>
+<li><code>service()</code>中定义了根据不同header执行对应方法的骨架「定义了处理请求的流程」，而例如<code>doPost</code>/<code>doGet</code>都交给实现类去实现。</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/questions/18072126/how-do-i-define-junit-test-case-without-using-test-annotation">Junit在不使用注解的方式下，使用继承TestCase的方式编码UT</a>
+<ul>
+<li>这种方式是比较老的设计，现在基本都用注解了，会比较灵活。</li>
+<li><a href="https://github.com/junit-team/junit4/blob/main/src/main/java/junit/framework/TestCase.java">TestCase</a> 中定义了<code>UT单测</code>跑起来的基本架子， <a href="https://github.com/junit-team/junit4/blob/cc7c500584fcb85eaf98c568b7441ceac6dd335c/src/main/java/junit/framework/TestCase.java#L138">runBare()</a> 定义架子，<a href="https://github.com/junit-team/junit4/blob/cc7c500584fcb85eaf98c568b7441ceac6dd335c/src/main/java/junit/framework/TestCase.java#L160">runTest()</a> 交给子类也就是具体业务来实现。</li>
+</ul>
+</li>
+</ul>
+<h2 id="visitor">Visitor<a hidden class="anchor" aria-hidden="true" href="#visitor">#</a></h2>
+<blockquote>
+<p>separates an algorithm from an object structure by moving the hierarchy of methods into one object.</p>
+</blockquote>
+<h1 id="对比">对比<a hidden class="anchor" aria-hidden="true" href="#对比">#</a></h1>
+<p>设计模式最大的区分在于设计意图、应用场景。回到本文最开始的观点：重点是<em>识别面临的问题的场景，识破问题关键</em>。</p>
+<h2 id="享元-vs-单例-vs-缓存-vs-池">享元 vs 单例 vs 缓存 vs 池<a hidden class="anchor" aria-hidden="true" href="#享元-vs-单例-vs-缓存-vs-池">#</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>设计意图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>享元</td>
+<td>复用对象「共享一个对象的同时使用权」、节省内存</td>
+</tr>
+<tr>
+<td>单例、多例</td>
+<td>限制对象个数</td>
+</tr>
+<tr>
+<td>缓存</td>
+<td>提高访问效率</td>
+</tr>
+<tr>
+<td>池</td>
+<td>重复使用「共享一个对象的非同时使用权」、节省时间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="代理-vs-桥接-vs-装饰器-vs-适配器">代理 vs 桥接 vs 装饰器 vs 适配器<a hidden class="anchor" aria-hidden="true" href="#代理-vs-桥接-vs-装饰器-vs-适配器">#</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>设计意图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代理</td>
+<td>控制访问</td>
+</tr>
+<tr>
+<td>桥接</td>
+<td>分离接口与实现，隔离变化</td>
+</tr>
+<tr>
+<td>装饰器</td>
+<td>增强原接口功能</td>
+</tr>
+<tr>
+<td>适配器</td>
+<td>事后补救，兼容新老接口</td>
+</tr>
+</tbody>
+</table>
+<h2 id="模板方法-vs-同步回调-vs-异步回调">模板方法 vs 同步回调 vs 异步回调<a hidden class="anchor" aria-hidden="true" href="#模板方法-vs-同步回调-vs-异步回调">#</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>应用场景</th>
+<th>代码实现</th>
+<th>优点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模板方法</td>
+<td>定义骨架，定制逻辑</td>
+<td>基于继承，子类重写父类方法</td>
+<td></td>
+</tr>
+<tr>
+<td>同步回调</td>
+<td>定义骨架，定制逻辑</td>
+<td>基于组合，传递回调对象</td>
+<td>灵活</td>
+</tr>
+<tr>
+<td>异步回调</td>
+<td>与观察者模式一致</td>
+<td>基于组合，传递回调对象</td>
+<td>灵活</td>
+</tr>
+</tbody>
+</table>
+<h2 id="策略-vs-工厂-vs-命令">策略 vs 工厂 vs 命令<a hidden class="anchor" aria-hidden="true" href="#策略-vs-工厂-vs-命令">#</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>应用场景、设计意图</th>
+<th>策略 vs 工厂</th>
+<th>策略 vs 命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>策略</td>
+<td>解决根据运行时状态从一组策略中选择不同策略的问题</td>
+<td>包含策略的定义、创建、使用。结构与工厂类似</td>
+<td>不同策略可互相替换，结果一致</td>
+</tr>
+<tr>
+<td>工厂</td>
+<td>封装对象创建过程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>命令</td>
+<td>控制命令的执行：异步、延迟、队列、回滚、日志</td>
+<td>将函数封装成对象。</td>
+<td>不同命令不可互相替换，结果不一致</td>
+</tr>
+</tbody>
+</table>
+<h2 id="中介-vs-观察者">中介 vs 观察者<a hidden class="anchor" aria-hidden="true" href="#中介-vs-观察者">#</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>应用场景</th>
+<th>区别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中介</td>
+<td>交互复杂，解耦对象间的交互</td>
+<td>交互关系复杂，上下游流向可互相转换，如a-&gt;b 转换为 b-&gt;a</td>
+</tr>
+<tr>
+<td>观察者</td>
+<td>明确的一对多关系下，解耦观察者、被观察者</td>
+<td>观察者被观察者关系明确，上下游流向固定不可变</td>
+</tr>
+</tbody>
+</table>
+<h1 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Software_design_pattern">wiki/Software_design_pattern</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Design_Patterns">wiki/Design_Patterns</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Creational_pattern">wiki/Creational_pattern</a></li>
+<li><a href="https://www.tutorialspoint.com/design_pattern">tutorialspoint.com/design_pattern</a></li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li>
+      <li><a href="https://redolog.github.io/tags/design-pattern/">Design Pattern</a></li>
+      <li><a href="https://redolog.github.io/tags/%E8%AE%BE%E8%AE%A1/">设计</a></li>
+      <li><a href="https://redolog.github.io/tags/%E6%A8%A1%E5%BC%8F/">模式</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/storage/mysql/performance-optimization/cheatsheet/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>MySQL性能优化cheatsheet</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/design/principle/oop/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>OOP编程原则一览</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 设计模式一览 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%b8%80%e8%a7%88&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f&amp;hashtags=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%2cDesignPattern%2c%e8%ae%be%e8%ae%a1%2c%e6%a8%a1%e5%bc%8f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 设计模式一览 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f&amp;title=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%b8%80%e8%a7%88&amp;summary=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%b8%80%e8%a7%88&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 设计模式一览 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f&title=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%b8%80%e8%a7%88">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 设计模式一览 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 设计模式一览 on whatsapp"
+        href="https://api.whatsapp.com/send?text=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%b8%80%e8%a7%88%20-%20https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 设计模式一览 on telegram"
+        href="https://telegram.me/share/url?text=%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%b8%80%e8%a7%88&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fpattern%2findex%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

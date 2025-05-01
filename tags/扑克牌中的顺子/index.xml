@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>扑克牌中的顺子 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E6%89%91%E5%85%8B%E7%89%8C%E4%B8%AD%E7%9A%84%E9%A1%BA%E5%AD%90/</link>
+    <description>Recent content in 扑克牌中的顺子 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 17 Jun 2022 11:30:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E6%89%91%E5%85%8B%E7%89%8C%E4%B8%AD%E7%9A%84%E9%A1%BA%E5%AD%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 剑指 Offer 61. 扑克牌中的顺子 简单题朴素题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/playing-card-is-straight/</link>
+      <pubDate>Fri, 17 Jun 2022 11:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/playing-card-is-straight/</guid>
+      <description>&lt;p&gt;LeetCode 剑指 Offer 61. 扑克牌中的顺子 简单题朴素解法，学习一下K神的思路。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

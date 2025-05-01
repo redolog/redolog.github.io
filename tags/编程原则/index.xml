@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>编程原则 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E7%BC%96%E7%A8%8B%E5%8E%9F%E5%88%99/</link>
+    <description>Recent content in 编程原则 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 20 Mar 2022 18:18:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E7%BC%96%E7%A8%8B%E5%8E%9F%E5%88%99/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OOP编程原则一览</title>
+      <link>https://redolog.github.io/posts/rd/design/principle/oop/</link>
+      <pubDate>Sun, 20 Mar 2022 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/principle/oop/</guid>
+      <description>&lt;p&gt;软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对&lt;code&gt;OOD&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>滑动窗口 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/</link>
+    <description>Recent content in 滑动窗口 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 22 Nov 2023 19:06:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>算法案例：计算酒店月租价</title>
+      <link>https://redolog.github.io/posts/rd/algo/case/calculate-hotel-month-price/</link>
+      <pubDate>Wed, 22 Nov 2023 19:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/case/calculate-hotel-month-price/</guid>
+      <description>&lt;p&gt;本文记录做酒店业务系统开发时遇到的算法实例：计算酒店产品月租价。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

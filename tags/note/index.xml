@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>note on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/note/</link>
+    <description>Recent content in note on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 24 Jun 2019 12:50:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/go/note/</link>
+      <pubDate>Mon, 24 Jun 2019 12:50:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/go/note/</guid>
+      <description>&lt;p&gt;Golang笔记。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AWK学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/awk/note/</link>
+      <pubDate>Sun, 29 Jul 2018 12:50:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/awk/note/</guid>
+      <description>AWK笔记。 AWK是Linux系统下著名的字符串处理工具。取名逻辑：三位创始人 Alfred Aho，Peter Weinberger, 和 Brian Kernighan 的 Family Name 的首字符。 Ref Runoob Linux awk 命令 CoolShell AWK 简</description>
+    </item>
+    
+    <item>
+      <title>JavaScript学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/js/note/</link>
+      <pubDate>Sun, 29 Jul 2018 12:50:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/js/note/</guid>
+      <description>JavaScript学习手记</description>
+    </item>
+    
+    <item>
+      <title>Python学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/python/note/</link>
+      <pubDate>Thu, 19 Jul 2018 10:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/python/note/</guid>
+      <description>Python学习手记</description>
+    </item>
+    
+  </channel>
+</rss>

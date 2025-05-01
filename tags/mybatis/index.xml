@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MyBatis on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/mybatis/</link>
+    <description>Recent content in MyBatis on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 01 Mar 2024 20:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/mybatis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>排查mybatis ognl解析参数值并发设置字段访问性报错问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</link>
+      <pubDate>Fri, 01 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</guid>
+      <description>&lt;p&gt;年后负责一个比较老的服务，报警不少，今天排查的这个问题也只有在老版本&lt;code&gt;MyBatis&lt;/code&gt;下才有机会复现，值此宝贵的线上问题机会，记录一番。&lt;/p&gt;
+&lt;p&gt;低版本&lt;code&gt;MyBatis&lt;/code&gt;中，在高并发情况下，有概率遇到解析&lt;code&gt;private&lt;/code&gt;内部类集合解析抛错的情况。&lt;/p&gt;
+&lt;p&gt;我通过分析异常栈+搜索+分析源码的方式解决了此问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>troubleshooting mybatis-plus parsing whitespaces in SQL</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis-plus/whitespaces_in_sql_err/</link>
+      <pubDate>Mon, 07 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis-plus/whitespaces_in_sql_err/</guid>
+      <description>&lt;p&gt;Since 3.4.1 (less or more), mybatis-plus bring in a bug: when parsing extra whitespaces in SQL, it throws &lt;code&gt;net.sf.jsqlparser.parser.ParseException&lt;/code&gt;. I solved the problem by finding relevant discussions and resources to gain insights into the issue.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

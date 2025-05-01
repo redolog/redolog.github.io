@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Sentinel on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/sentinel/</link>
+    <description>Recent content in Sentinel on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 23 May 2022 11:44:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/sentinel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>sentinel value in programming</title>
+      <link>https://redolog.github.io/posts/rd/faq/sentinel-value/</link>
+      <pubDate>Mon, 23 May 2022 11:44:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/faq/sentinel-value/</guid>
+      <description>&lt;p&gt;解读编程技巧中的&lt;code&gt;sentinel value&lt;/code&gt;、哨兵。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

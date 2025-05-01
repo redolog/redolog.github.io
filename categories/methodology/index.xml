@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>methodology on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/categories/methodology/</link>
+    <description>Recent content in methodology on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 15 Nov 2024 13:49:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/categories/methodology/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我的管理工作实践</title>
+      <link>https://redolog.github.io/posts/methodology/work/how-to-become-manager/</link>
+      <pubDate>Fri, 15 Nov 2024 13:49:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/methodology/work/how-to-become-manager/</guid>
+      <description>&lt;p&gt;今年进入新的方向后，有幸负责了一部分团队的管理，借以本文记录我的一些认知与实践。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迅速熟悉一摊子事：顺藤摸瓜</title>
+      <link>https://redolog.github.io/posts/methodology/work/how-to-get-familiar-with-new-thing/</link>
+      <pubDate>Sun, 31 Mar 2024 20:49:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/methodology/work/how-to-get-familiar-with-new-thing/</guid>
+      <description>&lt;p&gt;如何迅速熟悉一摊子新的事？我目前总结、实践下来就四个字：顺藤摸瓜。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

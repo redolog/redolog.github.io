@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MaxQueue on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/maxqueue/</link>
+    <description>Recent content in MaxQueue on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 27 Jun 2022 11:17:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/maxqueue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 剑指 Offer 59 - II. 队列的最大值 单调队列题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/max-queue/</link>
+      <pubDate>Mon, 27 Jun 2022 11:17:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/max-queue/</guid>
+      <description>&lt;p&gt;LeetCode 剑指 Offer 59 - II. 队列的最大值 单调队列题解，熟悉单调队列，对比滑动窗口最大值题目。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

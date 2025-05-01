@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>二分变体 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E4%BA%8C%E5%88%86%E5%8F%98%E4%BD%93/</link>
+    <description>Recent content in 二分变体 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 30 Jul 2022 00:01:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E4%BA%8C%E5%88%86%E5%8F%98%E4%BD%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解决「生成单调序列」类型题目</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/b-search-monotonic-sequence/</link>
+      <pubDate>Sat, 30 Jul 2022 00:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/b-search-monotonic-sequence/</guid>
+      <description>&lt;p&gt;LeetCode 一类题型解析，二分搜索变体：单调序列，单调序列是指非严格递增、非严格递减。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跳表结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</link>
+      <pubDate>Tue, 28 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</guid>
+      <description>&lt;p&gt;从零实现一个跳表。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 153. 寻找旋转排序数组中的最小值 二分题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-minimum-in-rotated-sorted-array/</link>
+      <pubDate>Sun, 19 Jun 2022 16:48:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-minimum-in-rotated-sorted-array/</guid>
+      <description>&lt;p&gt;LeetCode 153. 寻找旋转排序数组中的最小值 二分题解，重新认识二分。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

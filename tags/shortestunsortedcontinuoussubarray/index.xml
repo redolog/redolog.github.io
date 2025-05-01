@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>shortestUnsortedContinuousSubarray on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/shortestunsortedcontinuoussubarray/</link>
+    <description>Recent content in shortestUnsortedContinuousSubarray on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 20 Aug 2023 21:43:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/shortestunsortedcontinuoussubarray/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LC 581. Shortest Unsorted Continuous Subarray</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/shortest-unsorted-continuous-subarray/</link>
+      <pubDate>Sun, 20 Aug 2023 21:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/shortest-unsorted-continuous-subarray/</guid>
+      <description>&lt;p&gt;LC 581. Shortest Unsorted Continuous Subarray 这道题目比较好地融合了一些常用解题技巧：&lt;code&gt;排序&lt;/code&gt;、&lt;code&gt;双指针&lt;/code&gt;、&lt;code&gt;单调序列&lt;/code&gt;（&lt;code&gt;单调栈&lt;/code&gt;），同时题目难度不是很大，适合细细品读。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

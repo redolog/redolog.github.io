@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>聊聊月租酒店项目中的交易系统设计 | 宋惠龙的博客</title>
+<meta name="keywords" content="系统设计, System Design, 交易, 支付, 签约, 数据一致性, 分布式事务" />
+<meta name="description" content="通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/rd/design/case/hotel-project/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.381b1f6e3e5f48c6ea0614a03942519ee25190a2244a20e1a46cffb0b9f4499e.css" integrity="sha256-OBsfbj5fSMbqBhSgOUJRnuJRkKIkSiDhpGz/sLn0SZ4=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="聊聊月租酒店项目中的交易系统设计" />
+<meta property="og:description" content="通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/rd/design/case/hotel-project/" />
+<meta property="og:image" content="https://redolog.github.io/cover.jpg" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-10-06T10:25:25&#43;08:00" />
+<meta property="article:modified_time" content="2024-10-06T10:25:25&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://redolog.github.io/cover.jpg" />
+<meta name="twitter:title" content="聊聊月租酒店项目中的交易系统设计"/>
+<meta name="twitter:description" content="通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "聊聊月租酒店项目中的交易系统设计",
+      "item": "https://redolog.github.io/posts/rd/design/case/hotel-project/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "聊聊月租酒店项目中的交易系统设计",
+  "name": "聊聊月租酒店项目中的交易系统设计",
+  "description": "通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。",
+  "keywords": [
+    "系统设计", "System Design", "交易", "支付", "签约", "数据一致性", "分布式事务"
+  ],
+  "articleBody": "本文我会尝试聊一下去年我主R做月租酒店项目时的一些核心设计要点。\n酒店项目是我来贝壳后主R的第一个比较完整的从零到一的项目，涵盖了对外交互、房源、签约、交易、结算等诸多领域，项目中有比较多有意思且有挑战的设计，对于当时的我来说，能够全链路承接整个项目也是一大挑战。\n本文聚焦的重点是其中的签约、支付、外部下单模块，我统称这些模块为交易模块。\n背景 先简单给读者介绍一下项目背景。\n贝壳租赁有多种业务模式，其中公寓是B2B2C的三方商家模式，比如自如、自营公寓（海盐）均是公寓模式下的大KA商家。商家通过签约入驻与贝壳达成合作协议，之后便可以使用公寓完善的系统进行管房、管钱、流量商业化等能力。平台对城市、商家也有完善的运营管理能力。\n而月租酒店是对公寓模式的一种房源供给以及交易模式的补充。\n前期运营同学使用公寓系统已经跑通了业务模式：录房、上架、签约去化，验证了模式的有效性。但是使用原系统录房只有两种途径：\n通过贝壳管房系统手动录 通过贝壳的OpenApi调接口录 对于酒店方来说，并没有动力针对贝壳这类外部渠道开发对接OpenApi，因此想要提升录房效率，需要贝壳侧进行适配对接。\n像抖音、快手这类渠道，与贝壳类似，都是针对酒店侧提供的接口进行适配对接。\n让管家联系酒店下单，效率也很低。因此除了对接房源，订单对接也很有必要。\n除此之外，我们也建设了结算对账线上化能力，帮助平台与酒店商家高效分账。\n由于我们是直接对接了外部的房源接口，同时订单也是直接调外部接口创建的，从系统交互上来看，我们跟外部做了直连，因此月租酒店项目，也叫做直连酒店。\n房源直连，提升录房、发房效率\n订单直连，提升下单效率\n月租直连酒店整体的运作过程： 系统设计 了解了大致背景，下面看下我们是怎么设计这块系统的。\n整体设计 首先简单看下整体的设计。\n还是看一下全景架构图： 相信读者看完背景介绍后，能够理解我们要做什么。简单来说我们做了三块建设：\n针对酒店供应商的接口，我们做了适配对接，其中包括房源、订单的对接； 针对租客侧的签约、下单、支付等签中流程，我们建设了完善的交易能力； 针对平台与商家的结算，我们也做了系统功能； 其中有些链路沿用了公寓、C端已有的能力，其中商家与贝壳的签约，则沿用了公寓的CRM能力。\n在系统的层面看，我们新增了三个服务：\nhotel-adator：负责适配外部接口，屏蔽不同供应商的差异； hotel-house：负责维护酒店房源模型，对外接入adaptor的酒店、房源，对内同步数据到公寓的房源链路； hotel-zuwu：负责维护酒店交易模型，流转租约、账单等核心状态机，对接内部支付、对账中台； 经过评估，我们的结算业务并没有太复杂，因此我们将结算跟签约交易统一放到了租务项目中，租务是租赁业务中负责租中事务的领域。 到这里，读者能对这块业务、系统有一个整体感知即可。\n交易模块设计 到这部分，其实才是我想写这篇文章的重点。\n接下来我们来看看，交易整个大的模块内，到底有哪些点是需要我们仔细考虑的。\n数据模型设计 设计模型的前提是，要对业务流程、业务动作、业务角色有掌控力。经过前期调研、充分沟通、流程梳理，我们明确了月租酒店的业务流程与迭代的规划。\n对于外部的订单交互来说，我们只需要做这几件事： 在内部的订单模型中，我们需要关联外部订单。内部的订单主模型，我们叫做租约。\n对于内部的签约、交易、结算以及营销，我们需要实现以下核心能力： 根据以上对业务流程、业务模式、核心动作的讨论、推断，我们最终的模型设计如下： 读到这里，读者对数据模型有大概的认知即可。\n分布式一致性设计 上面的模型只是为了方便读者理解业务跟系统，这部分的分布式一致性设计，其实才是真正的重难点。\n在月租直连酒店项目中，交易与结算模块都需要考虑接口的事务一致性、数据的完整性，由于交易涉及场景更多，本文我们就以交易为例，结算模块中的实践与考量实际大同小异。\n简单来说，我们为了保证一致性，引入了分布式事务的方案。\n行业内针对这类问题，通用实践的解法一般是可靠消息、最大努力通知、TCC、Seata框架。\n在我们的项目中，根据不同场景的诉求，我们主要引入了三类方案，以下是按照一致性保障强度从高到低的排序：\nSeata 的 AT 模式 可靠消息最终一致性 RocketMQ事务消息 本地消息表 最大努力通知 MQ普通消息（可能会丢消息）+接口补偿 我们从方案+场景的维度逐个分析。\n创建租约（Seata AT模式） 商机管家接到租客的咨询并且拿到租客的下单意向后，会在我们的B端系统创建租约，之后租客便可以签约、支付。\n创建租约的时序图如下： 可以看到这一步逻辑很多，同时交互的服务也很多。图中红框标出的是分布式事务的范围。\n设计1：\n首先我们在做协议的校验之前就调用了外部酒店的验单接口，如果这一步没有库存或者被其他规则拦住，则流程终止，过程中没有数据损失。\n设计2：\n其次协议的创建、盖章等动作并没有放入事务中，有这些考虑：\n首先协议中台的这些接口除了数据写入，同时还有文件操作，Seata的AT模式只支持MySQL的数据写入； 其次协议中台的这一系列接口，支持重入+数据无需回滚，如果前序某个接口调用失败了，我们会提示用户明确的文案，提示用户可以重试，这样数据、流程整体也是完整自洽的； 最后一点是因为，协议中台提供的SLA并不保障多个接口的连续调用性能，如果接入到分布式事务中，可能会导致事务耗时过长； 结合以上几点，我们评估在B端的场景下，协议交互的这几个调用可以不放到事务内。\n设计3：\n对于酒店B端租约、账单等数据的创建以及锁券，则需要使用分布式事务保障调用的一致性。\n我们看下主流分布式事务协议的对比： 结合我们这里的业务场景，要求尽可能保障事务的一致性，要求具备隔离性，同时事务参与的几方均为关系型数据库操作。Seata AT模式对业务代码基本无侵入性，同时公司内有基建团队维护，因此这里我们倾向于使用AT模式来保障一致性。\n在创建租约的场景里，Seata服务端就是TC（协调者），我们酒店的B端租务服务就是TM（管理者），而营销的服务就是RM（资源管理器）。一次分布式事务调用的过程大致如下：\nTM（酒店B端租务服务）调用TC创建分布式事务的记录，获得生成的XID； TM（酒店B端租务服务）通过RPC框架调用其他服务接口，同时会携带上一步生成的XID； RM（营销服务）通过其接收到的XID，将其所管理的资源且被该调用所使用到的资源注册为一个事务分支(Branch Transaction)； 当该请求的调用链全部结束时，TM（酒店B端租务服务）根据本次调用是否有失败的情况，如果所有调用都成功，则决议Commit，如果有超时或者失败，则决议Rollback； TM将结果同步给TC，TC根据结果协调各RM，进行事务二阶段的提交或回滚； 设计4：\n创建租约这一步，由于调用多耗时较长，我们针对前端的交互做了体验上的优化，点击提交按钮后，系统会弹窗提示用户目前进行到了哪一步来缓解用户体验上的焦虑（类似携程上买票的过程）。\n对比C端电商更通用的下单场景，其中的设计要点跟倾向性会跟B端很不一样，比如C端需要更多性能、可用性方面的设计。\n月租酒店项目中，除了这个场景，在以下场景也使用了AT模式保障了事务的实时一致性：\n签约完成：创建支付流水+支付单，其中创建流水、更新账单为本地数据库操作，创建支付单则需要调用支付中台； 外部下单成功：更新租约状态、同步核销券； 签约、支付超时关单（最大努力通知） 租约在创建后以及租客在支付后，服务端均需要通过RocketMQ的延迟消息来完成超时关闭的功能。我们的实现方案中，在对应的节点，会发送一条RocketMQ延迟消息，在消费逻辑中判断是否满足超时的条件，从而触发关闭逻辑。\n这里发送消息的时候，我们一般不会将发消息与本地事务放在一起，因此，消息发送无法保证事务的原子性，也就是说，消息可能会丢。\n这里我们评估了场景对消息的丢失容忍度，是可以接受丢消息的，这就是最大努力通知的一种应用场景。\n当然，为了提高业务的可用性、数据完整性，我们会在用户查询租约、账单的时候，做一个被动超时关单的操作，算是对最大努力通知的一种补偿。\n支付成功（本地消息表） 租客在支付完成之后，就进入了外部下单的流程，这一步我们主要是更新本地的账单状态，更新流水实付信息，同时触发外部下单的调用。\n支付成功的时序图如下： 这里我们主要有两个设计：\n设计1：\n首先我们设计了一个重试任务的表，放在酒店租务服务中，能保证只要本地事务成功，重试的任务就可以持久化下来。这解决了使用普通消息发送失败然后丢消息的问题。\n重试任务目前我们设计每分钟都会触发。\n这里为什么要考虑做这种设计呢？原因是比如如家提供的接口，有可能响应非常慢。在外部提供的SLA不够高的情况下，使用定时任务的设计能够提高流程整体的可靠性。同时与支付成功的节点做了一定的解耦。\n设计2：\n其次重试的任务中会记录状态与重试次数，重试次数消耗完之前，只要没有进入子流程，会一直重试。\n至于重试次数的配置，会根据不同的供应商提供的SLA进行调整。\n下单成功或者失败的子流程一致性则在子流程内部收敛。\n关闭租约（RocketMQ事务消息） 签约超时、支付超时、外部下单失败修需要关闭租约。\n而在关闭租约时除了作废租约、账单，还需要同步解锁券，券的操作就涉及到了营销中台的接口调用。\n设计考虑：\n这里我们同样可以考虑Seata的AT模式，但是在这个场景下，其实不需要强一致以及隔离性。\n由于券已经被锁定，并且传入了我们的业务标识（租约的唯一编码），因此资源其实已经在业务数据层面做了隔离。\n这个场景下，使用RocketMQ事务消息是一种更轻的方式，同时也能保障最终一致性。作为柔性事务的实现方式之一，事务消息满足BASE理论，即基本可用+最终一致。\n总结 本文主要给读者介绍了我去年主R月租直连酒店项目的整体设计以及交易核心涉及的一些分布式一致性设计要点。\n在B端交易的场景下，我们主要用到了三类方案来保障分布式环境下的数据一致性，即：\nSeata 的 AT 模式 可靠消息最终一致性 RocketMQ事务消息 本地消息表 最大努力通知 MQ普通消息（可能会丢消息）+接口补偿 在针对不同场景考虑同样的分布式一致性问题的时候，最后的方案可能不同，但是设计的思路其实是一致的，即：\n评估场景的侧重点、倾向性； 评估场景对一致性、隔离性、数据实时性等指标的容忍度； 评估方案与场景诉求的契合程度； 评估团队能力、基建现状； 系统设计出了需要梳理业务流程、明确业务规则，还需要做出取舍。除了一致性，在做系统设计的时候，也需要兼顾性能、可用性。同时技术方案需要做好兜底设计。\n最后，如果读者有疑问或者建议，欢迎评论区指出。\n以上。\n",
+  "wordCount" : "4307",
+  "inLanguage": "en",
+  "image":"https://redolog.github.io/cover.jpg","datePublished": "2024-10-06T10:25:25+08:00",
+  "dateModified": "2024-10-06T10:25:25+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/rd/design/case/hotel-project/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9EJ8N0FFCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9EJ8N0FFCW');
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      聊聊月租酒店项目中的交易系统设计
+    </h1>
+    <div class="post-description">
+      通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。
+    </div>
+    <div class="post-meta"><span title='2024-10-06 10:25:25 +0800 CST'>October 6, 2024</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="lazy" srcset="https://redolog.github.io/posts/rd/design/case/hotel-project/cover_hu39ec4182daceec56f8ea96efef175761_89720_360x0_resize_q75_box.jpg 360w ,https://redolog.github.io/posts/rd/design/case/hotel-project/cover_hu39ec4182daceec56f8ea96efef175761_89720_480x0_resize_q75_box.jpg 480w ,https://redolog.github.io/posts/rd/design/case/hotel-project/cover_hu39ec4182daceec56f8ea96efef175761_89720_720x0_resize_q75_box.jpg 720w ,https://redolog.github.io/posts/rd/design/case/hotel-project/cover_hu39ec4182daceec56f8ea96efef175761_89720_1080x0_resize_q75_box.jpg 1080w ,https://redolog.github.io/posts/rd/design/case/hotel-project/cover_hu39ec4182daceec56f8ea96efef175761_89720_1500x0_resize_q75_box.jpg 1500w ,https://redolog.github.io/posts/rd/design/case/hotel-project/cover.jpg 2862w" 
+            sizes="(min-width: 768px) 720px, 100vw" src="https://redolog.github.io/posts/rd/design/case/hotel-project/cover.jpg" alt="月租酒店核心模块：房源接入、签约、支付、对账、结算、券抵扣" 
+            width="2862" height="664">
+        <p>月租酒店核心模块：房源接入、签约、支付、对账、结算、券抵扣</p>
+</figure><aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1" aria-label="系统设计">系统设计</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%95%b4%e4%bd%93%e8%ae%be%e8%ae%a1" aria-label="整体设计">整体设计</a></li>
+                    <li>
+                        <a href="#%e4%ba%a4%e6%98%93%e6%a8%a1%e5%9d%97%e8%ae%be%e8%ae%a1" aria-label="交易模块设计">交易模块设计</a></li>
+                    <li>
+                        <a href="#%e6%95%b0%e6%8d%ae%e6%a8%a1%e5%9e%8b%e8%ae%be%e8%ae%a1" aria-label="数据模型设计">数据模型设计</a></li>
+                    <li>
+                        <a href="#%e5%88%86%e5%b8%83%e5%bc%8f%e4%b8%80%e8%87%b4%e6%80%a7%e8%ae%be%e8%ae%a1" aria-label="分布式一致性设计">分布式一致性设计</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%88%9b%e5%bb%ba%e7%a7%9f%e7%ba%a6seata-at%e6%a8%a1%e5%bc%8f" aria-label="创建租约（Seata AT模式）">创建租约（Seata AT模式）</a></li>
+                    <li>
+                        <a href="#%e7%ad%be%e7%ba%a6%e6%94%af%e4%bb%98%e8%b6%85%e6%97%b6%e5%85%b3%e5%8d%95%e6%9c%80%e5%a4%a7%e5%8a%aa%e5%8a%9b%e9%80%9a%e7%9f%a5" aria-label="签约、支付超时关单（最大努力通知）">签约、支付超时关单（最大努力通知）</a></li>
+                    <li>
+                        <a href="#%e6%94%af%e4%bb%98%e6%88%90%e5%8a%9f%e6%9c%ac%e5%9c%b0%e6%b6%88%e6%81%af%e8%a1%a8" aria-label="支付成功（本地消息表）">支付成功（本地消息表）</a></li>
+                    <li>
+                        <a href="#%e5%85%b3%e9%97%ad%e7%a7%9f%e7%ba%a6rocketmq%e4%ba%8b%e5%8a%a1%e6%b6%88%e6%81%af" aria-label="关闭租约（RocketMQ事务消息）">关闭租约（RocketMQ事务消息）</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%80%bb%e7%bb%93" aria-label="总结">总结</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>本文我会尝试聊一下去年我主R做月租酒店项目时的一些核心设计要点。</p>
+<p>酒店项目是我来贝壳后主R的第一个比较完整的从零到一的项目，涵盖了对外交互、房源、签约、交易、结算等诸多领域，项目中有比较多有意思且有挑战的设计，对于当时的我来说，能够全链路承接整个项目也是一大挑战。</p>
+<p><strong>本文聚焦的重点是其中的签约、支付、外部下单模块，我统称这些模块为交易模块。</strong></p>
+<h1 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h1>
+<p>先简单给读者介绍一下项目背景。</p>
+<p>贝壳租赁有多种业务模式，其中公寓是B2B2C的三方商家模式，比如自如、自营公寓（海盐）均是公寓模式下的大KA商家。商家通过签约入驻与贝壳达成合作协议，之后便可以使用公寓完善的系统进行管房、管钱、流量商业化等能力。平台对城市、商家也有完善的运营管理能力。</p>
+<p>而月租酒店是对公寓模式的一种房源供给以及交易模式的补充。</p>
+<p>前期运营同学使用公寓系统已经跑通了业务模式：录房、上架、签约去化，验证了模式的有效性。但是使用原系统录房只有两种途径：</p>
+<ol>
+<li>通过贝壳管房系统手动录</li>
+<li>通过贝壳的<code>OpenApi</code>调接口录</li>
+</ol>
+<p>对于酒店方来说，并没有动力针对贝壳这类外部渠道开发对接<code>OpenApi</code>，<strong>因此想要提升录房效率，需要贝壳侧进行适配对接</strong>。</p>
+<!-- 即封面图中的`hotel-adaptor`服务所做的事。 -->
+<blockquote>
+<p>像抖音、快手这类渠道，与贝壳类似，都是针对酒店侧提供的接口进行适配对接。</p>
+</blockquote>
+<p>让管家联系酒店下单，效率也很低。<strong>因此除了对接房源，订单对接也很有必要。</strong></p>
+<p>除此之外，我们也建设了结算对账线上化能力，帮助平台与酒店商家高效分账。</p>
+<p>由于我们是直接对接了外部的房源接口，同时订单也是直接调外部接口创建的，从系统交互上来看，我们跟外部做了直连，因此月租酒店项目，也叫做直连酒店。</p>
+<blockquote>
+<p>房源直连，提升录房、发房效率</p>
+<p>订单直连，提升下单效率</p>
+</blockquote>
+<p>月租直连酒店整体的运作过程：
+<img loading="lazy" src="hotel_operate_chain.jpg" alt=""  />
+</p>
+<h1 id="系统设计">系统设计<a hidden class="anchor" aria-hidden="true" href="#系统设计">#</a></h1>
+<p>了解了大致背景，下面看下我们是怎么设计这块系统的。</p>
+<h2 id="整体设计">整体设计<a hidden class="anchor" aria-hidden="true" href="#整体设计">#</a></h2>
+<p>首先简单看下整体的设计。</p>
+<p>还是看一下全景架构图：
+<img loading="lazy" src="hotel_arch.jpg" alt=""  />
+</p>
+<p>相信读者看完背景介绍后，能够理解我们要做什么。简单来说我们做了三块建设：</p>
+<ol>
+<li>针对酒店供应商的接口，我们做了适配对接，其中包括房源、订单的对接；</li>
+<li>针对租客侧的签约、下单、支付等签中流程，我们建设了完善的交易能力；</li>
+<li>针对平台与商家的结算，我们也做了系统功能；</li>
+</ol>
+<p>其中有些链路沿用了公寓、C端已有的能力，其中商家与贝壳的签约，则沿用了公寓的CRM能力。</p>
+<p>在系统的层面看，我们新增了三个服务：</p>
+<ol>
+<li><code>hotel-adator</code>：负责适配外部接口，屏蔽不同供应商的差异；</li>
+<li><code>hotel-house</code>：负责维护酒店房源模型，对外接入adaptor的酒店、房源，对内同步数据到公寓的房源链路；</li>
+<li><code>hotel-zuwu</code>：负责维护酒店交易模型，流转租约、账单等核心状态机，对接内部支付、对账中台；
+经过评估，我们的结算业务并没有太复杂，因此我们将结算跟签约交易统一放到了租务项目中，租务是租赁业务中负责租中事务的领域。</li>
+</ol>
+<p>到这里，读者能对这块业务、系统有一个整体感知即可。</p>
+<!-- > 由于本文聚焦于交易的设计，因此对于房源、结算部分的细节不做过多介绍。 -->
+<h2 id="交易模块设计">交易模块设计<a hidden class="anchor" aria-hidden="true" href="#交易模块设计">#</a></h2>
+<!-- > 🤣 前面好像写了太多废话了 -->
+<p>到这部分，其实才是我想写这篇文章的重点。</p>
+<p>接下来我们来看看，交易整个大的模块内，到底有哪些点是需要我们仔细考虑的。</p>
+<h2 id="数据模型设计">数据模型设计<a hidden class="anchor" aria-hidden="true" href="#数据模型设计">#</a></h2>
+<!-- 交易整个大的模块，由租约这个概念统一管理。当创建租约、流转租约状态机的时候，统一协调管理签约交易营销等子业务。 -->
+<p>设计模型的前提是，要对业务流程、业务动作、业务角色有掌控力。经过前期调研、充分沟通、流程梳理，我们明确了月租酒店的业务流程与迭代的规划。</p>
+<p>对于外部的订单交互来说，我们只需要做这几件事：
+<img loading="lazy" src="adaptor_order_api.jpg" alt=""  />
+</p>
+<p>在内部的订单模型中，我们需要关联外部订单。内部的订单主模型，我们叫做租约。</p>
+<p>对于内部的签约、交易、结算以及营销，我们需要实现以下核心能力：
+<img loading="lazy" src="hotel_zuwu_mod_function.jpg" alt=""  />
+</p>
+<p>根据以上对业务流程、业务模式、核心动作的讨论、推断，我们最终的模型设计如下：
+<img loading="lazy" src="hotel_zuwu_model.jpg" alt=""  />
+</p>
+<p>读到这里，读者对数据模型有大概的认知即可。</p>
+<h2 id="分布式一致性设计">分布式一致性设计<a hidden class="anchor" aria-hidden="true" href="#分布式一致性设计">#</a></h2>
+<p>上面的模型只是为了方便读者理解业务跟系统，<strong>这部分的分布式一致性设计，其实才是真正的重难点</strong>。</p>
+<p>在月租直连酒店项目中，交易与结算模块都需要考虑接口的事务一致性、数据的完整性，由于交易涉及场景更多，本文我们就以交易为例，结算模块中的实践与考量实际大同小异。</p>
+<p>简单来说，我们为了保证一致性，引入了分布式事务的方案。</p>
+<p>行业内针对这类问题，通用实践的解法一般是可靠消息、最大努力通知、TCC、Seata框架。</p>
+<p>在我们的项目中，根据不同场景的诉求，我们主要引入了三类方案，以下是按照一致性保障强度从高到低的排序：</p>
+<ol>
+<li><code>Seata</code> 的 <code>AT</code> 模式</li>
+<li>可靠消息最终一致性
+<ol>
+<li><code>RocketMQ</code>事务消息</li>
+<li>本地消息表</li>
+</ol>
+</li>
+<li>最大努力通知
+<ol>
+<li>MQ普通消息（可能会丢消息）+接口补偿</li>
+</ol>
+</li>
+</ol>
+<!-- 4. 数据对账+人工介入 -->
+<p>我们从方案+场景的维度逐个分析。</p>
+<h3 id="创建租约seata-at模式">创建租约（Seata AT模式）<a hidden class="anchor" aria-hidden="true" href="#创建租约seata-at模式">#</a></h3>
+<p>商机管家接到租客的咨询并且拿到租客的下单意向后，会在我们的B端系统创建租约，之后租客便可以签约、支付。</p>
+<p>创建租约的时序图如下：
+<img loading="lazy" src="seq_create_order.jpg" alt=""  />
+</p>
+<p>可以看到这一步逻辑很多，同时交互的服务也很多。图中红框标出的是分布式事务的范围。</p>
+<blockquote>
+<p>设计1：</p>
+</blockquote>
+<p>首先我们在做协议的校验之前就调用了外部酒店的验单接口，如果这一步没有库存或者被其他规则拦住，则流程终止，过程中没有数据损失。</p>
+<blockquote>
+<p>设计2：</p>
+</blockquote>
+<p>其次协议的创建、盖章等动作并没有放入事务中，有这些考虑：</p>
+<ul>
+<li>首先协议中台的这些接口除了数据写入，同时还有文件操作，Seata的AT模式只支持MySQL的数据写入；</li>
+<li>其次协议中台的这一系列接口，支持重入+数据无需回滚，如果前序某个接口调用失败了，我们会提示用户明确的文案，提示用户可以重试，这样数据、流程整体也是完整自洽的；</li>
+<li>最后一点是因为，协议中台提供的<code>SLA</code>并不保障多个接口的连续调用性能，如果接入到分布式事务中，可能会导致事务耗时过长；</li>
+</ul>
+<p>结合以上几点，我们评估在B端的场景下，协议交互的这几个调用可以不放到事务内。</p>
+<blockquote>
+<p>设计3：</p>
+</blockquote>
+<p>对于酒店B端租约、账单等数据的创建以及锁券，则需要使用分布式事务保障调用的一致性。</p>
+<p>我们看下主流分布式事务协议的对比：
+<img loading="lazy" src="distributed_trx_versus.png" alt=""  />
+</p>
+<p>结合我们这里的业务场景，<strong>要求尽可能保障事务的一致性，要求具备隔离性，同时事务参与的几方均为关系型数据库操作</strong>。Seata AT模式对业务代码基本无侵入性，同时公司内有基建团队维护，因此这里我们倾向于使用AT模式来保障一致性。</p>
+<p>在创建租约的场景里，Seata服务端就是TC（协调者），我们酒店的B端租务服务就是TM（管理者），而营销的服务就是RM（资源管理器）。一次分布式事务调用的过程大致如下：</p>
+<ol>
+<li>TM（酒店B端租务服务）调用TC创建分布式事务的记录，获得生成的XID；</li>
+<li>TM（酒店B端租务服务）通过RPC框架调用其他服务接口，同时会携带上一步生成的XID；</li>
+<li>RM（营销服务）通过其接收到的XID，将其所管理的资源且被该调用所使用到的资源注册为一个事务分支(Branch Transaction)；</li>
+<li>当该请求的调用链全部结束时，TM（酒店B端租务服务）根据本次调用是否有失败的情况，如果所有调用都成功，则决议Commit，如果有超时或者失败，则决议Rollback；</li>
+<li>TM将结果同步给TC，TC根据结果协调各RM，进行事务二阶段的提交或回滚；</li>
+</ol>
+<blockquote>
+<p>设计4：</p>
+</blockquote>
+<p>创建租约这一步，由于调用多耗时较长，我们针对前端的交互做了体验上的优化，点击提交按钮后，系统会弹窗提示用户目前进行到了哪一步来缓解用户体验上的焦虑（类似携程上买票的过程）。</p>
+<blockquote>
+<p>对比C端电商更通用的下单场景，其中的设计要点跟倾向性会跟B端很不一样，比如C端需要更多性能、可用性方面的设计。</p>
+</blockquote>
+<hr>
+<p>月租酒店项目中，除了这个场景，在以下场景也使用了AT模式保障了事务的实时一致性：</p>
+<ul>
+<li>签约完成：创建支付流水+支付单，其中创建流水、更新账单为本地数据库操作，创建支付单则需要调用支付中台；</li>
+<li>外部下单成功：更新租约状态、同步核销券；</li>
+</ul>
+<hr>
+<h3 id="签约支付超时关单最大努力通知">签约、支付超时关单（最大努力通知）<a hidden class="anchor" aria-hidden="true" href="#签约支付超时关单最大努力通知">#</a></h3>
+<p>租约在创建后以及租客在支付后，服务端均需要通过<code>RocketMQ</code>的延迟消息来完成超时关闭的功能。我们的实现方案中，在对应的节点，会发送一条<code>RocketMQ</code>延迟消息，在消费逻辑中判断是否满足超时的条件，从而触发关闭逻辑。</p>
+<p>这里发送消息的时候，我们一般不会将发消息与本地事务放在一起，因此，<strong>消息发送无法保证事务的原子性，也就是说，消息可能会丢</strong>。</p>
+<p>这里我们评估了场景对消息的丢失容忍度，是可以接受丢消息的，这就是最大努力通知的一种应用场景。</p>
+<p>当然，为了提高业务的可用性、数据完整性，我们会在用户查询租约、账单的时候，<strong>做一个被动超时关单的操作，算是对最大努力通知的一种补偿</strong>。</p>
+<hr>
+<h3 id="支付成功本地消息表">支付成功（本地消息表）<a hidden class="anchor" aria-hidden="true" href="#支付成功本地消息表">#</a></h3>
+<p>租客在支付完成之后，就进入了外部下单的流程，这一步我们主要是更新本地的账单状态，更新流水实付信息，同时触发外部下单的调用。</p>
+<p>支付成功的时序图如下：
+<img loading="lazy" src="seq_pay_success.jpg" alt=""  />
+</p>
+<p>这里我们主要有两个设计：</p>
+<blockquote>
+<p>设计1：</p>
+</blockquote>
+<p>首先我们设计了一个重试任务的表，放在酒店租务服务中，能保证只要本地事务成功，重试的任务就可以持久化下来。这解决了使用普通消息发送失败然后丢消息的问题。</p>
+<p>重试任务目前我们设计每分钟都会触发。</p>
+<p>这里为什么要考虑做这种设计呢？原因是比如如家提供的接口，有可能响应非常慢。在外部提供的SLA不够高的情况下，使用定时任务的设计能够提高流程整体的可靠性。同时与支付成功的节点做了一定的解耦。</p>
+<blockquote>
+<p>设计2：</p>
+</blockquote>
+<p>其次重试的任务中会记录状态与重试次数，重试次数消耗完之前，只要没有进入子流程，会一直重试。</p>
+<p>至于重试次数的配置，会根据不同的供应商提供的SLA进行调整。</p>
+<p>下单成功或者失败的子流程一致性则在子流程内部收敛。</p>
+<hr>
+<h3 id="关闭租约rocketmq事务消息">关闭租约（RocketMQ事务消息）<a hidden class="anchor" aria-hidden="true" href="#关闭租约rocketmq事务消息">#</a></h3>
+<p>签约超时、支付超时、外部下单失败修需要关闭租约。</p>
+<p>而在关闭租约时除了作废租约、账单，<strong>还需要同步解锁券</strong>，券的操作就涉及到了营销中台的接口调用。</p>
+<blockquote>
+<p>设计考虑：</p>
+</blockquote>
+<p>这里我们同样可以考虑Seata的AT模式，但是在这个场景下，其实不需要强一致以及隔离性。</p>
+<p>由于券已经被锁定，并且传入了我们的业务标识（租约的唯一编码），因此资源其实已经在业务数据层面做了隔离。</p>
+<p>这个场景下，使用RocketMQ事务消息是一种更轻的方式，同时也能保障最终一致性。作为柔性事务的实现方式之一，事务消息满足<code>BASE</code>理论，即基本可用+最终一致。</p>
+<h1 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h1>
+<p>本文主要给读者介绍了我去年主R月租直连酒店项目的整体设计以及交易核心涉及的一些分布式一致性设计要点。</p>
+<p>在B端交易的场景下，我们主要用到了三类方案来保障分布式环境下的数据一致性，即：</p>
+<ol>
+<li><code>Seata</code> 的 <code>AT</code> 模式</li>
+<li>可靠消息最终一致性
+<ol>
+<li><code>RocketMQ</code>事务消息</li>
+<li>本地消息表</li>
+</ol>
+</li>
+<li>最大努力通知
+<ol>
+<li>MQ普通消息（可能会丢消息）+接口补偿</li>
+</ol>
+</li>
+</ol>
+<p>在针对不同场景考虑同样的分布式一致性问题的时候，最后的方案可能不同，但是设计的思路其实是一致的，即：</p>
+<ol>
+<li>评估场景的侧重点、倾向性；</li>
+<li>评估场景对一致性、隔离性、数据实时性等指标的容忍度；</li>
+<li>评估方案与场景诉求的契合程度；</li>
+<li>评估团队能力、基建现状；</li>
+</ol>
+<p>系统设计出了需要梳理业务流程、明确业务规则，还需要做出取舍。除了一致性，在做系统设计的时候，也需要兼顾性能、可用性。同时技术方案需要做好兜底设计。</p>
+<p>最后，如果读者有疑问或者建议，欢迎评论区指出。</p>
+<p>以上。</p>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">系统设计</a></li>
+      <li><a href="https://redolog.github.io/tags/system-design/">System Design</a></li>
+      <li><a href="https://redolog.github.io/tags/%E4%BA%A4%E6%98%93/">交易</a></li>
+      <li><a href="https://redolog.github.io/tags/%E6%94%AF%E4%BB%98/">支付</a></li>
+      <li><a href="https://redolog.github.io/tags/%E7%AD%BE%E7%BA%A6/">签约</a></li>
+      <li><a href="https://redolog.github.io/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/">数据一致性</a></li>
+      <li><a href="https://redolog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/design/trx-message/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>RocketMQ事务消息原理解析</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/design/aqs/architecture/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>理解AQS架构</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 聊聊月租酒店项目中的交易系统设计 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e8%81%8a%e8%81%8a%e6%9c%88%e7%a7%9f%e9%85%92%e5%ba%97%e9%a1%b9%e7%9b%ae%e4%b8%ad%e7%9a%84%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f&amp;hashtags=%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%2cSystemDesign%2c%e4%ba%a4%e6%98%93%2c%e6%94%af%e4%bb%98%2c%e7%ad%be%e7%ba%a6%2c%e6%95%b0%e6%8d%ae%e4%b8%80%e8%87%b4%e6%80%a7%2c%e5%88%86%e5%b8%83%e5%bc%8f%e4%ba%8b%e5%8a%a1">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 聊聊月租酒店项目中的交易系统设计 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f&amp;title=%e8%81%8a%e8%81%8a%e6%9c%88%e7%a7%9f%e9%85%92%e5%ba%97%e9%a1%b9%e7%9b%ae%e4%b8%ad%e7%9a%84%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1&amp;summary=%e8%81%8a%e8%81%8a%e6%9c%88%e7%a7%9f%e9%85%92%e5%ba%97%e9%a1%b9%e7%9b%ae%e4%b8%ad%e7%9a%84%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 聊聊月租酒店项目中的交易系统设计 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f&title=%e8%81%8a%e8%81%8a%e6%9c%88%e7%a7%9f%e9%85%92%e5%ba%97%e9%a1%b9%e7%9b%ae%e4%b8%ad%e7%9a%84%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 聊聊月租酒店项目中的交易系统设计 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 聊聊月租酒店项目中的交易系统设计 on whatsapp"
+        href="https://api.whatsapp.com/send?text=%e8%81%8a%e8%81%8a%e6%9c%88%e7%a7%9f%e9%85%92%e5%ba%97%e9%a1%b9%e7%9b%ae%e4%b8%ad%e7%9a%84%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%20-%20https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 聊聊月租酒店项目中的交易系统设计 on telegram"
+        href="https://telegram.me/share/url?text=%e8%81%8a%e8%81%8a%e6%9c%88%e7%a7%9f%e9%85%92%e5%ba%97%e9%a1%b9%e7%9b%ae%e4%b8%ad%e7%9a%84%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2frd%2fdesign%2fcase%2fhotel-project%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>兼具大小写的最好英文字母 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E5%85%BC%E5%85%B7%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E6%9C%80%E5%A5%BD%E8%8B%B1%E6%96%87%E5%AD%97%E6%AF%8D/</link>
+    <description>Recent content in 兼具大小写的最好英文字母 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 27 Oct 2022 20:53:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E5%85%BC%E5%85%B7%E5%A4%A7%E5%B0%8F%E5%86%99%E7%9A%84%E6%9C%80%E5%A5%BD%E8%8B%B1%E6%96%87%E5%AD%97%E6%AF%8D/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LC 2309. 兼具大小写的最好英文字母 位运算题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/greatest-english-letter-in-upper-and-lower-case/</link>
+      <pubDate>Thu, 27 Oct 2022 20:53:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/greatest-english-letter-in-upper-and-lower-case/</guid>
+      <description>&lt;p&gt;LC 2309. 兼具大小写的最好英文字母，使用位运算实现空间&lt;code&gt;O(1)&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

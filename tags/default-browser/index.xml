@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>default browser on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/default-browser/</link>
+    <description>Recent content in default browser on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 31 Mar 2023 13:00:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/default-browser/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>踩坑：macOS默认浏览器设置后跳转有误</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/setting/default-browser/</link>
+      <pubDate>Fri, 31 Mar 2023 13:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/setting/default-browser/</guid>
+      <description>&lt;p&gt;记录一则&lt;code&gt;macOS&lt;/code&gt;设置默认浏览器失效的例子。通过尝试解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

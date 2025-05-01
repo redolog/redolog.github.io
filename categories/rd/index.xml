@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>RD on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/categories/rd/</link>
+    <description>Recent content in RD on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 08 Feb 2025 16:13:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/categories/rd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DDD战略设计之供应链服务拆分</title>
+      <link>https://redolog.github.io/posts/rd/ddd/strategy-design/supply-chain-case/</link>
+      <pubDate>Sat, 08 Feb 2025 16:13:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/ddd/strategy-design/supply-chain-case/</guid>
+      <description>本文，我会尝试使用图例表达前几个月在做的供应链项目中使用到的DDD设计方法。</description>
+    </item>
+    
+    <item>
+      <title>缓存高并发常见问题及方案</title>
+      <link>https://redolog.github.io/posts/rd/design/cache-concurrency/</link>
+      <pubDate>Sun, 12 Jan 2025 22:25:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/cache-concurrency/</guid>
+      <description>通过本文，我来统一梳理一下缓存高并发场景常见问题以及解决方案。</description>
+    </item>
+    
+    <item>
+      <title>理解RocketMQ架构</title>
+      <link>https://redolog.github.io/posts/rd/design/rocketmq/architecture/</link>
+      <pubDate>Sun, 24 Nov 2024 20:19:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/rocketmq/architecture/</guid>
+      <description>本文通过图解的方式，递进式讲解RocketMQ顶层架构组件的设计原理。</description>
+    </item>
+    
+    <item>
+      <title>复杂对象序列化失败问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/serialization/ddd-entity-redis-down/</link>
+      <pubDate>Fri, 15 Nov 2024 13:21:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/serialization/ddd-entity-redis-down/</guid>
+      <description>&lt;p&gt;踩坑一则复杂对象（领域实体）序列化失败问题。&lt;/p&gt;
+&lt;p&gt;归因：测试环境&lt;code&gt;Redis&lt;/code&gt;连接挂掉，同时对&lt;code&gt;DDD&lt;/code&gt;领域实体序列化，&lt;code&gt;JSON.toJSON()&lt;/code&gt; 封装了异常，导致关键异常栈丢失，后经过正向逆向分析找到了问题原因与解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LC 501. 二叉搜索树中的众数</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-mode-in-binary-search-tree/</link>
+      <pubDate>Sun, 03 Nov 2024 12:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-mode-in-binary-search-tree/</guid>
+      <description>&lt;p&gt;LC 501. 二叉搜索树中的众数，在计数解法的基础上，利用二叉搜索树中序遍历有序的特性优化空间复杂度。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>RocketMQ事务消息原理解析</title>
+      <link>https://redolog.github.io/posts/rd/design/trx-message/</link>
+      <pubDate>Mon, 07 Oct 2024 22:25:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/trx-message/</guid>
+      <description>通过本文，我来讲一下我对RocketMQ事务消息的理解。</description>
+    </item>
+    
+    <item>
+      <title>聊聊月租酒店项目中的交易系统设计</title>
+      <link>https://redolog.github.io/posts/rd/design/case/hotel-project/</link>
+      <pubDate>Sun, 06 Oct 2024 10:25:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/case/hotel-project/</guid>
+      <description>通过本文，我会输出去年做的酒店项目中的整体设计以及交易模块的核心设计要点。</description>
+    </item>
+    
+    <item>
+      <title>理解AQS架构</title>
+      <link>https://redolog.github.io/posts/rd/design/aqs/architecture/</link>
+      <pubDate>Tue, 17 Sep 2024 17:05:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/aqs/architecture/</guid>
+      <description>通过本文，我会尝试用我平时学习、工作的思路，来帮助读者建立对AQS的基础认知。</description>
+    </item>
+    
+    <item>
+      <title>算法案例：给定一堆货物，计算最少货车数</title>
+      <link>https://redolog.github.io/posts/rd/algo/case/find-minimum-quantity-of-cars/</link>
+      <pubDate>Mon, 16 Sep 2024 19:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/case/find-minimum-quantity-of-cars/</guid>
+      <description>&lt;p&gt;本文记录最近与朋友聊过的算法实例：给定一堆带重量的货物，计算最少需要的货车数量。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用分布式锁解决接口互斥性、幂等性问题两例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</link>
+      <pubDate>Wed, 20 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</guid>
+      <description>&lt;p&gt;针对近期处理的两例并发场景引发的「互斥性」「幂等性」问题进行过程分析、输出系统方案。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gitlab MR被revert后，功能分支无法再次merge到主干分支，怎么办？</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/git/revert-mr-and-merge-again/</link>
+      <pubDate>Tue, 12 Mar 2024 12:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/git/revert-mr-and-merge-again/</guid>
+      <description>&lt;p&gt;需求分支首先通过MR合并到了&lt;code&gt;master&lt;/code&gt;分支，部署后发现有问题，于是回滚代码，操作了&lt;code&gt;MR&lt;/code&gt;处的&lt;code&gt;revert&lt;/code&gt;，后面修复了问题，使用原功能分支提新的&lt;code&gt;MR&lt;/code&gt;时，发现变更处是空的，本文来解决此类无法合并情形的问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查mybatis ognl解析参数值并发设置字段访问性报错问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</link>
+      <pubDate>Fri, 01 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</guid>
+      <description>&lt;p&gt;年后负责一个比较老的服务，报警不少，今天排查的这个问题也只有在老版本&lt;code&gt;MyBatis&lt;/code&gt;下才有机会复现，值此宝贵的线上问题机会，记录一番。&lt;/p&gt;
+&lt;p&gt;低版本&lt;code&gt;MyBatis&lt;/code&gt;中，在高并发情况下，有概率遇到解析&lt;code&gt;private&lt;/code&gt;内部类集合解析抛错的情况。&lt;/p&gt;
+&lt;p&gt;我通过分析异常栈+搜索+分析源码的方式解决了此问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查 ConcurrentModificationException 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</link>
+      <pubDate>Wed, 21 Feb 2024 16:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</guid>
+      <description>&lt;p&gt;排查一则生产环境报 &lt;code&gt;ConcurrentModificationException&lt;/code&gt; 的问题。&lt;/p&gt;
+&lt;p&gt;在相对复杂的工业代码中（绕来绕去，不是简单的一个函数调用），排查「简单问题」也不是一件简单的事。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于IO我所知道的一切都在这里了</title>
+      <link>https://redolog.github.io/posts/rd/design/io/all-about-io/</link>
+      <pubDate>Tue, 06 Feb 2024 12:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/io/all-about-io/</guid>
+      <description>统一整理IO涉及的知识点</description>
+    </item>
+    
+    <item>
+      <title>Linux零拷贝图例一览</title>
+      <link>https://redolog.github.io/posts/rd/linux/zero-copy/legend/</link>
+      <pubDate>Fri, 15 Dec 2023 12:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/zero-copy/legend/</guid>
+      <description>统一整理零拷贝相关图例</description>
+    </item>
+    
+    <item>
+      <title>算法案例：计算酒店月租价</title>
+      <link>https://redolog.github.io/posts/rd/algo/case/calculate-hotel-month-price/</link>
+      <pubDate>Wed, 22 Nov 2023 19:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/case/calculate-hotel-month-price/</guid>
+      <description>&lt;p&gt;本文记录做酒店业务系统开发时遇到的算法实例：计算酒店产品月租价。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用策略模式优化支付回调代码一例</title>
+      <link>https://redolog.github.io/posts/rd/design/pattern/case/pay-callback/</link>
+      <pubDate>Wed, 18 Oct 2023 19:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/pattern/case/pay-callback/</guid>
+      <description>&lt;p&gt;本文使用策略模式和模板方法模式来优化处理支付回调的代码结构，记录设计模式应用实例。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>aviator动态创建类过多导致元空间内存泄漏 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/jvm/memory-leak/aviator/</link>
+      <pubDate>Fri, 15 Sep 2023 09:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/jvm/memory-leak/aviator/</guid>
+      <description>&lt;p&gt;协助同事排查处理了一则&lt;code&gt;aviator&lt;/code&gt;使用不当导致元空间内存泄漏的问题，个人觉得是一则很有价值的案例，因此观摩学习一波。&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;aviator&lt;/code&gt;不启用表达式缓存的情况下，会分别在编译、解析阶段根据时间戳使用&lt;code&gt;asm&lt;/code&gt;动态生成&lt;code&gt;class&lt;/code&gt;，生成过多&lt;code&gt;class&lt;/code&gt;就会撑爆元空间，也就是内存泄漏。&lt;/p&gt;
+&lt;p&gt;除此之外，在分析过程中还发现了&lt;code&gt;aviator&lt;/code&gt;低版本的另一个泄漏问题，非常适合用来巩固&lt;code&gt;jvm&lt;/code&gt;相关知识。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mysql datetime 秒精度问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</link>
+      <pubDate>Thu, 10 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/fractional-seconds/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;datetime&lt;/code&gt;写入 &lt;strong&gt;诡异进位&lt;/strong&gt; 的问题，通过查阅官方文档的方式找到了问题原因。顺带巩固下基础知识。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>troubleshooting mybatis-plus parsing whitespaces in SQL</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis-plus/whitespaces_in_sql_err/</link>
+      <pubDate>Mon, 07 Aug 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis-plus/whitespaces_in_sql_err/</guid>
+      <description>&lt;p&gt;Since 3.4.1 (less or more), mybatis-plus bring in a bug: when parsing extra whitespaces in SQL, it throws &lt;code&gt;net.sf.jsqlparser.parser.ParseException&lt;/code&gt;. I solved the problem by finding relevant discussions and resources to gain insights into the issue.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 2544. Alternating Digit Sum</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/alternating-digit-sum/</link>
+      <pubDate>Sat, 05 Aug 2023 21:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/alternating-digit-sum/</guid>
+      <description>&lt;p&gt;Find mathematical patterns through observing test cases.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用jackson反序列化未忽略未知字段时报错 `UnrecognizedPropertyException` 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/serialization/jackson/unrecognized_property_exception/</link>
+      <pubDate>Tue, 27 Jun 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/serialization/jackson/unrecognized_property_exception/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;Redis&lt;/code&gt;缓存使用&lt;code&gt;Jackson2JsonRedisSerializer&lt;/code&gt;管理序列化，未设置&lt;code&gt;disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)&lt;/code&gt;，上线中新代码写入了新的缓存字段结构，旧代码读到新结构报错&lt;code&gt;UnrecognizedPropertyException&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LC 2671. 频率跟踪器</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/frequency-tracker/</link>
+      <pubDate>Fri, 12 May 2023 21:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/frequency-tracker/</guid>
+      <description>&lt;p&gt;LC 2671. 频率跟踪器，一道中规中矩的数据结构题目，解法平平无奇，却让我学到了「阅读理解」的重要性。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>踩坑：macOS默认浏览器设置后跳转有误</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/setting/default-browser/</link>
+      <pubDate>Fri, 31 Mar 2023 13:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/setting/default-browser/</guid>
+      <description>&lt;p&gt;记录一则&lt;code&gt;macOS&lt;/code&gt;设置默认浏览器失效的例子。通过尝试解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>踩坑更改了javaagent路径导致idea无法启动问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</link>
+      <pubDate>Fri, 24 Mar 2023 13:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</guid>
+      <description>&lt;p&gt;踩坑，新机器装开发环境，因手动变更了已配置好的&lt;code&gt;idea&lt;/code&gt;启动依赖的&lt;code&gt;agent&lt;/code&gt;路径，导致&lt;code&gt;jetbrains&lt;/code&gt;全系产品无法启动。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>spring-data-redis版本过低，导致并发获取数据为null问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</link>
+      <pubDate>Mon, 27 Feb 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;spring-data-redis&lt;/code&gt;版本过低，导致并发获取数据为&lt;code&gt;null&lt;/code&gt;问题一例，试用&lt;code&gt;phind.com&lt;/code&gt;AI 搜索，快速定位到了问题原因。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mysql in 查询索引失效问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/index/in-ineffective/</link>
+      <pubDate>Thu, 01 Dec 2022 00:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/index/in-ineffective/</guid>
+      <description>&lt;p&gt;排查了一则&lt;code&gt;MySQL&lt;/code&gt;中&lt;code&gt;in&lt;/code&gt;查询传入270个入参则 &lt;strong&gt;索引失效&lt;/strong&gt; 的问题，本文记录分析与解决的过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>混部redis写文件竞态严重导致实例获取不到连接问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/asynchronous_aof_fsync_is_taking_too_long/</link>
+      <pubDate>Tue, 29 Nov 2022 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/asynchronous_aof_fsync_is_taking_too_long/</guid>
+      <description>&lt;p&gt;踩坑&lt;code&gt;redis&lt;/code&gt;混部，导致&lt;code&gt;AOF&lt;/code&gt;写磁盘过多，导致影响其他实例。通过与&lt;code&gt;sre&lt;/code&gt;协作、分析日志，解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决iCloud同步卡住的问题</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/</link>
+      <pubDate>Tue, 08 Nov 2022 12:40:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/</guid>
+      <description>&lt;p&gt;居家办公，使用备用机搬砖，发现iCloud有文件没同步过来，排查、咨询客服后通过进入安全模式解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>young gc stw pause引发接口超时问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/</link>
+      <pubDate>Wed, 02 Nov 2022 21:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/young-gc-insufficient-memory/</guid>
+      <description>&lt;p&gt;分析排查一则接口超时问题，定位为&lt;code&gt;JVM&lt;/code&gt; &lt;code&gt;Young&lt;/code&gt;区新生代过小引发GC频繁、触发&lt;code&gt;STW&lt;/code&gt;停顿过多。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用「原地哈希」解决一类问题</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/</link>
+      <pubDate>Wed, 24 Aug 2022 00:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/</guid>
+      <description>&lt;p&gt;了解原地哈希思路，使用其解决LC几道代表性题目。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决MacOS突然无法上网问题</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/network/network-connected-but-cant-browse/</link>
+      <pubDate>Sat, 13 Aug 2022 21:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/network/network-connected-but-cant-browse/</guid>
+      <description>&lt;p&gt;笔记本突然没法上网了，准确地说是能用微信但是浏览器无法上网，简单排查处理了下，这里记录下思路、过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决「生成单调序列」类型题目</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/b-search-monotonic-sequence/</link>
+      <pubDate>Sat, 30 Jul 2022 00:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/b-search-monotonic-sequence/</guid>
+      <description>&lt;p&gt;LeetCode 一类题型解析，二分搜索变体：单调序列，单调序列是指非严格递增、非严格递减。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 895. 最大频率栈 题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/maximum-frequency-stack/</link>
+      <pubDate>Sun, 24 Jul 2022 12:09:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/maximum-frequency-stack/</guid>
+      <description>&lt;p&gt;LeetCode 895. 最大频率栈 题解，熟练掌握数据结构、集合的解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Redis内存优化策略</title>
+      <link>https://redolog.github.io/posts/rd/storage/redis/memory-optimization/</link>
+      <pubDate>Wed, 20 Jul 2022 18:10:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/redis/memory-optimization/</guid>
+      <description>&lt;p&gt;了解Redis如何优化内存开销，总结、学习其思想。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 112/113. 路径总和 DFS、回溯题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/path-sum-i-ii/</link>
+      <pubDate>Wed, 20 Jul 2022 17:22:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/path-sum-i-ii/</guid>
+      <description>&lt;p&gt;LeetCode 112/113. 路径总和，两道同类树形路径问题，熟悉&lt;code&gt;DFS&lt;/code&gt;、回溯解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 121. 买卖股票的最佳时机 DP题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/best-time-to-buy-and-sell-stock/</link>
+      <pubDate>Wed, 20 Jul 2022 11:57:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/best-time-to-buy-and-sell-stock/</guid>
+      <description>&lt;p&gt;LeetCode 121. 买卖股票的最佳时机 DP题解，熟悉简单DP问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 470. 用 Rand7() 实现 Rand10() 进制转换题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/implement-rand10-using-rand7/</link>
+      <pubDate>Tue, 19 Jul 2022 22:52:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/implement-rand10-using-rand7/</guid>
+      <description>&lt;p&gt;LeetCode 470. 用 Rand7() 实现 Rand10() 进制转换题解，解决一道等概率类型的代表题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>COWMap结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/cow-map/</link>
+      <pubDate>Sun, 17 Jul 2022 21:55:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/cow-map/</guid>
+      <description>&lt;p&gt;从零实现一个&lt;code&gt;CopyOnWrite&lt;/code&gt;写时复制的&lt;code&gt;map&lt;/code&gt;，同时了解写时复制的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>BitMap结构实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/bitmap/</link>
+      <pubDate>Thu, 14 Jul 2022 19:20:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/bitmap/</guid>
+      <description>&lt;p&gt;从零实现位图&lt;code&gt;BitMap&lt;/code&gt;，使用实测数据感受其优劣，同时了解&lt;code&gt;BitMap&lt;/code&gt;结构的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>理解并实现一致性哈希</title>
+      <link>https://redolog.github.io/posts/rd/algo/hash/consistent-hashing/</link>
+      <pubDate>Sat, 02 Jul 2022 00:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/hash/consistent-hashing/</guid>
+      <description>&lt;p&gt;从零实现一个一致性哈希算法，理解+实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跳表结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</link>
+      <pubDate>Tue, 28 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</guid>
+      <description>&lt;p&gt;从零实现一个跳表。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LRU工业级案例</title>
+      <link>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru-industrial-case/</link>
+      <pubDate>Mon, 27 Jun 2022 15:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru-industrial-case/</guid>
+      <description>&lt;p&gt;了解&lt;code&gt;LRU&lt;/code&gt;工业级实现，以&lt;code&gt;MySQL&lt;/code&gt;、&lt;code&gt;Redis&lt;/code&gt;为例。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LRU基本实现及优化</title>
+      <link>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru/</link>
+      <pubDate>Thu, 23 Jun 2022 15:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru/</guid>
+      <description>&lt;p&gt;从零实现一个&lt;code&gt;LRU&lt;/code&gt;，同时优化我们的版本。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>特里树最简实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/trie-tree/</link>
+      <pubDate>Wed, 22 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/trie-tree/</guid>
+      <description>&lt;p&gt;从零实现一个最简单的特里树，同时了解特里树的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 153. 寻找旋转排序数组中的最小值 二分题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-minimum-in-rotated-sorted-array/</link>
+      <pubDate>Sun, 19 Jun 2022 16:48:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-minimum-in-rotated-sorted-array/</guid>
+      <description>&lt;p&gt;LeetCode 153. 寻找旋转排序数组中的最小值 二分题解，重新认识二分。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>堆结构实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/heap/</link>
+      <pubDate>Thu, 16 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/heap/</guid>
+      <description>&lt;p&gt;从零实现一个最小堆，同时了解堆结构的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并查集常见实现及优化</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/union-find/</link>
+      <pubDate>Tue, 14 Jun 2022 21:24:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/union-find/</guid>
+      <description>&lt;p&gt;从零实现并查集，并逐步优化各版本中的问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 46. 全排列 DFS题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/permutations/</link>
+      <pubDate>Tue, 07 Jun 2022 21:05:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/permutations/</guid>
+      <description>&lt;p&gt;LeetCode 46. 全排列 &lt;code&gt;DFS&lt;/code&gt;题解，理解&lt;code&gt;DFS&lt;/code&gt;、回溯、递归树。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 206. 反转链表 递归题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-linked-list/</link>
+      <pubDate>Sat, 04 Jun 2022 18:23:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-linked-list/</guid>
+      <description>&lt;p&gt;LeetCode 206. 反转链表题解，借用本题与关联题目，加强对递归的理解。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>sentinel value in programming</title>
+      <link>https://redolog.github.io/posts/rd/faq/sentinel-value/</link>
+      <pubDate>Mon, 23 May 2022 11:44:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/faq/sentinel-value/</guid>
+      <description>&lt;p&gt;解读编程技巧中的&lt;code&gt;sentinel value&lt;/code&gt;、哨兵。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 142. 环形链表 II 题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/linked-list-cycle-ii/</link>
+      <pubDate>Sun, 22 May 2022 23:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/linked-list-cycle-ii/</guid>
+      <description>&lt;p&gt;LeetCode 142. 环形链表 II 题解，寻找链表环入口。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL性能优化cheatsheet</title>
+      <link>https://redolog.github.io/posts/rd/storage/mysql/performance-optimization/cheatsheet/</link>
+      <pubDate>Mon, 16 May 2022 21:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/mysql/performance-optimization/cheatsheet/</guid>
+      <description>&lt;p&gt;&lt;code&gt;MySQL&lt;/code&gt;性能优化&lt;code&gt;cheatsheet&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式一览</title>
+      <link>https://redolog.github.io/posts/rd/design/pattern/index/</link>
+      <pubDate>Mon, 21 Mar 2022 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/pattern/index/</guid>
+      <description>&lt;p&gt;设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。
+使用的时候重点是&lt;em&gt;识别面临的问题的场景，识破问题关键&lt;/em&gt;，挑选适当的模式进行编码。
+&lt;strong&gt;识别&lt;/strong&gt;这一步最为关键。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>OOP编程原则一览</title>
+      <link>https://redolog.github.io/posts/rd/design/principle/oop/</link>
+      <pubDate>Sun, 20 Mar 2022 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/principle/oop/</guid>
+      <description>&lt;p&gt;软件编程有多年工业界实践的经验沉淀，这些原则、法则是指导我们设计、编码的方法论。本文只针对&lt;code&gt;OOD&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Latency numbers every programmer should know</title>
+      <link>https://redolog.github.io/posts/rd/linux/data/latency/</link>
+      <pubDate>Thu, 24 Feb 2022 14:13:14 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/data/latency/</guid>
+      <description>&lt;p&gt;Latency numbers every programmer should know.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>技术概念与现实的映射</title>
+      <link>https://redolog.github.io/posts/rd/mapping/reality/</link>
+      <pubDate>Sun, 20 Feb 2022 21:45:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/mapping/reality/</guid>
+      <description>&lt;p&gt;很多技术概念都是对现实的映射、类比、模拟。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>我自用的项目管理文档模板</title>
+      <link>https://redolog.github.io/posts/rd/pm/doc/</link>
+      <pubDate>Fri, 18 Feb 2022 20:24:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/pm/doc/</guid>
+      <description>&lt;p&gt;作为RD，除了搞好技术方案、实现，也要搞好项目管理。
+大部分的任务推进都是以项目为维度的，而其中的项目管理对于结果成功至关重要。
+如何做好DPM（Developer Project Manager）？我认为首先要有owner心态，即我是这个项目的负责人心态，其次是要有owner配套的方法论、能力。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>译---日志：每个软件工程师都应该知道的有关实时数据的统一抽象</title>
+      <link>https://redolog.github.io/posts/rd/log/translation/what-every-software-engineer-should-know-about-real-time-datas-unifying/</link>
+      <pubDate>Sun, 06 Feb 2022 16:32:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/log/translation/what-every-software-engineer-should-know-about-real-time-datas-unifying/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Jay Kreps (Confluent CEO，Kafka 核心作者) 在《The Log: What every software engineer should know about real-time data&amp;rsquo;s unifying abstraction》中系统性描述了日志的价值和重要性，指出了日志特定的应用目标：它记录了什么时间发生了什么事情（they record what happened and when）。而这，正是分布式系统许多问题的核心。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>ES为什么建议使用32或者26GB的堆？</title>
+      <link>https://redolog.github.io/posts/rd/jvm/compressed_oops/</link>
+      <pubDate>Wed, 29 Dec 2021 21:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/jvm/compressed_oops/</guid>
+      <description>&lt;p&gt;解答：ES为什么建议使用32或者26GB的堆？并且了解&lt;code&gt;JVM&lt;/code&gt;中的指针压缩设计。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟业务数据缺失问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</link>
+      <pubDate>Mon, 20 Dec 2021 20:12:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/apply_callback_miss/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，流程业务卡住无法流转，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>消费RocketMQ无序同步缓存，导致数据覆盖问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/consistency/mysql_sync_redis_with_process_pause/</link>
+      <pubDate>Wed, 15 Dec 2021 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/consistency/mysql_sync_redis_with_process_pause/</guid>
+      <description>&lt;p&gt;踩坑通过消费MQ，从&lt;code&gt;MySQL&lt;/code&gt;同步&lt;code&gt;Redis&lt;/code&gt;时，并发时暴露消费无序的问题，导致数据被覆盖。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从延迟消费重试问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</link>
+      <pubDate>Thu, 09 Dec 2021 13:04:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/db-replicate-delay/msg_consumer_no_delay/</guid>
+      <description>&lt;p&gt;踩坑MySQL主从延迟背景下，生产消费未正确处理此类场景，数据消费第一次失败报警，问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>事务中调用sleep问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/sleep-in-transaction/</link>
+      <pubDate>Wed, 08 Dec 2021 21:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/sleep-in-transaction/</guid>
+      <description>&lt;p&gt;踩坑事务内循环调用sleep，通过调整线程池参数的方式问题得以暴露。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Reflections中反映的Guava版本不兼容问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/reflections/guava_version_incompatible/</link>
+      <pubDate>Fri, 18 Jun 2021 15:13:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/reflections/guava_version_incompatible/</guid>
+      <description>踩坑reflections反射库突然无法通过反射正常加载类，原因竟是Guava未做新老版本兼容</description>
+    </item>
+    
+    <item>
+      <title>buffer跟cache的区别是什么？</title>
+      <link>https://redolog.github.io/posts/rd/faq/buffer-cache/</link>
+      <pubDate>Sat, 10 Apr 2021 10:59:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/faq/buffer-cache/</guid>
+      <description>解答组内技术分享时抛出的一个疑问：buffer跟cache的区别是什么？</description>
+    </item>
+    
+    <item>
+      <title>Tomcat精粹</title>
+      <link>https://redolog.github.io/posts/rd/web/tomcat/essence/</link>
+      <pubDate>Wed, 10 Feb 2021 15:04:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/web/tomcat/essence/</guid>
+      <description>理解Tomcat主要的架构设计、核心组件设计、功能实现以及性能优化方案，细数我目前对Tomcat掌握的知识</description>
+    </item>
+    
+    <item>
+      <title>简析ES/Lucene索引的基本设计原理</title>
+      <link>https://redolog.github.io/posts/rd/storage/es/index-structure/</link>
+      <pubDate>Tue, 09 Feb 2021 09:14:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/es/index-structure/</guid>
+      <description>为什么Elasticsearch/Lucene全文查询这么快？</description>
+    </item>
+    
+    <item>
+      <title>研究一下fork函数</title>
+      <link>https://redolog.github.io/posts/rd/linux/fork/</link>
+      <pubDate>Tue, 02 Feb 2021 14:14:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/fork/</guid>
+      <description>了解Unix、Linux系统下的进程控制fork函数</description>
+    </item>
+    
+    <item>
+      <title>研究一下fsync函数</title>
+      <link>https://redolog.github.io/posts/rd/linux/fsync_durability/</link>
+      <pubDate>Fri, 29 Jan 2021 11:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/fsync_durability/</guid>
+      <description>讨论fsync函数细节</description>
+    </item>
+    
+    <item>
+      <title>【译】用户态网络协议栈之DPDK</title>
+      <link>https://redolog.github.io/posts/english/translation/dpdk/</link>
+      <pubDate>Thu, 28 Jan 2021 13:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/dpdk/</guid>
+      <description>了解下DPDK技术基本原理</description>
+    </item>
+    
+    <item>
+      <title>【译】简析Linux IO多路复用模型</title>
+      <link>https://redolog.github.io/posts/english/translation/linux_io_multiplexing/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/linux_io_multiplexing/</guid>
+      <description>简析Linux下IO多路复用的设计，理解epoll的优势</description>
+    </item>
+    
+    <item>
+      <title>Linux中的swap空间</title>
+      <link>https://redolog.github.io/posts/english/translation/all_about_linux_swap_space/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/all_about_linux_swap_space/</guid>
+      <description>解析Linux文件系统swap交换区</description>
+    </item>
+    
+    <item>
+      <title>什么是NUMA架构？</title>
+      <link>https://redolog.github.io/posts/english/translation/what_is_numa/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/what_is_numa/</guid>
+      <description>解析非统一内存访问架构（Non-Uniform Memory Access，NUMA 架构）</description>
+    </item>
+    
+    <item>
+      <title>Apollo命名空间加载优先级</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/apollo/namespace-priority/</link>
+      <pubDate>Thu, 26 Nov 2020 12:09:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/apollo/namespace-priority/</guid>
+      <description>&lt;p&gt;踩坑Apollo配置namespace加载顺序优先级问题，更具体点应该表述为【踩坑Spring框架中针对多配置属性源取值的逻辑】。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>晋西 != 晋西 ？？？</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/invalid_nonprinting_char/</link>
+      <pubDate>Sat, 13 Jun 2020 12:09:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/invalid_nonprinting_char/</guid>
+      <description>踩坑WebService接入外部非法数据（非打印字符）</description>
+    </item>
+    
+    <item>
+      <title>Go学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/go/note/</link>
+      <pubDate>Mon, 24 Jun 2019 12:50:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/go/note/</guid>
+      <description>&lt;p&gt;Golang笔记。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Int numbers every programmer should know</title>
+      <link>https://redolog.github.io/posts/rd/linux/data/int/</link>
+      <pubDate>Tue, 26 Mar 2019 14:13:14 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/linux/data/int/</guid>
+      <description>&lt;p&gt;Int numbers every programmer should know.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从零开始微服务</title>
+      <link>https://redolog.github.io/posts/rd/share/learn-micro-service-from-scratch/</link>
+      <pubDate>Wed, 26 Dec 2018 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/share/learn-micro-service-from-scratch/</guid>
+      <description>&lt;p&gt;大约是2018-12在&lt;code&gt;imageDT&lt;/code&gt;内部简单分享的一则Slide：从零开始微服务。介绍微服务出现的背景、历程以及基本的技术栈体现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AWK学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/awk/note/</link>
+      <pubDate>Sun, 29 Jul 2018 12:50:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/awk/note/</guid>
+      <description>AWK笔记。 AWK是Linux系统下著名的字符串处理工具。取名逻辑：三位创始人 Alfred Aho，Peter Weinberger, 和 Brian Kernighan 的 Family Name 的首字符。 Ref Runoob Linux awk 命令 CoolShell AWK 简</description>
+    </item>
+    
+    <item>
+      <title>JavaScript学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/js/note/</link>
+      <pubDate>Sun, 29 Jul 2018 12:50:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/js/note/</guid>
+      <description>JavaScript学习手记</description>
+    </item>
+    
+    <item>
+      <title>Python学习手记</title>
+      <link>https://redolog.github.io/posts/rd/language/python/note/</link>
+      <pubDate>Thu, 19 Jul 2018 10:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/language/python/note/</guid>
+      <description>Python学习手记</description>
+    </item>
+    
+    <item>
+      <title>快速上手Elasticsearch</title>
+      <link>https://redolog.github.io/posts/rd/storage/es/learn-from-scratch/</link>
+      <pubDate>Tue, 19 Jun 2018 10:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/es/learn-from-scratch/</guid>
+      <description>快速上手Elasticsearch</description>
+    </item>
+    
+    <item>
+      <title>MySQL业务应用问题汇总</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mysql/biz/</link>
+      <pubDate>Sun, 18 Mar 2018 10:53:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mysql/biz/</guid>
+      <description>&lt;p&gt;后端大部分时候在玩儿&lt;code&gt;MySQL&lt;/code&gt;（或者其他存储），而针对&lt;code&gt;MySQL&lt;/code&gt;我们碰到过各种各样的问题，在此一并整理记录。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>通用常见缩写</title>
+      <link>https://redolog.github.io/posts/rd/abbr/common/</link>
+      <pubDate>Thu, 04 Jan 2018 21:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/abbr/common/</guid>
+      <description>通用常见缩写</description>
+    </item>
+    
+  </channel>
+</rss>

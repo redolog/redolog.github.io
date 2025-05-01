@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>单词搜索 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E5%8D%95%E8%AF%8D%E6%90%9C%E7%B4%A2/</link>
+    <description>Recent content in 单词搜索 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 04 Jul 2022 18:23:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E5%8D%95%E8%AF%8D%E6%90%9C%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 212. 单词搜索 II 特里树题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/word-search-ii/</link>
+      <pubDate>Mon, 04 Jul 2022 18:23:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/word-search-ii/</guid>
+      <description>&lt;p&gt;LeetCode 212. 单词搜索 II 特里树题解，&lt;code&gt;79单词搜索&lt;/code&gt;+&lt;code&gt;208实现 Trie (前缀树)&lt;/code&gt;相当于本题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 79. 单词搜索 回溯题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/word-search/</link>
+      <pubDate>Mon, 20 Jun 2022 21:53:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/word-search/</guid>
+      <description>&lt;p&gt;LeetCode 79. 单词搜索 回溯题解，巩固回溯写法。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

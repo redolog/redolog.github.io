@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>算法 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 03 Nov 2024 12:43:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LC 501. 二叉搜索树中的众数</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-mode-in-binary-search-tree/</link>
+      <pubDate>Sun, 03 Nov 2024 12:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-mode-in-binary-search-tree/</guid>
+      <description>&lt;p&gt;LC 501. 二叉搜索树中的众数，在计数解法的基础上，利用二叉搜索树中序遍历有序的特性优化空间复杂度。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>算法案例：给定一堆货物，计算最少货车数</title>
+      <link>https://redolog.github.io/posts/rd/algo/case/find-minimum-quantity-of-cars/</link>
+      <pubDate>Mon, 16 Sep 2024 19:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/case/find-minimum-quantity-of-cars/</guid>
+      <description>&lt;p&gt;本文记录最近与朋友聊过的算法实例：给定一堆带重量的货物，计算最少需要的货车数量。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>算法案例：计算酒店月租价</title>
+      <link>https://redolog.github.io/posts/rd/algo/case/calculate-hotel-month-price/</link>
+      <pubDate>Wed, 22 Nov 2023 19:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/case/calculate-hotel-month-price/</guid>
+      <description>&lt;p&gt;本文记录做酒店业务系统开发时遇到的算法实例：计算酒店产品月租价。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 2544. Alternating Digit Sum</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/alternating-digit-sum/</link>
+      <pubDate>Sat, 05 Aug 2023 21:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/alternating-digit-sum/</guid>
+      <description>&lt;p&gt;Find mathematical patterns through observing test cases.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LC 2671. 频率跟踪器</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/frequency-tracker/</link>
+      <pubDate>Fri, 12 May 2023 21:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/frequency-tracker/</guid>
+      <description>&lt;p&gt;LC 2671. 频率跟踪器，一道中规中矩的数据结构题目，解法平平无奇，却让我学到了「阅读理解」的重要性。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用「原地哈希」解决一类问题</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/</link>
+      <pubDate>Wed, 24 Aug 2022 00:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/</guid>
+      <description>&lt;p&gt;了解原地哈希思路，使用其解决LC几道代表性题目。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决「生成单调序列」类型题目</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/b-search-monotonic-sequence/</link>
+      <pubDate>Sat, 30 Jul 2022 00:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/b-search-monotonic-sequence/</guid>
+      <description>&lt;p&gt;LeetCode 一类题型解析，二分搜索变体：单调序列，单调序列是指非严格递增、非严格递减。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 895. 最大频率栈 题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/maximum-frequency-stack/</link>
+      <pubDate>Sun, 24 Jul 2022 12:09:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/maximum-frequency-stack/</guid>
+      <description>&lt;p&gt;LeetCode 895. 最大频率栈 题解，熟练掌握数据结构、集合的解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Redis内存优化策略</title>
+      <link>https://redolog.github.io/posts/rd/storage/redis/memory-optimization/</link>
+      <pubDate>Wed, 20 Jul 2022 18:10:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/redis/memory-optimization/</guid>
+      <description>&lt;p&gt;了解Redis如何优化内存开销，总结、学习其思想。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 112/113. 路径总和 DFS、回溯题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/path-sum-i-ii/</link>
+      <pubDate>Wed, 20 Jul 2022 17:22:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/path-sum-i-ii/</guid>
+      <description>&lt;p&gt;LeetCode 112/113. 路径总和，两道同类树形路径问题，熟悉&lt;code&gt;DFS&lt;/code&gt;、回溯解法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 121. 买卖股票的最佳时机 DP题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/best-time-to-buy-and-sell-stock/</link>
+      <pubDate>Wed, 20 Jul 2022 11:57:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/best-time-to-buy-and-sell-stock/</guid>
+      <description>&lt;p&gt;LeetCode 121. 买卖股票的最佳时机 DP题解，熟悉简单DP问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 470. 用 Rand7() 实现 Rand10() 进制转换题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/implement-rand10-using-rand7/</link>
+      <pubDate>Tue, 19 Jul 2022 22:52:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/implement-rand10-using-rand7/</guid>
+      <description>&lt;p&gt;LeetCode 470. 用 Rand7() 实现 Rand10() 进制转换题解，解决一道等概率类型的代表题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>COWMap结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/cow-map/</link>
+      <pubDate>Sun, 17 Jul 2022 21:55:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/cow-map/</guid>
+      <description>&lt;p&gt;从零实现一个&lt;code&gt;CopyOnWrite&lt;/code&gt;写时复制的&lt;code&gt;map&lt;/code&gt;，同时了解写时复制的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>BitMap结构实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/bitmap/</link>
+      <pubDate>Thu, 14 Jul 2022 19:20:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/bitmap/</guid>
+      <description>&lt;p&gt;从零实现位图&lt;code&gt;BitMap&lt;/code&gt;，使用实测数据感受其优劣，同时了解&lt;code&gt;BitMap&lt;/code&gt;结构的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>理解并实现一致性哈希</title>
+      <link>https://redolog.github.io/posts/rd/algo/hash/consistent-hashing/</link>
+      <pubDate>Sat, 02 Jul 2022 00:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/hash/consistent-hashing/</guid>
+      <description>&lt;p&gt;从零实现一个一致性哈希算法，理解+实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跳表结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</link>
+      <pubDate>Tue, 28 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</guid>
+      <description>&lt;p&gt;从零实现一个跳表。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LRU工业级案例</title>
+      <link>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru-industrial-case/</link>
+      <pubDate>Mon, 27 Jun 2022 15:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru-industrial-case/</guid>
+      <description>&lt;p&gt;了解&lt;code&gt;LRU&lt;/code&gt;工业级实现，以&lt;code&gt;MySQL&lt;/code&gt;、&lt;code&gt;Redis&lt;/code&gt;为例。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LRU基本实现及优化</title>
+      <link>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru/</link>
+      <pubDate>Thu, 23 Jun 2022 15:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/cache/replacement-policy/lru/</guid>
+      <description>&lt;p&gt;从零实现一个&lt;code&gt;LRU&lt;/code&gt;，同时优化我们的版本。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>特里树最简实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/trie-tree/</link>
+      <pubDate>Wed, 22 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/trie-tree/</guid>
+      <description>&lt;p&gt;从零实现一个最简单的特里树，同时了解特里树的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 153. 寻找旋转排序数组中的最小值 二分题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-minimum-in-rotated-sorted-array/</link>
+      <pubDate>Sun, 19 Jun 2022 16:48:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-minimum-in-rotated-sorted-array/</guid>
+      <description>&lt;p&gt;LeetCode 153. 寻找旋转排序数组中的最小值 二分题解，重新认识二分。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>堆结构实现及使用场景</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/heap/</link>
+      <pubDate>Thu, 16 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/heap/</guid>
+      <description>&lt;p&gt;从零实现一个最小堆，同时了解堆结构的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>并查集常见实现及优化</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/union-find/</link>
+      <pubDate>Tue, 14 Jun 2022 21:24:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/union-find/</guid>
+      <description>&lt;p&gt;从零实现并查集，并逐步优化各版本中的问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 46. 全排列 DFS题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/permutations/</link>
+      <pubDate>Tue, 07 Jun 2022 21:05:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/permutations/</guid>
+      <description>&lt;p&gt;LeetCode 46. 全排列 &lt;code&gt;DFS&lt;/code&gt;题解，理解&lt;code&gt;DFS&lt;/code&gt;、回溯、递归树。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 206. 反转链表 递归题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-linked-list/</link>
+      <pubDate>Sat, 04 Jun 2022 18:23:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-linked-list/</guid>
+      <description>&lt;p&gt;LeetCode 206. 反转链表题解，借用本题与关联题目，加强对递归的理解。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 142. 环形链表 II 题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/linked-list-cycle-ii/</link>
+      <pubDate>Sun, 22 May 2022 23:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/linked-list-cycle-ii/</guid>
+      <description>&lt;p&gt;LeetCode 142. 环形链表 II 题解，寻找链表环入口。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

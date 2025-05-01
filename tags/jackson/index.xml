@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>jackson on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/jackson/</link>
+    <description>Recent content in jackson on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 27 Jun 2023 21:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/jackson/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用jackson反序列化未忽略未知字段时报错 `UnrecognizedPropertyException` 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/serialization/jackson/unrecognized_property_exception/</link>
+      <pubDate>Tue, 27 Jun 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/serialization/jackson/unrecognized_property_exception/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;Redis&lt;/code&gt;缓存使用&lt;code&gt;Jackson2JsonRedisSerializer&lt;/code&gt;管理序列化，未设置&lt;code&gt;disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)&lt;/code&gt;，上线中新代码写入了新的缓存字段结构，旧代码读到新结构报错&lt;code&gt;UnrecognizedPropertyException&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>译---Alex Xu Twitter技术文 | 宋惠龙的博客</title>
+<meta name="keywords" content="English, Alex Xu, SystemDesign, 系统设计" />
+<meta name="description" content="翻译 Alex Xu 的技术 Twitter">
+<meta name="author" content="DragonSong">
+<link rel="canonical" href="https://redolog.github.io/posts/english/translation/twitter/alexxu/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.9b6a269e23740841d8b96cd2194e50ec25f1f4e98207baa71c1350b9a5c3c238.css" integrity="sha256-m2omniN0CEHYuWzSGU5Q7CXx9OmCB7qnHBNQuaXDwjg=" rel="preload stylesheet" as="style">
+<link rel="preload" href="/favicons/favicon16.ico" as="image">
+<link rel="icon" href="https://redolog.github.io/favicons/favicon16.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://redolog.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://redolog.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<link rel="mask-icon" href="https://redolog.github.io/favicons/favicon_apple_touch.ico">
+<meta name="theme-color" content="#fff2f2">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="译---Alex Xu Twitter技术文" />
+<meta property="og:description" content="翻译 Alex Xu 的技术 Twitter" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://redolog.github.io/posts/english/translation/twitter/alexxu/" /><meta property="og:image" content="https://redolog.github.io/avatar.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-30T15:32:50&#43;08:00" />
+<meta property="article:modified_time" content="2022-05-03T13:29:50&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://redolog.github.io/avatar.png"/>
+
+<meta name="twitter:title" content="译---Alex Xu Twitter技术文"/>
+<meta name="twitter:description" content="翻译 Alex Xu 的技术 Twitter"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://redolog.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "译---Alex Xu Twitter技术文",
+      "item": "https://redolog.github.io/posts/english/translation/twitter/alexxu/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "译---Alex Xu Twitter技术文",
+  "name": "译---Alex Xu Twitter技术文",
+  "description": "翻译 Alex Xu 的技术 Twitter",
+  "keywords": [
+    "English", "Alex Xu", "SystemDesign", "系统设计"
+  ],
+  "articleBody": "翻译 Alex Xu 的技术 Twitter。Alex Xu 是 System Design Interview 的作者之一。\nSystem Design Interview 中包含了大多数互联网技术体系中常见的系统设计案例，除了书籍，Alex Xu 在他的Twitter上也发了很多技术帖。\n本文结构：\n以场景-方案为单位； 说明背景、问题点； 阐述方案关键点、解析过程； 词汇：\nreconciliation 对账 ledger 收支总账、分类账簿 cut-off 截止点、界限 discrepancy 差异、不符 exponential 指数的、（增长）越来越快的 backoff 补偿 floating-gate 浮栅 transistor 晶体管 通用原则 针对面试场景，需要聚焦于核心设计，因为面试有时间限制，不可能考虑到实际场景中所有细节； 问清晰的问题，表达、阐述清晰； 不要过早优化； CDC变更数据捕获是如何工作的？ https://twitter.com/alexxubyte/status/1527318907786186753\n背景 存在某个数据库中的数据对于别的业务节点很有可能是有意义的，比如报表、AI等下游服务，那么每个下游节点都需要定制一套数据格式转换的逻辑吗？\nCDC ChangeDataCapture变更数据捕获帮我们解决了这个问题。\n变更数据捕获的运行机制 数据正常写入数据库； 数据库使用事务日志记录变更； CDC使用source connector连接数据库，读取事务日志； source connector将事务日志作为消息发送到MQ； CDC使用sink connector消费日志； sink connector将日志内容写入到下游； 除了第三步其他步骤对于用户都是透明的； 主流的CDC实现如Debezium支持了大多数RDBMS：MySQL, PostgreSQL, DB2, Oracle。\n开发者唯一要做的就是配置CDC的source、sink。\n什么是数据库隔离级别？ https://twitter.com/alexxubyte/status/1526234911178272768\nSerializalble：最高、最严格的隔离级别，并发事务顺次执行； Repeatable Read：事务中多次读效果与首次读一致； Read Committed：数据变更只能在事务提交后被读到； Read Uncommitted：最弱级别，事务提交前的数据可被别的事务读到； 上图中以 Repeatable Read 为例讲解 MVCC 的原理：\n每行数据有两个隐藏列： transaction_id 记录操作的事务id roll_pointer 指向事务开启时已提交最新的数据 事务A开启：生成transaction_id=201的快照ReadView； 事务B开启：生成transaction_id=202的快照ReadView； 事务A将余额更新为200，新数据日志落库，ReadView roll_pointer 指向旧的数据行； 在事务A提交前，事务B读取余额，发现事务201暂未提交，根据 roll_pointer 找到当前已提交最新的数据transaction_id=200； 此时事务A提交； 事务B再次读取余额，transaction_id=202的快照ReadView roll_pointer 仍然指向数据transaction_id=200； 什么是SSO单点登录？ https://twitter.com/alexxubyte/status/1523691173327507456\nSSO Single Sign-On\n背景 用户维护多个网站的用户名、密码多少是个繁琐的事，一旦忘记了某个网站的密码，可能还得回答很多找回密码的认证问题。\n单点登录作为一种认证方案，帮我们解决了这个问题：用户使用一个统一的id来访问多个系统。\n过程解析 用户首先访问Gmail，此时未登录，用户被重定向到SSO服务端，SSO也认定用户未登录；用户再重定向到登录页，输入SSO认证信息； 开始请求认证； 为用户创建token、全局session； Gmail携带token去SSO服务端认证，同时注册Gmail状态，返回valid，Gmail给用户返回登录可查看的资源； 用户此时从Gmail跳转到另一家Google系的网站Youtube； Youtube发现用户未登录，请求SSO系统，发现用户已登录，返回上一步已创建好的token； Youtube携带token去SSO服务端认证，同时注册Youtube状态，返回valid，Youtube给用户返回登录可查看的资源； 如何在数据库安全地存储密码？ https://twitter.com/alexxubyte/status/1522242694004674560\n禁止 🈲 不要在数据库存密码明文，那样的话内部人员都能看到密码！ 不要简单对密码hash后存储，那样的话易受彩虹表（提前把明文hash值缓存，撞库用）攻击！ 方案 👌🏻 加盐即可！\n盐值不要求是加密的，可以是我们指定的一段字符串（可以考虑存到数据库，后续能拿到即可），用于后续hash匹配唯一性。\nhash加盐格式：𝘩𝘢𝘴𝘩( 𝘱𝘢𝘴𝘴𝘸𝘰𝘳𝘥 + 𝘴𝘢𝘭𝘵)。\n验证过程：\n服务端接受到用户输入的密码； 获取提前指定的盐值，计算加盐hash值：𝘩𝘢𝘴𝘩( 𝘱𝘢𝘴𝘴𝘸𝘰𝘳𝘥 + 𝘴𝘢𝘭𝘵)； 对比提前存下的hash值，匹配即为有效； HTTPS是如何工作的？ https://twitter.com/alexxubyte/status/1521883407864590337\nHTTPS：\nHTTP安全版的拓展。 使用TLS（Transport Layer Security）传输数据。 如果消息被拦截，拦截者只能拿到加密的二进制码。 工作流程 客户端与服务端先建立一个TCP连接； 客户端发送一个「hello」消息给服务端，消息内包含了一组加密算法+最新支持的TLS版本； 服务端发回响应，告诉客户端算法与TLS版本的支持情况； 服务端接着发送SSL证书，包含： 公钥； 主机名； 过期时间； 客户端校验证书有效性； 证书校验后，客户端生成一个session key并使用公钥加密，服务端收到后使用私钥解密； 目前服务端+客户端均持有了同一个session key（对称加密），加密数据此时双向传输具备了安全性； HTTPS数据传输使用对称加密的原因：\n安全性。 非对称加密仅单向生效，也就是说服务端把加密消息返回给客户端后，任意客户端都可以用公钥解密； 节省服务端资源。 非对称加密有较多数学计算的开销，这一点不适用于长回话的场景； 如何设计缓存策略？ https://twitter.com/alexxubyte/status/1499428315429412864\nLinux性能剖析工具 https://twitter.com/alexxubyte/status/1500881250201976832\n排查系统问题时，观察系统层面的很多指标非常常见，可以借助下面的工具。\n常用工具 命令 作用 vmstat 输出进程、内存、页、block IO、CPU活动信息； iostat 输出CPU、IO统计数据； netstat 输出网络统计数据，包括不限于：IP/TCP/UDP/ICMP等协议； lsof 列出当前系统打开的文件； pidstat 监控指定或全部进程对应系统资源的使用情况，资源包括CPU/内存/IO/任务切换/线程等； 如何避免cache miss attack？ https://twitter.com/alexxubyte/status/1501609063129387014\n问题定义 cache miss attack 指的是请求尝试获取数据库与缓存均不存在的数据。\n会对数据库带来不必要的负载。有时候这是一种攻击手段。\n解决方案 两种通用方案：\n将key对应值设为null，同时将值为null的kv设定一个ttl存活时间（节省内存）。 使用bloomFilter。 key存在，先查缓存，没有再查数据库； key不存在，fail-fast请求直接返回； 权衡延迟、一致性 https://twitter.com/alexxubyte/status/1502321128752107526\n延迟与一致性是相悖的，需要根据实际场景做权衡。\nRedis vs Memcached https://twitter.com/alexxubyte/status/1503401413107347456\n对比也可参考：memcached-vs-redis-whats-the-difference\nRedis丰富的数据结构有如下优势：\n数据结构 场景 hash 方便记录每篇推文每次点击、评论； zset 去重用户数据；排序评论过的用户列表； zset、hash 缓存用户行为历史；过滤恶意行为数据； bitmap 使用极小的空间存储非常大量的二值数据，如登录状态、会员状态； 交互协议对比 SOAP vs REST vs GraphQL vs RPC. https://twitter.com/alexxubyte/status/1506298328878780419\nKafka为什么这么快？ https://twitter.com/alexxubyte/status/1506663791961919488 总结Kafka提升效率的设计要点。\n顺序IO 零拷贝 过程解析 零拷贝 步骤1.1-1.3，生产者Producer写入数据到磁盘； 步骤二，Consumer不用零拷贝读取数据： 2.1 数据从磁盘加载到系统缓存； 2.2 数据从系统缓存拷贝到Kafka应用层buffer； 2.3 数据从Kafka应用层buffer拷贝到socket buffer； 2.4 数据从socket buffer拷贝到网卡； 2.5 网卡发送数据给Consumer； 相比，Consumer用零拷贝读取数据： 3.1 数据从磁盘加载到系统缓存； 3.2 系统缓存直接将数据拷贝到网卡sendfile()； 3.3 网卡发送数据给Consumer； 零拷贝在数据不做多余处理只是复制传输的场景下减少了拷贝次数（内核、应用上下文），耗时可减少65%。\nSaaS vs PaaS vs IaaS vs DDD https://twitter.com/alexxubyte/status/1507026453572902912\nSaaS vs PaaS vs IaaS vs DDD 均为通用的云计算架构，本节简要描述定义、适用场景、发展历程。\nSaaS SaaS：软件即服务。服务供应商提供云应用，开箱即用。\n架构要点：分层，易于拓展、迭代。\nPaaS PaaS：平台即服务。提供基于云的开发、运行、管理应用的平台。\n如 AWS Elastic Beanstalk, Google App Engine\n架构要点：技术栈复用。抽象公用技术组件、平台。\nIaaS IaaS：基础设施服务。允许多个团队在云平台管理自己的服务器、存储。\nAWS, Azure, Google cloud\n架构要点：云平台通过虚拟化技术封装了操作系统，方便业务水平拓展业务服务器。\nDDD DDD：领域驱动设计。聚焦于领域建模，匹配领域专家的业务知识。\n架构要点：代码复杂度攀升，清晰定义领域边界有利于解耦领域业务。\n拓展服务应对量级 https://twitter.com/alexxubyte/status/1508835814469296131\n背景 电商网站背景下，用户量激增，服务如何拆分？\n假设我们有以下业务系统：\n库存 处理商品、库存 用户 处理用户元信息、注册登录逻辑 方案 由于用户量激增，单个应用后端顶不住流量，我们将应用后端与数据库拆到不同的服务器实例； 业务持续增长，我们将应用后端部署为多点集群； LoadBalancer负载均衡器处理路由，平衡流量； 业务再增长，数据库成为瓶颈，我们开启从库，拆分读写流量； 业务再增长，单个数据库实例顶不住TPS压力，现在有几个备选方案： 垂直分区：给数据库服务器实例增配，CPU、内存等； 水平分区：添加更多服务器实例； 增加缓存层； 拆分领域服务，微服务架构； HTTP发展历程 HTTP 1.0 -\u003e HTTP 1.1 -\u003e HTTP 2.0 -\u003e HTTP 3.0 (QUIC). https://twitter.com/alexxubyte/status/1509200416403189765\nHTTP 1.0 1996年HTTP 1.0敲定了初版，同一服务端的每个请求都需要开启新的TCP连接。\nHTTP 1.1 1997年HTTP 1.1发布，TCP连接具备了持久化能力，open之后可复用。HOL（head-of-line）阻塞问题依然存在。\nHOL（head-of-line）blocking 当浏览器允许的并行请求量到顶后，后续请求需要阻塞。\nHTTP 2.0 2015年HTTP 2.0发布，通过请求多路复用解决了应用层HOL阻塞问题，但传输层TCP依然存在HOL阻塞。\nHTTP 2.0引入了HTTP streams 流的概念，允许在同一个TCP连接上多路复用多个请求，并且每个流块不保证有序。\nHTTP 3.0 2020年HTTP 3.0首次提案，传输层使用QUIC替代了TCP，因此在传输层解决了HOL阻塞问题。\nQUIC基于UDP，其在传输层引入了stream流作为一等公民。QUIC的流复用连接，所以无需多余的握手、创建新连接的开销。\n缺点：QUIC的流与流是分开送达的，在很多丢包的场景下，一个流不会影响到别的流。\n2013年早期Twitter是如何运行的？ https://twitter.com/alexxubyte/status/1518981294494871553\n一条推文的生命周期 通过Write接口发出一条推文； Write服务将请求路由给Fanout service； Fanout service将推文存在Redis，并做一些其他处理； Timeline service找到推文对应时间线所在的Redis实例； 用户/客户端拉取Timeline service上的时间线； 搜索 \u0026 发现 Ingester: 标注、分词推文数据，供搜索用； Earlybird: 存储索引； Blender: 创建搜索页的时间线； 推送计算 基于HTTP推送 移动端推送 如何生成全局唯一id？ https://twitter.com/alexxubyte/status/1519348482057797632\n研究下像 Facebook, Twitter, LinkedIn 这些亿级用户大厂的用户id是怎么生成的。\n需求 全局唯一 不唯一的话会产生冲突 大概按照时间排序 像帖子获取的时候有天然的按时间排序的要求，如果id已经经过时间排序，则不需另外的操作 只能存number数字类型 与时间正相关，方便前端直接获取，无多余排序操作 64位 32位大概是40亿数据量，对于帖子这类数据来说，id不够用 而128位则太大了 高拓展性，低延迟 方案对比 方案 优点 缺点 数据库自增id 维护成本低 只能在单点服务架构下可行 UUID 容易生成；全局唯一 太长；非数字；非时间排序 DB ticket server 「我理解就是专用的数据库用于生成id」 自增id易理解 单点架构下会有单点故障问题；集群架构下id不严格排序 Redis，假设两台，A生成奇数，B生成偶数 不依赖数据库 引入了Redis集群维护成本 Twitter的雪花算法 Twitter开源，工业界Discord也用这个方案 SSD固态硬盘为什么快？ https://twitter.com/alexxubyte/status/1511374877600595968\n背景 固态一般的读写速度是机械硬盘的10-20倍。\n解析 SSD是基于flash内存的存储硬件，比特位（数据）存在浮栅晶体管组成的单元格中。相比HDD机械硬盘使用物理磁头，SSD所有组件均为电子组件。\n架构 用户读写指令通过host interface传入硬盘，这一层可以使用不同协议： Serial ATA (SATA) PCI Express (PCIe) 提供并行通道能力，更快 SSD Controller中的Processor接管命令，下一步传送给Flash Controller； SSD内置了RAM buffer，用于缓存、存储映射信息； NAND flash驱动内存以组为单位，交给多个channel管理，可并行处理； SSD Controller可并行处理多个FLASH颗粒，显著提高了带宽。比如我们想写多个页时，可并行处理。而HDD机械硬盘只有一个物理磁头，同一时刻只能读一个数据。\n每次写一个页数据，SSD Controller找到对应物理页、写入、并记录物理页与逻辑页的映射。下次读取数据时，根据映射就能找到数据的具体位置。\nGoogle如何避免爬取重复的URL？ https://twitter.com/alexxubyte/status/1511729406791749634\n使用set存储爬过的url set时间效率高，但是空间效率低。\n使用数据库存储爬过的url 可行，但是DB负载会很高。\n使用布隆过滤器存储爬过的url 这是当前最佳方案。\nBloom filter 在1970年被Burton Howard Bloom提出，是一种概率性数据结构，可以用来判断元素是否在集合中。\nfalse 表示元素一定不在集合中 true 表示元素可能在集合中 底层为一个位图，bitmap中存储元素经过多个hash函数计算后的槽位。\nbloomfilter还有升级版的布谷鸟过滤器，可以参考 linvon博客：布谷鸟过滤器：实际上优于布隆过滤器。\n虚拟化与容器化的区别？ https://twitter.com/alexxubyte/status/1512453102380908546\n解析虚拟化（VMWare）与容器化（Docker）的区别。\n虚拟化 虚拟化技术可以让我们在单一硬件上生成多套虚拟环境。\n容器化 容器化则是将程序源码、依赖的库或者框架一同打包，所以每套容器都是隔离的。\n对比 虚拟化技术中，Hypervisor在硬件之上提供了一层抽象，所以多套系统可以同时运行在同一套硬件上。这也是云计算的第一代思想。 容器化则是轻量级的虚拟化，在操作系统之上提供一层抽象，因为没有Hypervisor中间层，容器操作资源更加高效。 如何设计接口鉴权？ https://twitter.com/alexxubyte/status/1514256018187816965\n背景 openAPI需要保证接口经过鉴权。\n方案 最常见的方案：\n基于Token； 用户在客户端输入密码，向鉴权服务端请求返回token； 鉴权服务端生成并返回token，同时设定有效期； 与下一步合并； 客户端在HTTP Header携带token请求资源； HMAC (Hash-based Message Authentication Code) 基于哈希消息； 与下一步合并； 鉴权服务端生成： public的appID； private的apiKey； 客户端根据以下属性生成hmac哈希码，hmacA： appID 请求uri 请求内容 HTTP方法 请求时间戳 apiKey 客户端在HTTP Header携带hmacA请求资源； 我们的web后端也根据第三步的哈希算法计算出签名：hmacB； 与下一步合并； 根据hmacA、hmacB是否相等决定鉴权结果； 如何发布部署服务？ https://twitter.com/alexxubyte/status/1516444237440512007\n背景 部署、升级服务有很大风险，需要提前考虑风险缓解策略。 𝐌𝐮𝐥𝐭𝐢-𝐒𝐞𝐫𝐯𝐢𝐜𝐞 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 多服务同时发布 同时部署多个服务是最容易实现的，但是管理、测试依赖项、回滚成本会比较高。\n𝐁𝐥𝐮𝐞-𝐆𝐫𝐞𝐞𝐧 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 蓝绿发布 启动两个一模一样的环境：\nstaging「blue」 前置环境 production「green」 后置环境 staging测试完成后，将流量切换到切到staging，此时staging变成了production。\n这种方案很好回滚，但是使用两个一模一样的生产环境成本较高。\n𝐂𝐚𝐧𝐚𝐫𝐲 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 灰度发布 灰度部署会逐步发布多个服务，每个批次针对流量子集。\n优点 相比蓝绿发布成本较低。同时回滚成本也很低。\n缺点 由于没有staging环境，必须在生产环境测试。 实现难度高，需要监控灰度过程，流量切换需平滑。 𝐀/𝐁 𝐓𝐞𝐬𝐭 AB测试 同时在生产环境运行服务的新旧版本，每个版本针对部分子集用户。\nAB测试的测试成本更低。\n关于Amazon的部署相关文档参考这里：确保部署期间安全回滚。\n如何设计 Google Docs 在线文档？ https://twitter.com/alexxubyte/status/1516806335303536642\n流程解析 客户端给WebSocket服务端发送文档编辑操作； WebSocket服务端负责实时通信； MQ负责存储文档操作； 文档操作服务端消费消息，使用协作算法转换操作信息： 文档操作服务端存储： 文档元信息； 文档内容； 操作； 核心挑战 实时的冲突解决是很大的问题，主流算法：\nOperational transformation (OT) Google Doc 使用这种算法； Differential Synchronization (DS) Conflict-free replicated data type (CRDT) 适用于实时并发编辑场景； 进程与线程的区别是什么？ https://twitter.com/alexxubyte/status/1518615214316425216\nProgram 程序 program 是一个保存在磁盘的可执行文件，内部包含一系列指令。一个程序可以对应多个进程，比如Chrome的每个tab都是一个进程。\nProcess 一个进程 process 意味着程序在运行态。当程序加载到内存进入活动态，程序就变成了进程。进程持有一些核心资源：\n寄存器 register 计数器 program counter 栈 stack file handles sockets device handles Thread 线程是进程运行的最小单位。\n编程语言级别的线程对应一个内核态的线程。OS scheduler为线程抢占式分配时间片，提供并发功能。多线程可运行在多处理器上。\nCoroutine 像Golang、Kotlin这种语言支持了协程 coroutine，协程是封装级别更高的api，内部依然是线程池，程序员使用编程语言调度协程，函数内决定并发任务何时暂停、继续。\n协程相对来说更轻量级，使用更小的开销（没有OS scheduler调度的开销），实现了并发的语义。\n对比 进程通常是独立的，而线程作为进程的子集存在； 每个进程拥有子集的内存空间，而线程与进程共享内存； 进程操作相对重量级： 创建、终止开销较大； 上下文切换开销较大； 线程间通信效率更高； 协程相对更轻量级： 比线程使用更少内存，每个线程需要单独的栈空间，协程则不是； 没有系统调度开销； 发送邮件背后发生了什么？ https://twitter.com/alexxubyte/status/1501963751397871625\n解析赵四给刘能发送邮件背后的过程。\n赵四对应Alice\n刘能对应Bob\n用户主流程 赵四登录他的Outlook客户，写好邮件，点击发送。邮件首先发到Outlook服务端，客户端与服务端交互的协议为SMTP； Outlook服务端查一遍DNS，找到刘能的SMTP服务地址「Gmail」，将邮件发给Gmail服务端； Gmail服务端存储邮件内容，此时刘能可以查到邮件； 当刘能打开手机GmailApp时，客户端使用IMAP/POP协议从服务端拉取邮件； 邮件发送流程 https://twitter.com/alexxubyte/status/1488195702308040704 赵四写好邮件，发送，请求首先经过负载均衡器load balancer; load balancer处理一些限流、路由逻辑，请求转给web后端； web后端处理： 校验 检查接收人邮箱地址是否与发送人一样，如果已有就直接存储，此时用户直接通过RESTful接口查到邮件，不需后续流程 消息队列 基础校验通过后，邮件被放入outgoing队列 校验未通过，邮件被放入error队列 SMTPworker从outgoing队列拉取邮件，并且判定是否有垃圾邮件、病毒 outgoing邮件存储在已发送文件夹下 SMTPworker发送邮件给接收者服务端 要点：\noutgoing队列中的每条消息都携带了创建邮件所需的元信息 分布式mq对于异步邮件处理是很重要的组件 需要仔细检查outgoing队列中的消息量，一旦有大量邮件阻塞，需要分析原因： 接收人的服务端不可用了，这种情况一般过段时间进行重试，指数型补偿是不错的重试策略「1,2,4,8逐步变慢节奏」 负责发邮件的消费者不够了，这种情况需要增多消费者 邮件接收流程 https://twitter.com/alexxubyte/status/1488561820423970820 赵四那边发来的邮件首先经过SMTP load balancer load balancer在SMTP服务器间做流量负载，在SMTP连接级别可以配置邮件接收策略，在这一步，非法的邮件被拦截 如果附件过大，会将附件放到附件存储 邮件被放入接收邮件队列 队列将邮件处理与SMTP服务端解耦，两端可根据对应负载进行拓展 队列在邮件量激增时，扮演了缓存的角色 邮件处理worker处理多种逻辑：过滤垃圾邮件、拦截病毒 邮件信息存在数据库、缓存、对象存储等多种介质中 如果刘能这时候在线，邮件会直接推给实时服务端 实时服务端使用WebSocket协议，刘能可以直接感知到邮件变化 如果刘能这时候离线，邮件存到存储层，当刘能打开客户端上线后，webemail客户端使用RESTful连接到服务端，将邮件从存储层拉到客户端 设计一个指标收集、监控、告警系统 https://twitter.com/alexxubyte/status/1481679754008825857\n背景 收集指标、监控、告警，是分布式架构系统中保持高可用非常重要的一环。 方案 Metrics source 指标源 应用服务 数据库 消息队列 Metrics collector 指标收集器 收集指标数据，将其写入 tsdb 时序数据库 Ref https://twitter.com/alexxubyte/status/1484578136842850312\npull收集方式 要点：\n定期拉取 专门的组件负责 使用HTTP协议从source拉取 服务发现 简单场景下我们只需一个文件来维护source的地址信息，少量变更时也可以通过手工修改文件进行服务的上下线 复杂情况下我们需要服务发现组件，来帮我们自动更新、通知服务的变更 Kubernetes, Zookeeper Figure 3 解释了注册服务、更新服务、拉数据的过程 通过服务发现组件拉取服务端的配置元数据（pull需要的内部信息） ip地址 超时时间 重试参数 etc 通过预定义的HTTP接口拉取数据，如/metrics 可通过依赖、库的方式暴露对应endpoint 如 Figure 3 ，对应拉取的服务是一个web后端 可选项：collector注册服务变更通知 当服务endpoint变更时可自动更新接口信息 最简单的方式就是定期轮询 push收集方式 tbd\nTime-series database 时序数据库 以时间序列存储归集数据 提供UI界面，供分析、聚合数据 基于label创建索引，加快label维度的聚合查询 实例：prometheus Kafka 一款高可用、支持大数据拓展的分布式消息平台 将数据收集、数据处理解耦 Consumers 消费者通常使用流式系统，如Apache Storm, Flink and Spark，下一步将数据推到tsdb Query Service 查询服务 作为UI系统，方便用户从tsdb查询数据 可以内部做一层简单封装转发，也可以使用tsdb提供的界面系统 Alerting system 告警系统 向多个系统发送告警通知 Visualization system 可视化大盘系统 以图表的方式展示指标 如何解决对账问题？ https://twitter.com/alexxubyte/status/1480957044047835141\n背景 在支付系统中，对账是比较繁琐、痛苦的一个环节，服务目标是对齐不同系统间的金额，过程中会产生很多复杂问题。\n比如我们使用PayPal买了一块200的表：\n电商网站应该会记录一笔200金额的订单； 同时生成一条与PayPal的交易账单； 总账服务会为买方记录一笔200的借记出账，为卖方记录一笔200的入账，此为「复式簿记」double-entry bookkeeping； 问题 数据标准化 在不同系统间对比数据时，数据格式不同。\n解决：增加一个转换层转换格式。\n大数据量 解决： 针对不同量级的数据量，我们可以考虑：\n定时分批处理； 流式系统近实时计算； 其他大数据技术栈； 临界时间问题 假设我们约定 00:00:00 为一天的起始时刻。\n内部系统我们记录时间：23:59:55 ； 外部系统记录时间：00:00:30 ； 此时两个系统比对数据时，在同一天中数据不匹配了。\n解决：内部服务在当天批次查不到数据时，跳跃到第二天的批次拉取数据。如果还是找不到，忽略这种数据。\n支付系统设计索引 Payment system Payment security 安全风控 Double charge 多次收费 Reconciliation 对账 Painful payment reconciliation Clearing \u0026 settlement 清结算 Foreign exchange 跨境交易 SWIFT PDF link: https://bytebyte-go.s3.amazonaws.com/LinkedInPDF_part1_payment+-+Google+Docs.pdf\n设计一个基本的股票交易系统 https://twitter.com/alexxubyte/status/1478796978238615553\n方案 用户过程解析：「关键路径：交易」\n用户通过交易前台下单 前台发送订单给交易后端「1/6」 网关层执行： 校验 限流 认证 标准化处理 发送订单给订单服务 - 4/5步校验风控规则「2/6」 检查钱包余额 - - 订单交给匹配引擎。匹配引擎将匹配到的结果返回 - - - - 匹配结果一路返回给用户前台 市场数据过程解析：\nM1-M3 发送市场数据给数据服务，包括阴阳烛图（K线）、订单，前台broker通过数据服务查询数据 报表过程解析：\n报表服务组合需要的报表字段，处理对应后端逻辑 设计解析 交易为关键路径，相对来说市场数据、报表则不关键，对应我们系统设计的延迟要求不同 如何避免多次收费？ https://twitter.com/alexxubyte/status/1478409566463291395\n背景 支付系统设计实操中，面对一个常见的问题：对用户发起了多个收费。 我们的系统需要做到exactly-once的语义。\n方案 拆解exactly-once语义：\n请求至少执行一次，即at least once 同时满足，执行最多一次，即at most once「2/6」 分别对应两种手段：\nRetry 重试 重试可以解决网络错误、超时等问题，保证了至少一次的语义「3/6」 idempotency check 幂等校验 幂等是接口设计的常见方案，客户端可以针对同一请求重复发起多次，并且保证了最终结果是一致的「4/6」 在端与端间的网络通信中，幂等的key一般由客户端生成，并且在特定时刻失效，具有唯一性 在Strip PayPal等公司，通常使用了UUID作为了这个幂等唯一键，放在HTTPheader中「/66」 电商购买按钮背后做了什么？ https://twitter.com/alexxubyte/status/1478059800453779456\n过程解析 用户点击购买按钮，系统生成一个支付事件，下游的支付服务处理这个消息 支付服务使用数据库存储「支付事件」「1/6」 有时候单个支付事件内包含多个支付订单。 比如一次支付中包含了多个商家，此时支付服务调用多个支付接口「2/6」 支付服务将支付单存在数据库 支付服务调用外部接口PSP，以完成信用卡支付动作「3/6」 支付成功后，支付服务将结果更新到钱包，记录每个商家拿到了多少钱 钱包服务将余额更新到数据库「4/6」 上一步完成后，支付服务调用总账服务，更新总账 总账服务将总账记录到数据库「5/6」 每晚PSP或者信用卡、外部支付平台向客户发送结算文件。 结算文件中包含了账户余额、当天发生的交易「6/6」 TBD 分布式事务一致性，需要细节解析 高并发、高可用、低RT high concurrency, high availability and quick responsiveness https://twitter.com/alexxubyte/status/1463577613595598854\n背景 电商很多活动会带来很多高发流量，系统需要交付高并发、高可用、快速响应的能力。\n方案 产品设计 在用户下单前使用reCaptcha验证码，防刷 前端设计 尽可能少的页面元素 尽可能少的JS加载 使用CDN托管静态文件 网关限流 防DDoS 限制可疑IP 针对单一IP限流 后端设计 针对电商活动使用单独隔离的实例资源 使用消息队列MQ处理异步任务 减少依赖的服务，减少RPC调用 减少单点设计（提前容错） 防止超卖 下单时锁定库存 支付成功后减库存 存储 针对电商活动使用单独隔离的缓存资源 使用缓存维护库存数据 数据库分批更新 设计原则 少就是多 页面更少元素 对存储尽可能少的访问 减少接口请求 更少的服务依赖 最短决策路径 减少单一请求内依赖的服务数，或者想办法合并多个服务 异步处理 使用MQ处理高TPS 隔离 隔离静态、动态资源 隔离进程、服务、存储 防止超售 考虑好何时扣减库存 做好用户体验 禁止出现用户已购买成功，但是后续通知却没货 TBD 超售设计需要细节 ",
+  "wordCount" : "10484",
+  "inLanguage": "en",
+  "datePublished": "2022-04-30T15:32:50+08:00",
+  "dateModified": "2022-05-03T13:29:50+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "DragonSong"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://redolog.github.io/posts/english/translation/twitter/alexxu/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "宋惠龙的博客",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://redolog.github.io/favicons/favicon16.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://redolog.github.io/" accesskey="h" title="宋惠龙的博客 (Alt + H)">
+                <img src="https://redolog.github.io/favicons/favicon16.ico" alt="logo" aria-label="logo"
+                    height="35">宋惠龙的博客</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://redolog.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://redolog.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/redolog" title="GitHub">
+                    <span><i class='fab fa-github fa-fw'></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://redolog.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://redolog.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      译---Alex Xu Twitter技术文
+    </h1>
+    <div class="post-description">
+      翻译 Alex Xu 的技术 Twitter
+    </div>
+    <div class="post-meta"><span title='2022-04-30 15:32:50 +0800 CST'>April 30, 2022</span>&nbsp;·&nbsp;21 min&nbsp;·&nbsp;DragonSong
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e9%80%9a%e7%94%a8%e5%8e%9f%e5%88%99" aria-label="通用原则">通用原则</a></li>
+                    <li>
+                        <a href="#cdc%e5%8f%98%e6%9b%b4%e6%95%b0%e6%8d%ae%e6%8d%95%e8%8e%b7%e6%98%af%e5%a6%82%e4%bd%95%e5%b7%a5%e4%bd%9c%e7%9a%84" aria-label="CDC变更数据捕获是如何工作的？">CDC变更数据捕获是如何工作的？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e5%8f%98%e6%9b%b4%e6%95%b0%e6%8d%ae%e6%8d%95%e8%8e%b7%e7%9a%84%e8%bf%90%e8%a1%8c%e6%9c%ba%e5%88%b6" aria-label="变更数据捕获的运行机制">变更数据捕获的运行机制</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e4%bb%80%e4%b9%88%e6%98%af%e6%95%b0%e6%8d%ae%e5%ba%93%e9%9a%94%e7%a6%bb%e7%ba%a7%e5%88%ab" aria-label="什么是数据库隔离级别？">什么是数据库隔离级别？</a></li>
+                    <li>
+                        <a href="#%e4%bb%80%e4%b9%88%e6%98%afsso%e5%8d%95%e7%82%b9%e7%99%bb%e5%bd%95" aria-label="什么是SSO单点登录？">什么是SSO单点登录？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-1" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e8%bf%87%e7%a8%8b%e8%a7%a3%e6%9e%90" aria-label="过程解析">过程解析</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e5%9c%a8%e6%95%b0%e6%8d%ae%e5%ba%93%e5%ae%89%e5%85%a8%e5%9c%b0%e5%ad%98%e5%82%a8%e5%af%86%e7%a0%81" aria-label="如何在数据库安全地存储密码？">如何在数据库安全地存储密码？</a><ul>
+                            
+                    <li>
+                        <a href="#%e7%a6%81%e6%ad%a2-" aria-label="禁止 🈲">禁止 🈲</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88-" aria-label="方案 👌🏻">方案 👌🏻</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#https%e6%98%af%e5%a6%82%e4%bd%95%e5%b7%a5%e4%bd%9c%e7%9a%84" aria-label="HTTPS是如何工作的？"><code>HTTPS</code>是如何工作的？</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%b7%a5%e4%bd%9c%e6%b5%81%e7%a8%8b" aria-label="工作流程">工作流程</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e8%ae%be%e8%ae%a1%e7%bc%93%e5%ad%98%e7%ad%96%e7%95%a5" aria-label="如何设计缓存策略？">如何设计缓存策略？</a></li>
+                    <li>
+                        <a href="#linux%e6%80%a7%e8%83%bd%e5%89%96%e6%9e%90%e5%b7%a5%e5%85%b7" aria-label="Linux性能剖析工具">Linux性能剖析工具</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%b8%b8%e7%94%a8%e5%b7%a5%e5%85%b7" aria-label="常用工具">常用工具</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e9%81%bf%e5%85%8dcache-miss-attack" aria-label="如何避免cache miss attack？">如何避免cache miss attack？</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%97%ae%e9%a2%98%e5%ae%9a%e4%b9%89" aria-label="问题定义">问题定义</a></li>
+                    <li>
+                        <a href="#%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" aria-label="解决方案">解决方案</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%9d%83%e8%a1%a1%e5%bb%b6%e8%bf%9f%e4%b8%80%e8%87%b4%e6%80%a7" aria-label="权衡延迟、一致性">权衡延迟、一致性</a></li>
+                    <li>
+                        <a href="#redis-vs-memcached" aria-label="Redis vs Memcached">Redis vs Memcached</a></li>
+                    <li>
+                        <a href="#%e4%ba%a4%e4%ba%92%e5%8d%8f%e8%ae%ae%e5%af%b9%e6%af%94-soap-vs-rest-vs-graphql-vs-rpc" aria-label="交互协议对比 SOAP vs REST vs GraphQL vs RPC.">交互协议对比 SOAP vs REST vs GraphQL vs RPC.</a></li>
+                    <li>
+                        <a href="#kafka%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e4%b9%88%e5%bf%ab" aria-label="Kafka为什么这么快？">Kafka为什么这么快？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%bf%87%e7%a8%8b%e8%a7%a3%e6%9e%90-1" aria-label="过程解析">过程解析</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%9b%b6%e6%8b%b7%e8%b4%9d" aria-label="零拷贝">零拷贝</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#saas-vs-paas-vs-iaas-vs-ddd" aria-label="SaaS vs PaaS vs IaaS vs DDD">SaaS vs PaaS vs IaaS vs DDD</a><ul>
+                            
+                    <li>
+                        <a href="#saas" aria-label="SaaS">SaaS</a></li>
+                    <li>
+                        <a href="#paas" aria-label="PaaS">PaaS</a></li>
+                    <li>
+                        <a href="#iaas" aria-label="IaaS">IaaS</a></li>
+                    <li>
+                        <a href="#ddd" aria-label="DDD">DDD</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%8b%93%e5%b1%95%e6%9c%8d%e5%8a%a1%e5%ba%94%e5%af%b9%e9%87%8f%e7%ba%a7" aria-label="拓展服务应对量级">拓展服务应对量级</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-2" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88" aria-label="方案">方案</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#http%e5%8f%91%e5%b1%95%e5%8e%86%e7%a8%8b" aria-label="HTTP发展历程">HTTP发展历程</a><ul>
+                            
+                    <li>
+                        <a href="#http-10" aria-label="HTTP 1.0">HTTP 1.0</a></li>
+                    <li>
+                        <a href="#http-11" aria-label="HTTP 1.1">HTTP 1.1</a></li>
+                    <li>
+                        <a href="#http-20" aria-label="HTTP 2.0">HTTP 2.0</a></li>
+                    <li>
+                        <a href="#http-30" aria-label="HTTP 3.0">HTTP 3.0</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#2013%e5%b9%b4%e6%97%a9%e6%9c%9ftwitter%e6%98%af%e5%a6%82%e4%bd%95%e8%bf%90%e8%a1%8c%e7%9a%84" aria-label="2013年早期Twitter是如何运行的？">2013年早期Twitter是如何运行的？</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%b8%80%e6%9d%a1%e6%8e%a8%e6%96%87%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f" aria-label="一条推文的生命周期">一条推文的生命周期</a></li>
+                    <li>
+                        <a href="#%e6%90%9c%e7%b4%a2--%e5%8f%91%e7%8e%b0" aria-label="搜索 &amp;amp; 发现">搜索 &amp; 发现</a></li>
+                    <li>
+                        <a href="#%e6%8e%a8%e9%80%81%e8%ae%a1%e7%ae%97" aria-label="推送计算">推送计算</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e7%94%9f%e6%88%90%e5%85%a8%e5%b1%80%e5%94%af%e4%b8%80id" aria-label="如何生成全局唯一id？">如何生成全局唯一id？</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%9c%80%e6%b1%82" aria-label="需求">需求</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88%e5%af%b9%e6%af%94" aria-label="方案对比">方案对比</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#ssd%e5%9b%ba%e6%80%81%e7%a1%ac%e7%9b%98%e4%b8%ba%e4%bb%80%e4%b9%88%e5%bf%ab" aria-label="SSD固态硬盘为什么快？">SSD固态硬盘为什么快？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-3" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e8%a7%a3%e6%9e%90" aria-label="解析">解析</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%9e%b6%e6%9e%84" aria-label="架构">架构</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#google%e5%a6%82%e4%bd%95%e9%81%bf%e5%85%8d%e7%88%ac%e5%8f%96%e9%87%8d%e5%a4%8d%e7%9a%84url" aria-label="Google如何避免爬取重复的URL？">Google如何避免爬取重复的URL？</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%bd%bf%e7%94%a8set%e5%ad%98%e5%82%a8%e7%88%ac%e8%bf%87%e7%9a%84url" aria-label="使用set存储爬过的url">使用set存储爬过的url</a></li>
+                    <li>
+                        <a href="#%e4%bd%bf%e7%94%a8%e6%95%b0%e6%8d%ae%e5%ba%93%e5%ad%98%e5%82%a8%e7%88%ac%e8%bf%87%e7%9a%84url" aria-label="使用数据库存储爬过的url">使用数据库存储爬过的url</a></li>
+                    <li>
+                        <a href="#%e4%bd%bf%e7%94%a8%e5%b8%83%e9%9a%86%e8%bf%87%e6%bb%a4%e5%99%a8%e5%ad%98%e5%82%a8%e7%88%ac%e8%bf%87%e7%9a%84url" aria-label="使用布隆过滤器存储爬过的url">使用布隆过滤器存储爬过的url</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%99%9a%e6%8b%9f%e5%8c%96%e4%b8%8e%e5%ae%b9%e5%99%a8%e5%8c%96%e7%9a%84%e5%8c%ba%e5%88%ab" aria-label="虚拟化与容器化的区别？">虚拟化与容器化的区别？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%99%9a%e6%8b%9f%e5%8c%96" aria-label="虚拟化">虚拟化</a></li>
+                    <li>
+                        <a href="#%e5%ae%b9%e5%99%a8%e5%8c%96" aria-label="容器化">容器化</a></li>
+                    <li>
+                        <a href="#%e5%af%b9%e6%af%94" aria-label="对比">对比</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e8%ae%be%e8%ae%a1%e6%8e%a5%e5%8f%a3%e9%89%b4%e6%9d%83" aria-label="如何设计接口鉴权？">如何设计接口鉴权？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-4" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88-1" aria-label="方案">方案</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e5%8f%91%e5%b8%83%e9%83%a8%e7%bd%b2%e6%9c%8d%e5%8a%a1" aria-label="如何发布部署服务？">如何发布部署服务？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-5" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%f0%9d%90%8c%f0%9d%90%ae%f0%9d%90%a5%f0%9d%90%ad%f0%9d%90%a2-%f0%9d%90%92%f0%9d%90%9e%f0%9d%90%ab%f0%9d%90%af%f0%9d%90%a2%f0%9d%90%9c%f0%9d%90%9e-%f0%9d%90%83%f0%9d%90%9e%f0%9d%90%a9%f0%9d%90%a5%f0%9d%90%a8%f0%9d%90%b2%f0%9d%90%a6%f0%9d%90%9e%f0%9d%90%a7%f0%9d%90%ad-%e5%a4%9a%e6%9c%8d%e5%8a%a1%e5%90%8c%e6%97%b6%e5%8f%91%e5%b8%83" aria-label="𝐌𝐮𝐥𝐭𝐢-𝐒𝐞𝐫𝐯𝐢𝐜𝐞 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 多服务同时发布">𝐌𝐮𝐥𝐭𝐢-𝐒𝐞𝐫𝐯𝐢𝐜𝐞 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 多服务同时发布</a></li>
+                    <li>
+                        <a href="#%f0%9d%90%81%f0%9d%90%a5%f0%9d%90%ae%f0%9d%90%9e-%f0%9d%90%86%f0%9d%90%ab%f0%9d%90%9e%f0%9d%90%9e%f0%9d%90%a7-%f0%9d%90%83%f0%9d%90%9e%f0%9d%90%a9%f0%9d%90%a5%f0%9d%90%a8%f0%9d%90%b2%f0%9d%90%a6%f0%9d%90%9e%f0%9d%90%a7%f0%9d%90%ad-%e8%93%9d%e7%bb%bf%e5%8f%91%e5%b8%83" aria-label="𝐁𝐥𝐮𝐞-𝐆𝐫𝐞𝐞𝐧 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 蓝绿发布">𝐁𝐥𝐮𝐞-𝐆𝐫𝐞𝐞𝐧 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 蓝绿发布</a></li>
+                    <li>
+                        <a href="#%f0%9d%90%82%f0%9d%90%9a%f0%9d%90%a7%f0%9d%90%9a%f0%9d%90%ab%f0%9d%90%b2-%f0%9d%90%83%f0%9d%90%9e%f0%9d%90%a9%f0%9d%90%a5%f0%9d%90%a8%f0%9d%90%b2%f0%9d%90%a6%f0%9d%90%9e%f0%9d%90%a7%f0%9d%90%ad-%e7%81%b0%e5%ba%a6%e5%8f%91%e5%b8%83" aria-label="𝐂𝐚𝐧𝐚𝐫𝐲 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 灰度发布">𝐂𝐚𝐧𝐚𝐫𝐲 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 灰度发布</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%bc%98%e7%82%b9" aria-label="优点">优点</a></li>
+                    <li>
+                        <a href="#%e7%bc%ba%e7%82%b9" aria-label="缺点">缺点</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%f0%9d%90%80%f0%9d%90%81-%f0%9d%90%93%f0%9d%90%9e%f0%9d%90%ac%f0%9d%90%ad-ab%e6%b5%8b%e8%af%95" aria-label="𝐀/𝐁 𝐓𝐞𝐬𝐭 AB测试">𝐀/𝐁 𝐓𝐞𝐬𝐭 AB测试</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e8%ae%be%e8%ae%a1-google-docs-%e5%9c%a8%e7%ba%bf%e6%96%87%e6%a1%a3" aria-label="如何设计 Google Docs 在线文档？">如何设计 Google Docs 在线文档？</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%b5%81%e7%a8%8b%e8%a7%a3%e6%9e%90" aria-label="流程解析">流程解析</a></li>
+                    <li>
+                        <a href="#%e6%a0%b8%e5%bf%83%e6%8c%91%e6%88%98" aria-label="核心挑战">核心挑战</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%bf%9b%e7%a8%8b%e4%b8%8e%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%8c%ba%e5%88%ab%e6%98%af%e4%bb%80%e4%b9%88" aria-label="进程与线程的区别是什么？">进程与线程的区别是什么？</a><ul>
+                            
+                    <li>
+                        <a href="#program" aria-label="Program">Program</a></li>
+                    <li>
+                        <a href="#process" aria-label="Process">Process</a></li>
+                    <li>
+                        <a href="#thread" aria-label="Thread">Thread</a></li>
+                    <li>
+                        <a href="#coroutine" aria-label="Coroutine">Coroutine</a></li>
+                    <li>
+                        <a href="#%e5%af%b9%e6%af%94-1" aria-label="对比">对比</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%8f%91%e9%80%81%e9%82%ae%e4%bb%b6%e8%83%8c%e5%90%8e%e5%8f%91%e7%94%9f%e4%ba%86%e4%bb%80%e4%b9%88" aria-label="发送邮件背后发生了什么？">发送邮件背后发生了什么？</a><ul>
+                            
+                    <li>
+                        <a href="#%e7%94%a8%e6%88%b7%e4%b8%bb%e6%b5%81%e7%a8%8b" aria-label="用户主流程">用户主流程</a></li>
+                    <li>
+                        <a href="#%e9%82%ae%e4%bb%b6%e5%8f%91%e9%80%81%e6%b5%81%e7%a8%8b" aria-label="邮件发送流程">邮件发送流程</a></li>
+                    <li>
+                        <a href="#%e9%82%ae%e4%bb%b6%e6%8e%a5%e6%94%b6%e6%b5%81%e7%a8%8b" aria-label="邮件接收流程">邮件接收流程</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%ae%be%e8%ae%a1%e4%b8%80%e4%b8%aa%e6%8c%87%e6%a0%87%e6%94%b6%e9%9b%86%e7%9b%91%e6%8e%a7%e5%91%8a%e8%ad%a6%e7%b3%bb%e7%bb%9f" aria-label="设计一个指标收集、监控、告警系统">设计一个指标收集、监控、告警系统</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-6" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88-2" aria-label="方案">方案</a><ul>
+                            
+                    <li>
+                        <a href="#metrics-source-%e6%8c%87%e6%a0%87%e6%ba%90" aria-label="Metrics source 指标源">Metrics source 指标源</a></li>
+                    <li>
+                        <a href="#metrics-collector-%e6%8c%87%e6%a0%87%e6%94%b6%e9%9b%86%e5%99%a8" aria-label="Metrics collector 指标收集器">Metrics collector 指标收集器</a><ul>
+                            
+                    <li>
+                        <a href="#ref" aria-label="Ref">Ref</a></li>
+                    <li>
+                        <a href="#pull%e6%94%b6%e9%9b%86%e6%96%b9%e5%bc%8f" aria-label="pull收集方式">pull收集方式</a></li>
+                    <li>
+                        <a href="#push%e6%94%b6%e9%9b%86%e6%96%b9%e5%bc%8f" aria-label="push收集方式">push收集方式</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#time-series-database-%e6%97%b6%e5%ba%8f%e6%95%b0%e6%8d%ae%e5%ba%93" aria-label="Time-series database 时序数据库">Time-series database 时序数据库</a></li>
+                    <li>
+                        <a href="#kafka" aria-label="Kafka">Kafka</a></li>
+                    <li>
+                        <a href="#consumers" aria-label="Consumers">Consumers</a></li>
+                    <li>
+                        <a href="#query-service-%e6%9f%a5%e8%af%a2%e6%9c%8d%e5%8a%a1" aria-label="Query Service 查询服务">Query Service 查询服务</a></li>
+                    <li>
+                        <a href="#alerting-system-%e5%91%8a%e8%ad%a6%e7%b3%bb%e7%bb%9f" aria-label="Alerting system 告警系统">Alerting system 告警系统</a></li>
+                    <li>
+                        <a href="#visualization-system-%e5%8f%af%e8%a7%86%e5%8c%96%e5%a4%a7%e7%9b%98%e7%b3%bb%e7%bb%9f" aria-label="Visualization system 可视化大盘系统">Visualization system 可视化大盘系统</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e8%a7%a3%e5%86%b3%e5%af%b9%e8%b4%a6%e9%97%ae%e9%a2%98" aria-label="如何解决对账问题？">如何解决对账问题？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-7" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e9%97%ae%e9%a2%98" aria-label="问题">问题</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%95%b0%e6%8d%ae%e6%a0%87%e5%87%86%e5%8c%96" aria-label="数据标准化">数据标准化</a></li>
+                    <li>
+                        <a href="#%e5%a4%a7%e6%95%b0%e6%8d%ae%e9%87%8f" aria-label="大数据量">大数据量</a></li>
+                    <li>
+                        <a href="#%e4%b8%b4%e7%95%8c%e6%97%b6%e9%97%b4%e9%97%ae%e9%a2%98" aria-label="临界时间问题">临界时间问题</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%94%af%e4%bb%98%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%e7%b4%a2%e5%bc%95" aria-label="支付系统设计索引">支付系统设计索引</a></li>
+                    <li>
+                        <a href="#%e8%ae%be%e8%ae%a1%e4%b8%80%e4%b8%aa%e5%9f%ba%e6%9c%ac%e7%9a%84%e8%82%a1%e7%a5%a8%e4%ba%a4%e6%98%93%e7%b3%bb%e7%bb%9f" aria-label="设计一个基本的股票交易系统">设计一个基本的股票交易系统</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88-3" aria-label="方案">方案</a></li>
+                    <li>
+                        <a href="#%e8%ae%be%e8%ae%a1%e8%a7%a3%e6%9e%90" aria-label="设计解析">设计解析</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a6%82%e4%bd%95%e9%81%bf%e5%85%8d%e5%a4%9a%e6%ac%a1%e6%94%b6%e8%b4%b9" aria-label="如何避免多次收费？">如何避免多次收费？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-8" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88-4" aria-label="方案">方案</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e7%94%b5%e5%95%86%e8%b4%ad%e4%b9%b0%e6%8c%89%e9%92%ae%e8%83%8c%e5%90%8e%e5%81%9a%e4%ba%86%e4%bb%80%e4%b9%88" aria-label="电商购买按钮背后做了什么？">电商购买按钮背后做了什么？</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%bf%87%e7%a8%8b%e8%a7%a3%e6%9e%90-2" aria-label="过程解析">过程解析</a></li>
+                    <li>
+                        <a href="#tbd" aria-label="TBD">TBD</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e9%ab%98%e5%b9%b6%e5%8f%91%e9%ab%98%e5%8f%af%e7%94%a8%e4%bd%8ert" aria-label="高并发、高可用、低RT">高并发、高可用、低RT</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af-9" aria-label="背景">背景</a></li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%a1%88-5" aria-label="方案">方案</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%ba%a7%e5%93%81%e8%ae%be%e8%ae%a1" aria-label="产品设计">产品设计</a></li>
+                    <li>
+                        <a href="#%e5%89%8d%e7%ab%af%e8%ae%be%e8%ae%a1" aria-label="前端设计">前端设计</a></li>
+                    <li>
+                        <a href="#%e7%bd%91%e5%85%b3%e9%99%90%e6%b5%81" aria-label="网关限流">网关限流</a></li>
+                    <li>
+                        <a href="#%e5%90%8e%e7%ab%af%e8%ae%be%e8%ae%a1" aria-label="后端设计">后端设计</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%98%b2%e6%ad%a2%e8%b6%85%e5%8d%96" aria-label="防止超卖">防止超卖</a></li>
+                    <li>
+                        <a href="#%e5%ad%98%e5%82%a8" aria-label="存储">存储</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99" aria-label="设计原则">设计原则</a></li>
+                    <li>
+                        <a href="#tbd-1" aria-label="TBD">TBD</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>翻译 Alex Xu 的技术 Twitter。<a href="https://twitter.com/alexxubyte">Alex Xu</a> 是 <a href="https://book.douban.com/subject/35246417/">System Design Interview</a> 的作者之一。</p>
+<p><a href="https://book.douban.com/subject/35246417/">System Design Interview</a> 中包含了大多数互联网技术体系中常见的系统设计案例，除了书籍，<a href="https://twitter.com/alexxubyte">Alex Xu</a> 在他的Twitter上也发了很多技术帖。</p>
+<p>本文结构：</p>
+<ul>
+<li>以场景-方案为单位；</li>
+<li>说明背景、问题点；</li>
+<li>阐述方案关键点、解析过程；</li>
+</ul>
+<p>词汇：</p>
+<ul>
+<li>reconciliation 对账</li>
+<li>ledger 收支总账、分类账簿</li>
+<li>cut-off 截止点、界限</li>
+<li>discrepancy 差异、不符</li>
+<li>exponential 指数的、（增长）越来越快的</li>
+<li>backoff 补偿</li>
+<li>floating-gate 浮栅</li>
+<li>transistor 晶体管</li>
+</ul>
+<h1 id="通用原则">通用原则<a hidden class="anchor" aria-hidden="true" href="#通用原则">#</a></h1>
+<ol>
+<li>针对面试场景，需要聚焦于核心设计，因为面试有时间限制，不可能考虑到实际场景中所有细节；</li>
+<li>问清晰的问题，表达、阐述清晰；</li>
+<li>不要过早优化；</li>
+</ol>
+<h1 id="cdc变更数据捕获是如何工作的">CDC变更数据捕获是如何工作的？<a hidden class="anchor" aria-hidden="true" href="#cdc变更数据捕获是如何工作的">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1527318907786186753">https://twitter.com/alexxubyte/status/1527318907786186753</a></p>
+<h2 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h2>
+<p>存在某个数据库中的数据对于别的业务节点很有可能是有意义的，比如报表、AI等下游服务，那么每个下游节点都需要定制一套数据格式转换的逻辑吗？</p>
+<p><code>CDC ChangeDataCapture</code>变更数据捕获帮我们解决了这个问题。</p>
+<h2 id="变更数据捕获的运行机制">变更数据捕获的运行机制<a hidden class="anchor" aria-hidden="true" href="#变更数据捕获的运行机制">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/how_cdc_work.jpeg" alt=""  />
+</p>
+<ol>
+<li>数据正常写入数据库；</li>
+<li>数据库使用事务日志记录变更；</li>
+<li><code>CDC</code>使用<code>source connector</code>连接数据库，读取事务日志；</li>
+<li><code>source connector</code>将事务日志作为消息发送到<code>MQ</code>；</li>
+<li><code>CDC</code>使用<code>sink connector</code>消费日志；</li>
+<li><code>sink connector</code>将日志内容写入到下游；</li>
+<li>除了第三步其他步骤对于用户都是透明的；</li>
+</ol>
+<p>主流的<code>CDC</code>实现如<code>Debezium</code>支持了大多数<code>RDBMS</code>：MySQL, PostgreSQL, DB2, Oracle。</p>
+<p>开发者唯一要做的就是配置<code>CDC</code>的<code>source</code>、<code>sink</code>。</p>
+<h1 id="什么是数据库隔离级别">什么是数据库隔离级别？<a hidden class="anchor" aria-hidden="true" href="#什么是数据库隔离级别">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1526234911178272768">https://twitter.com/alexxubyte/status/1526234911178272768</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/database_isolation_level.jpeg" alt=""  />
+</p>
+<ul>
+<li>Serializalble：最高、最严格的隔离级别，并发事务顺次执行；</li>
+<li>Repeatable Read：事务中多次读效果与首次读一致；</li>
+<li>Read Committed：数据变更只能在事务提交后被读到；</li>
+<li>Read Uncommitted：最弱级别，事务提交前的数据可被别的事务读到；</li>
+</ul>
+<p>上图中以 Repeatable Read 为例讲解 MVCC 的原理：</p>
+<ul>
+<li>每行数据有两个隐藏列：
+<ul>
+<li>transaction_id 记录操作的事务id</li>
+<li>roll_pointer 指向事务开启时已提交最新的数据</li>
+</ul>
+</li>
+<li>事务A开启：生成<code>transaction_id=201</code>的快照<code>ReadView</code>；</li>
+<li>事务B开启：生成<code>transaction_id=202</code>的快照<code>ReadView</code>；</li>
+<li>事务A将余额更新为200，新数据日志落库，<code>ReadView</code> roll_pointer 指向旧的数据行；</li>
+<li>在事务A提交前，事务B读取余额，发现事务201暂未提交，根据 roll_pointer 找到当前已提交最新的数据<code>transaction_id=200</code>；</li>
+<li>此时事务A提交；</li>
+<li>事务B再次读取余额，<code>transaction_id=202</code>的快照<code>ReadView</code> roll_pointer 仍然指向数据<code>transaction_id=200</code>；</li>
+</ul>
+<h1 id="什么是sso单点登录">什么是SSO单点登录？<a hidden class="anchor" aria-hidden="true" href="#什么是sso单点登录">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1523691173327507456">https://twitter.com/alexxubyte/status/1523691173327507456</a></p>
+<blockquote>
+<p>SSO Single Sign-On</p>
+</blockquote>
+<h2 id="背景-1">背景<a hidden class="anchor" aria-hidden="true" href="#背景-1">#</a></h2>
+<p>用户维护多个网站的用户名、密码多少是个繁琐的事，一旦忘记了某个网站的密码，可能还得回答很多找回密码的认证问题。</p>
+<p>单点登录作为一种认证方案，帮我们解决了这个问题：用户使用一个统一的id来访问多个系统。</p>
+<h2 id="过程解析">过程解析<a hidden class="anchor" aria-hidden="true" href="#过程解析">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/how_does_sso_work.jpeg" alt=""  />
+</p>
+<ol>
+<li>用户首先访问<code>Gmail</code>，此时未登录，用户被重定向到<code>SSO</code>服务端，<code>SSO</code>也认定用户未登录；用户再重定向到登录页，输入<code>SSO</code>认证信息；</li>
+<li>开始请求认证；</li>
+<li>为用户创建<code>token</code>、全局<code>session</code>；</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><code>Gmail</code>携带<code>token</code>去<code>SSO</code>服务端认证，同时注册<code>Gmail</code>状态，返回<code>valid</code>，<code>Gmail</code>给用户返回登录可查看的资源；</li>
+<li>用户此时从<code>Gmail</code>跳转到另一家<code>Google</code>系的网站<code>Youtube</code>；</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><code>Youtube</code>发现用户未登录，请求<code>SSO</code>系统，发现用户已登录，返回上一步已创建好的<code>token</code>；</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><code>Youtube</code>携带<code>token</code>去<code>SSO</code>服务端认证，同时注册<code>Youtube</code>状态，返回<code>valid</code>，<code>Youtube</code>给用户返回登录可查看的资源；</li>
+</ol>
+<h1 id="如何在数据库安全地存储密码">如何在数据库安全地存储密码？<a hidden class="anchor" aria-hidden="true" href="#如何在数据库安全地存储密码">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1522242694004674560">https://twitter.com/alexxubyte/status/1522242694004674560</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/store_pwd_in_db.jpeg" alt=""  />
+</p>
+<h2 id="禁止-">禁止 🈲<a hidden class="anchor" aria-hidden="true" href="#禁止-">#</a></h2>
+<ul>
+<li>不要在数据库存密码明文，那样的话内部人员都能看到密码！</li>
+<li>不要简单对密码<code>hash</code>后存储，那样的话易受彩虹表（提前把明文<code>hash</code>值缓存，撞库用）攻击！</li>
+</ul>
+<h2 id="方案-">方案 👌🏻<a hidden class="anchor" aria-hidden="true" href="#方案-">#</a></h2>
+<p>加盐即可！</p>
+<p>盐值不要求是加密的，可以是我们指定的一段字符串（可以考虑存到数据库，后续能拿到即可），用于后续<code>hash</code>匹配唯一性。</p>
+<p><code>hash</code>加盐格式：<code>𝘩𝘢𝘴𝘩( 𝘱𝘢𝘴𝘴𝘸𝘰𝘳𝘥 + 𝘴𝘢𝘭𝘵)</code>。</p>
+<p>验证过程：</p>
+<ol>
+<li>服务端接受到用户输入的密码；</li>
+<li>获取提前指定的盐值，计算加盐hash值：<code>𝘩𝘢𝘴𝘩( 𝘱𝘢𝘴𝘴𝘸𝘰𝘳𝘥 + 𝘴𝘢𝘭𝘵)</code>；</li>
+<li>对比提前存下的hash值，匹配即为有效；</li>
+</ol>
+<h1 id="https是如何工作的"><code>HTTPS</code>是如何工作的？<a hidden class="anchor" aria-hidden="true" href="#https是如何工作的">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1521883407864590337">https://twitter.com/alexxubyte/status/1521883407864590337</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/how_does_https_work.jpeg" alt=""  />
+</p>
+<p><code>HTTPS</code>：</p>
+<ul>
+<li><code>HTTP</code>安全版的拓展。</li>
+<li>使用<code>TLS</code>（Transport Layer Security）传输数据。</li>
+<li>如果消息被拦截，拦截者只能拿到加密的二进制码。</li>
+</ul>
+<h2 id="工作流程">工作流程<a hidden class="anchor" aria-hidden="true" href="#工作流程">#</a></h2>
+<ol>
+<li>客户端与服务端先建立一个<code>TCP</code>连接；</li>
+<li>客户端发送一个「hello」消息给服务端，消息内包含了一组加密算法+最新支持的<code>TLS</code>版本；
+<ol>
+<li>服务端发回响应，告诉客户端算法与<code>TLS</code>版本的支持情况；</li>
+<li>服务端接着发送<code>SSL</code>证书，包含：
+<ol>
+<li>公钥；</li>
+<li>主机名；</li>
+<li>过期时间；</li>
+</ol>
+</li>
+<li>客户端校验证书有效性；</li>
+</ol>
+</li>
+<li>证书校验后，客户端生成一个<code>session key</code>并使用公钥加密，服务端收到后使用私钥解密；</li>
+<li>目前服务端+客户端均持有了同一个<code>session key</code>（对称加密），加密数据此时双向传输具备了安全性；</li>
+</ol>
+<p><code>HTTPS</code>数据传输使用对称加密的原因：</p>
+<ol>
+<li>安全性。 非对称加密仅单向生效，也就是说服务端把加密消息返回给客户端后，任意客户端都可以用公钥解密；</li>
+<li>节省服务端资源。 非对称加密有较多数学计算的开销，这一点不适用于长回话的场景；</li>
+</ol>
+<h1 id="如何设计缓存策略">如何设计缓存策略？<a hidden class="anchor" aria-hidden="true" href="#如何设计缓存策略">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1499428315429412864">https://twitter.com/alexxubyte/status/1499428315429412864</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/top_cache_strategies.jpeg" alt=""  />
+</p>
+<h1 id="linux性能剖析工具">Linux性能剖析工具<a hidden class="anchor" aria-hidden="true" href="#linux性能剖析工具">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1500881250201976832">https://twitter.com/alexxubyte/status/1500881250201976832</a></p>
+<p>排查系统问题时，观察系统层面的很多指标非常常见，可以借助下面的工具。</p>
+<h2 id="常用工具">常用工具<a hidden class="anchor" aria-hidden="true" href="#常用工具">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/linux_performance_observability_tools.jpeg" alt=""  />
+</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vmstat</td>
+<td>输出进程、内存、页、block IO、CPU活动信息；</td>
+</tr>
+<tr>
+<td>iostat</td>
+<td>输出CPU、IO统计数据；</td>
+</tr>
+<tr>
+<td>netstat</td>
+<td>输出网络统计数据，包括不限于：IP/TCP/UDP/ICMP等协议；</td>
+</tr>
+<tr>
+<td>lsof</td>
+<td>列出当前系统打开的文件；</td>
+</tr>
+<tr>
+<td>pidstat</td>
+<td>监控指定或全部进程对应系统资源的使用情况，资源包括CPU/内存/IO/任务切换/线程等；</td>
+</tr>
+</tbody>
+</table>
+<h1 id="如何避免cache-miss-attack">如何避免cache miss attack？<a hidden class="anchor" aria-hidden="true" href="#如何避免cache-miss-attack">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1501609063129387014">https://twitter.com/alexxubyte/status/1501609063129387014</a></p>
+<h2 id="问题定义">问题定义<a hidden class="anchor" aria-hidden="true" href="#问题定义">#</a></h2>
+<p>cache miss attack 指的是请求尝试获取数据库与缓存均不存在的数据。</p>
+<p>会对数据库带来不必要的负载。有时候这是一种攻击手段。</p>
+<h2 id="解决方案">解决方案<a hidden class="anchor" aria-hidden="true" href="#解决方案">#</a></h2>
+<p>两种通用方案：</p>
+<ol>
+<li>将<code>key</code>对应值设为<code>null</code>，同时将值为<code>null</code>的<code>kv</code>设定一个<code>ttl</code>存活时间（节省内存）。</li>
+<li>使用bloomFilter。
+<ol>
+<li><code>key</code>存在，先查缓存，没有再查数据库；</li>
+<li><code>key</code>不存在，<code>fail-fast</code>请求直接返回；</li>
+</ol>
+</li>
+</ol>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/cache_miss_attack_and_solution.jpeg" alt=""  />
+</p>
+<h1 id="权衡延迟一致性">权衡延迟、一致性<a hidden class="anchor" aria-hidden="true" href="#权衡延迟一致性">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1502321128752107526">https://twitter.com/alexxubyte/status/1502321128752107526</a></p>
+<p>延迟与一致性是相悖的，需要根据实际场景做权衡。</p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/tradeoff_between_latency_consistency.jpeg" alt=""  />
+</p>
+<h1 id="redis-vs-memcached">Redis vs Memcached<a hidden class="anchor" aria-hidden="true" href="#redis-vs-memcached">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1503401413107347456">https://twitter.com/alexxubyte/status/1503401413107347456</a></p>
+<p>对比也可参考：<a href="https://engineering.kablamo.com.au/posts/2021/memcached-vs-redis-whats-the-difference">memcached-vs-redis-whats-the-difference</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/memcached_vs_redis.jpeg" alt=""  />
+</p>
+<p>Redis丰富的数据结构有如下优势：</p>
+<table>
+<thead>
+<tr>
+<th>数据结构</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hash</td>
+<td>方便记录每篇推文每次点击、评论；</td>
+</tr>
+<tr>
+<td>zset</td>
+<td>去重用户数据；排序评论过的用户列表；</td>
+</tr>
+<tr>
+<td>zset、hash</td>
+<td>缓存用户行为历史；过滤恶意行为数据；</td>
+</tr>
+<tr>
+<td>bitmap</td>
+<td>使用极小的空间存储非常大量的二值数据，如登录状态、会员状态；</td>
+</tr>
+</tbody>
+</table>
+<h1 id="交互协议对比-soap-vs-rest-vs-graphql-vs-rpc">交互协议对比 SOAP vs REST vs GraphQL vs RPC.<a hidden class="anchor" aria-hidden="true" href="#交互协议对比-soap-vs-rest-vs-graphql-vs-rpc">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1506298328878780419">https://twitter.com/alexxubyte/status/1506298328878780419</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/SOAPvsRESTvsGraphQLvsRPC.jpeg" alt=""  />
+</p>
+<h1 id="kafka为什么这么快">Kafka为什么这么快？<a hidden class="anchor" aria-hidden="true" href="#kafka为什么这么快">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1506663791961919488">https://twitter.com/alexxubyte/status/1506663791961919488</a>
+总结Kafka提升效率的设计要点。</p>
+<ul>
+<li>顺序IO</li>
+<li>零拷贝</li>
+</ul>
+<h2 id="过程解析-1">过程解析<a hidden class="anchor" aria-hidden="true" href="#过程解析-1">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/why_is_kafka_fast.jpeg" alt=""  />
+</p>
+<h3 id="零拷贝">零拷贝<a hidden class="anchor" aria-hidden="true" href="#零拷贝">#</a></h3>
+<ol>
+<li>步骤1.1-1.3，生产者Producer写入数据到磁盘；</li>
+<li>步骤二，Consumer不用零拷贝读取数据：
+<ol>
+<li>2.1 数据从磁盘加载到系统缓存；</li>
+<li>2.2 数据从系统缓存拷贝到Kafka应用层buffer；</li>
+<li>2.3 数据从Kafka应用层buffer拷贝到<code>socket buffer</code>；</li>
+<li>2.4 数据从<code>socket buffer</code>拷贝到网卡；</li>
+<li>2.5 网卡发送数据给Consumer；</li>
+</ol>
+</li>
+<li>相比，Consumer用零拷贝读取数据：
+<ol>
+<li>3.1 数据从磁盘加载到系统缓存；</li>
+<li>3.2 系统缓存直接将数据拷贝到网卡<code>sendfile()</code>；</li>
+<li>3.3 网卡发送数据给Consumer；</li>
+</ol>
+</li>
+</ol>
+<p>零拷贝在数据不做多余处理只是复制传输的场景下减少了拷贝次数（内核、应用上下文），耗时可减少65%。</p>
+<h1 id="saas-vs-paas-vs-iaas-vs-ddd">SaaS vs PaaS vs IaaS vs DDD<a hidden class="anchor" aria-hidden="true" href="#saas-vs-paas-vs-iaas-vs-ddd">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1507026453572902912">https://twitter.com/alexxubyte/status/1507026453572902912</a></p>
+<p>SaaS vs PaaS vs IaaS vs DDD 均为通用的云计算架构，本节简要描述定义、适用场景、发展历程。</p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/SaaSvsPaaSvsIaaSvsDDD.jpeg" alt=""  />
+
+<img loading="lazy" src="/posts/english/translation/twitter/alexxu/IaaSvsPaaSvsSaaS.jpeg" alt=""  />
+</p>
+<h2 id="saas">SaaS<a hidden class="anchor" aria-hidden="true" href="#saas">#</a></h2>
+<p>SaaS：软件即服务。服务供应商提供云应用，开箱即用。</p>
+<p>架构要点：分层，易于拓展、迭代。</p>
+<h2 id="paas">PaaS<a hidden class="anchor" aria-hidden="true" href="#paas">#</a></h2>
+<p>PaaS：平台即服务。提供基于云的开发、运行、管理应用的平台。</p>
+<blockquote>
+<p>如 AWS Elastic Beanstalk, Google App Engine</p>
+</blockquote>
+<p>架构要点：技术栈复用。抽象公用技术组件、平台。</p>
+<h2 id="iaas">IaaS<a hidden class="anchor" aria-hidden="true" href="#iaas">#</a></h2>
+<p>IaaS：基础设施服务。允许多个团队在云平台管理自己的服务器、存储。</p>
+<blockquote>
+<p>AWS, Azure, Google cloud</p>
+</blockquote>
+<p>架构要点：云平台通过虚拟化技术封装了操作系统，方便业务水平拓展业务服务器。</p>
+<h2 id="ddd">DDD<a hidden class="anchor" aria-hidden="true" href="#ddd">#</a></h2>
+<p>DDD：领域驱动设计。聚焦于领域建模，匹配领域专家的业务知识。</p>
+<p>架构要点：代码复杂度攀升，清晰定义领域边界有利于解耦领域业务。</p>
+<h1 id="拓展服务应对量级">拓展服务应对量级<a hidden class="anchor" aria-hidden="true" href="#拓展服务应对量级">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1508835814469296131">https://twitter.com/alexxubyte/status/1508835814469296131</a></p>
+<h2 id="背景-2">背景<a hidden class="anchor" aria-hidden="true" href="#背景-2">#</a></h2>
+<p>电商网站背景下，用户量激增，服务如何拆分？</p>
+<p>假设我们有以下业务系统：</p>
+<ol>
+<li>库存
+<ol>
+<li>处理商品、库存</li>
+</ol>
+</li>
+<li>用户
+<ol>
+<li>处理用户元信息、注册登录逻辑</li>
+</ol>
+</li>
+</ol>
+<h2 id="方案">方案<a hidden class="anchor" aria-hidden="true" href="#方案">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/scale_a_website.jpeg" alt=""  />
+</p>
+<ol>
+<li>由于用户量激增，单个应用后端顶不住流量，我们将应用后端与数据库拆到不同的服务器实例；</li>
+<li>业务持续增长，我们将应用后端部署为多点集群；</li>
+<li>LoadBalancer负载均衡器处理路由，平衡流量；</li>
+<li>业务再增长，数据库成为瓶颈，我们开启从库，拆分读写流量；</li>
+<li>业务再增长，单个数据库实例顶不住TPS压力，现在有几个备选方案：
+<ol>
+<li>垂直分区：给数据库服务器实例增配，CPU、内存等；</li>
+<li>水平分区：添加更多服务器实例；</li>
+<li>增加缓存层；</li>
+</ol>
+</li>
+<li>拆分领域服务，微服务架构；</li>
+</ol>
+<h1 id="http发展历程">HTTP发展历程<a hidden class="anchor" aria-hidden="true" href="#http发展历程">#</a></h1>
+<p>HTTP 1.0 -&gt; HTTP 1.1 -&gt; HTTP 2.0 -&gt; HTTP 3.0 (QUIC).
+<a href="https://twitter.com/alexxubyte/status/1509200416403189765">https://twitter.com/alexxubyte/status/1509200416403189765</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/http_history.jpeg" alt=""  />
+</p>
+<h2 id="http-10">HTTP 1.0<a hidden class="anchor" aria-hidden="true" href="#http-10">#</a></h2>
+<p>1996年HTTP 1.0敲定了初版，同一服务端的每个请求都需要开启新的TCP连接。</p>
+<h2 id="http-11">HTTP 1.1<a hidden class="anchor" aria-hidden="true" href="#http-11">#</a></h2>
+<p>1997年HTTP 1.1发布，TCP连接具备了持久化能力，open之后可复用。HOL（head-of-line）阻塞问题依然存在。</p>
+<blockquote>
+<p>HOL（head-of-line）blocking
+当浏览器允许的并行请求量到顶后，后续请求需要阻塞。</p>
+</blockquote>
+<h2 id="http-20">HTTP 2.0<a hidden class="anchor" aria-hidden="true" href="#http-20">#</a></h2>
+<p>2015年HTTP 2.0发布，通过请求多路复用解决了应用层<code>HOL</code>阻塞问题，但传输层<code>TCP</code>依然存在<code>HOL</code>阻塞。</p>
+<p>HTTP 2.0引入了HTTP streams 流的概念，允许在同一个<code>TCP</code>连接上多路复用多个请求，并且每个流块不保证有序。</p>
+<h2 id="http-30">HTTP 3.0<a hidden class="anchor" aria-hidden="true" href="#http-30">#</a></h2>
+<p>2020年HTTP 3.0首次提案，传输层使用<code>QUIC</code>替代了<code>TCP</code>，因此在传输层解决了<code>HOL</code>阻塞问题。</p>
+<p><code>QUIC</code>基于<code>UDP</code>，其在传输层引入了<code>stream</code>流作为一等公民。<code>QUIC</code>的流复用连接，所以无需多余的握手、创建新连接的开销。</p>
+<p>缺点：<code>QUIC</code>的流与流是分开送达的，在很多丢包的场景下，一个流不会影响到别的流。</p>
+<h1 id="2013年早期twitter是如何运行的">2013年早期Twitter是如何运行的？<a hidden class="anchor" aria-hidden="true" href="#2013年早期twitter是如何运行的">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1518981294494871553">https://twitter.com/alexxubyte/status/1518981294494871553</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/how_twitter_work.jpeg" alt=""  />
+</p>
+<h2 id="一条推文的生命周期">一条推文的生命周期<a hidden class="anchor" aria-hidden="true" href="#一条推文的生命周期">#</a></h2>
+<ol>
+<li>通过<code>Write</code>接口发出一条推文；</li>
+<li><code>Write</code>服务将请求路由给<code>Fanout service</code>；</li>
+<li><code>Fanout service</code>将推文存在<code>Redis</code>，并做一些其他处理；</li>
+<li><code>Timeline service</code>找到推文对应时间线所在的<code>Redis</code>实例；</li>
+<li>用户/客户端拉取<code>Timeline service</code>上的时间线；</li>
+</ol>
+<h2 id="搜索--发现">搜索 &amp; 发现<a hidden class="anchor" aria-hidden="true" href="#搜索--发现">#</a></h2>
+<ul>
+<li>Ingester: 标注、分词推文数据，供搜索用；</li>
+<li>Earlybird: 存储索引；</li>
+<li>Blender: 创建搜索页的时间线；</li>
+</ul>
+<h2 id="推送计算">推送计算<a hidden class="anchor" aria-hidden="true" href="#推送计算">#</a></h2>
+<ul>
+<li>基于HTTP推送</li>
+<li>移动端推送</li>
+</ul>
+<h1 id="如何生成全局唯一id">如何生成全局唯一id？<a hidden class="anchor" aria-hidden="true" href="#如何生成全局唯一id">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1519348482057797632">https://twitter.com/alexxubyte/status/1519348482057797632</a></p>
+<p>研究下像 Facebook, Twitter, LinkedIn 这些亿级用户大厂的用户id是怎么生成的。</p>
+<h2 id="需求">需求<a hidden class="anchor" aria-hidden="true" href="#需求">#</a></h2>
+<ul>
+<li>全局唯一
+<ul>
+<li>不唯一的话会产生冲突</li>
+</ul>
+</li>
+<li>大概按照时间排序
+<ul>
+<li>像帖子获取的时候有天然的按时间排序的要求，如果id已经经过时间排序，则不需另外的操作</li>
+</ul>
+</li>
+<li>只能存number数字类型
+<ul>
+<li>与时间正相关，方便前端直接获取，无多余排序操作</li>
+</ul>
+</li>
+<li>64位
+<ul>
+<li>32位大概是40亿数据量，对于帖子这类数据来说，id不够用</li>
+<li>而128位则太大了</li>
+</ul>
+</li>
+<li>高拓展性，低延迟</li>
+</ul>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/unique_id_generator.jpeg" alt=""  />
+</p>
+<h2 id="方案对比">方案对比<a hidden class="anchor" aria-hidden="true" href="#方案对比">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据库自增id</td>
+<td>维护成本低</td>
+<td>只能在单点服务架构下可行</td>
+</tr>
+<tr>
+<td>UUID</td>
+<td>容易生成；全局唯一</td>
+<td>太长；非数字；非时间排序</td>
+</tr>
+<tr>
+<td>DB ticket server 「我理解就是专用的数据库用于生成id」</td>
+<td>自增id易理解</td>
+<td>单点架构下会有单点故障问题；集群架构下id不严格排序</td>
+</tr>
+<tr>
+<td>Redis，假设两台，A生成奇数，B生成偶数</td>
+<td>不依赖数据库</td>
+<td>引入了Redis集群维护成本</td>
+</tr>
+<tr>
+<td>Twitter的雪花算法</td>
+<td>Twitter开源，工业界Discord也用这个方案</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="ssd固态硬盘为什么快">SSD固态硬盘为什么快？<a hidden class="anchor" aria-hidden="true" href="#ssd固态硬盘为什么快">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1511374877600595968">https://twitter.com/alexxubyte/status/1511374877600595968</a></p>
+<h2 id="背景-3">背景<a hidden class="anchor" aria-hidden="true" href="#背景-3">#</a></h2>
+<p>固态一般的读写速度是机械硬盘的10-20倍。</p>
+<h2 id="解析">解析<a hidden class="anchor" aria-hidden="true" href="#解析">#</a></h2>
+<p>SSD是基于flash内存的存储硬件，比特位（数据）存在浮栅晶体管组成的单元格中。相比HDD机械硬盘使用物理磁头，SSD所有组件均为电子组件。</p>
+<h3 id="架构">架构<a hidden class="anchor" aria-hidden="true" href="#架构">#</a></h3>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/why_is_ssd_fast.jpeg" alt=""  />
+</p>
+<ol>
+<li>用户读写指令通过<code>host interface</code>传入硬盘，这一层可以使用不同协议：
+<ol>
+<li>Serial ATA (SATA)</li>
+<li>PCI Express (PCIe) 提供并行通道能力，更快</li>
+</ol>
+</li>
+<li><code>SSD Controller</code>中的<code>Processor</code>接管命令，下一步传送给<code>Flash Controller</code>；</li>
+<li>SSD内置了<code>RAM buffer</code>，用于缓存、存储映射信息；</li>
+<li>NAND flash驱动内存以组为单位，交给多个<code>channel</code>管理，可并行处理；</li>
+</ol>
+<p><code>SSD Controller</code>可并行处理多个<code>FLASH</code>颗粒，显著提高了带宽。比如我们想写多个页时，可并行处理。而HDD机械硬盘只有一个物理磁头，同一时刻只能读一个数据。</p>
+<p>每次写一个页数据，<code>SSD Controller</code>找到对应物理页、写入、并记录物理页与逻辑页的映射。下次读取数据时，根据映射就能找到数据的具体位置。</p>
+<h1 id="google如何避免爬取重复的url">Google如何避免爬取重复的URL？<a hidden class="anchor" aria-hidden="true" href="#google如何避免爬取重复的url">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1511729406791749634">https://twitter.com/alexxubyte/status/1511729406791749634</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/avoid_duplicate_url.jpeg" alt=""  />
+</p>
+<h2 id="使用set存储爬过的url">使用set存储爬过的url<a hidden class="anchor" aria-hidden="true" href="#使用set存储爬过的url">#</a></h2>
+<p>set时间效率高，但是空间效率低。</p>
+<h2 id="使用数据库存储爬过的url">使用数据库存储爬过的url<a hidden class="anchor" aria-hidden="true" href="#使用数据库存储爬过的url">#</a></h2>
+<p>可行，但是DB负载会很高。</p>
+<h2 id="使用布隆过滤器存储爬过的url">使用布隆过滤器存储爬过的url<a hidden class="anchor" aria-hidden="true" href="#使用布隆过滤器存储爬过的url">#</a></h2>
+<p>这是当前最佳方案。</p>
+<p>Bloom filter 在1970年被Burton Howard Bloom提出，是一种概率性数据结构，可以用来判断元素是否在集合中。</p>
+<ul>
+<li>false
+<ul>
+<li>表示元素一定不在集合中</li>
+</ul>
+</li>
+<li>true
+<ul>
+<li>表示元素可能在集合中</li>
+</ul>
+</li>
+</ul>
+<p>底层为一个位图，bitmap中存储元素经过多个hash函数计算后的槽位。</p>
+<p>bloomfilter还有升级版的布谷鸟过滤器，可以参考 <a href="http://www.linvon.cn/posts/cuckoo/">linvon博客：布谷鸟过滤器：实际上优于布隆过滤器</a>。</p>
+<h1 id="虚拟化与容器化的区别">虚拟化与容器化的区别？<a hidden class="anchor" aria-hidden="true" href="#虚拟化与容器化的区别">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1512453102380908546">https://twitter.com/alexxubyte/status/1512453102380908546</a></p>
+<p>解析虚拟化（VMWare）与容器化（Docker）的区别。</p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/virtualization_vs_containerization.jpeg" alt=""  />
+</p>
+<h2 id="虚拟化">虚拟化<a hidden class="anchor" aria-hidden="true" href="#虚拟化">#</a></h2>
+<p>虚拟化技术可以让我们在单一硬件上生成多套虚拟环境。</p>
+<h2 id="容器化">容器化<a hidden class="anchor" aria-hidden="true" href="#容器化">#</a></h2>
+<p>容器化则是将程序源码、依赖的库或者框架一同打包，所以每套容器都是隔离的。</p>
+<h2 id="对比">对比<a hidden class="anchor" aria-hidden="true" href="#对比">#</a></h2>
+<ul>
+<li>虚拟化技术中，Hypervisor在硬件之上提供了一层抽象，所以多套系统可以同时运行在同一套硬件上。这也是云计算的第一代思想。</li>
+<li>容器化则是轻量级的虚拟化，在操作系统之上提供一层抽象，因为没有Hypervisor中间层，容器操作资源更加高效。</li>
+</ul>
+<h1 id="如何设计接口鉴权">如何设计接口鉴权？<a hidden class="anchor" aria-hidden="true" href="#如何设计接口鉴权">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1514256018187816965">https://twitter.com/alexxubyte/status/1514256018187816965</a></p>
+<h2 id="背景-4">背景<a hidden class="anchor" aria-hidden="true" href="#背景-4">#</a></h2>
+<p><code>openAPI</code>需要保证接口经过鉴权。</p>
+<h2 id="方案-1">方案<a hidden class="anchor" aria-hidden="true" href="#方案-1">#</a></h2>
+<p>最常见的方案：</p>
+<ol>
+<li>基于<code>Token</code>；
+<ol>
+<li>用户在客户端输入密码，向鉴权服务端请求返回<code>token</code>；</li>
+<li>鉴权服务端生成并返回<code>token</code>，同时设定有效期；</li>
+<li>与下一步合并；</li>
+<li>客户端在<code>HTTP Header</code>携带<code>token</code>请求资源；</li>
+</ol>
+</li>
+<li>HMAC (Hash-based Message Authentication Code) 基于哈希消息；
+<ol>
+<li>与下一步合并；</li>
+<li>鉴权服务端生成：
+<ol>
+<li>public的appID；</li>
+<li>private的apiKey；</li>
+</ol>
+</li>
+<li>客户端根据以下属性生成hmac哈希码，hmacA：
+<ol>
+<li>appID</li>
+<li>请求uri</li>
+<li>请求内容</li>
+<li>HTTP方法</li>
+<li>请求时间戳</li>
+<li>apiKey</li>
+</ol>
+</li>
+<li>客户端在<code>HTTP Header</code>携带hmacA请求资源；</li>
+<li>我们的web后端也根据第三步的哈希算法计算出签名：hmacB；</li>
+<li>与下一步合并；</li>
+<li>根据hmacA、hmacB是否相等决定鉴权结果；</li>
+</ol>
+</li>
+</ol>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/design_secure_web_api.jpeg" alt=""  />
+</p>
+<h1 id="如何发布部署服务">如何发布部署服务？<a hidden class="anchor" aria-hidden="true" href="#如何发布部署服务">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1516444237440512007">https://twitter.com/alexxubyte/status/1516444237440512007</a></p>
+<h2 id="背景-5">背景<a hidden class="anchor" aria-hidden="true" href="#背景-5">#</a></h2>
+<p>部署、升级服务有很大风险，需要提前考虑风险缓解策略。
+<img loading="lazy" src="/posts/english/translation/twitter/alexxu/how_to_deploy_services.png" alt=""  />
+</p>
+<h2 id="𝐌𝐮𝐥𝐭𝐢-𝐒𝐞𝐫𝐯𝐢𝐜𝐞-𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭-多服务同时发布">𝐌𝐮𝐥𝐭𝐢-𝐒𝐞𝐫𝐯𝐢𝐜𝐞 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 多服务同时发布<a hidden class="anchor" aria-hidden="true" href="#𝐌𝐮𝐥𝐭𝐢-𝐒𝐞𝐫𝐯𝐢𝐜𝐞-𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭-多服务同时发布">#</a></h2>
+<p>同时部署多个服务是最容易实现的，但是管理、测试依赖项、回滚成本会比较高。</p>
+<h2 id="𝐁𝐥𝐮𝐞-𝐆𝐫𝐞𝐞𝐧-𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭-蓝绿发布">𝐁𝐥𝐮𝐞-𝐆𝐫𝐞𝐞𝐧 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 蓝绿发布<a hidden class="anchor" aria-hidden="true" href="#𝐁𝐥𝐮𝐞-𝐆𝐫𝐞𝐞𝐧-𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭-蓝绿发布">#</a></h2>
+<p>启动两个一模一样的环境：</p>
+<ul>
+<li>staging「blue」
+<ul>
+<li>前置环境</li>
+</ul>
+</li>
+<li>production「green」
+<ul>
+<li>后置环境</li>
+</ul>
+</li>
+</ul>
+<p><code>staging</code>测试完成后，将流量切换到切到<code>staging</code>，此时<code>staging</code>变成了<code>production</code>。</p>
+<p>这种方案很好回滚，但是使用两个一模一样的生产环境成本较高。</p>
+<h2 id="𝐂𝐚𝐧𝐚𝐫𝐲-𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭-灰度发布">𝐂𝐚𝐧𝐚𝐫𝐲 𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭 灰度发布<a hidden class="anchor" aria-hidden="true" href="#𝐂𝐚𝐧𝐚𝐫𝐲-𝐃𝐞𝐩𝐥𝐨𝐲𝐦𝐞𝐧𝐭-灰度发布">#</a></h2>
+<p>灰度部署会逐步发布多个服务，每个批次针对流量子集。</p>
+<h3 id="优点">优点<a hidden class="anchor" aria-hidden="true" href="#优点">#</a></h3>
+<p>相比蓝绿发布成本较低。同时回滚成本也很低。</p>
+<h3 id="缺点">缺点<a hidden class="anchor" aria-hidden="true" href="#缺点">#</a></h3>
+<ul>
+<li>由于没有<code>staging</code>环境，必须在生产环境测试。</li>
+<li>实现难度高，需要监控灰度过程，流量切换需平滑。</li>
+</ul>
+<h2 id="𝐀𝐁-𝐓𝐞𝐬𝐭-ab测试">𝐀/𝐁 𝐓𝐞𝐬𝐭 AB测试<a hidden class="anchor" aria-hidden="true" href="#𝐀𝐁-𝐓𝐞𝐬𝐭-ab测试">#</a></h2>
+<p>同时在生产环境运行服务的新旧版本，每个版本针对部分子集用户。</p>
+<p>AB测试的测试成本更低。</p>
+<p>关于Amazon的部署相关文档参考这里：<a href="https://aws.amazon.com/cn/builders-library/ensuring-rollback-safety-during-deployments/?did=ba_card&amp;trk=ba_card">确保部署期间安全回滚</a>。</p>
+<h1 id="如何设计-google-docs-在线文档">如何设计 Google Docs 在线文档？<a hidden class="anchor" aria-hidden="true" href="#如何设计-google-docs-在线文档">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1516806335303536642">https://twitter.com/alexxubyte/status/1516806335303536642</a></p>
+<h2 id="流程解析">流程解析<a hidden class="anchor" aria-hidden="true" href="#流程解析">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/design_google_doc.jpeg" alt=""  />
+</p>
+<ol>
+<li>客户端给<code>WebSocket</code>服务端发送文档编辑操作；</li>
+<li><code>WebSocket</code>服务端负责实时通信；</li>
+<li><code>MQ</code>负责存储文档操作；</li>
+<li>文档操作服务端消费消息，使用协作算法转换操作信息：</li>
+<li>文档操作服务端存储：
+<ol>
+<li>文档元信息；</li>
+<li>文档内容；</li>
+<li>操作；</li>
+</ol>
+</li>
+</ol>
+<h2 id="核心挑战">核心挑战<a hidden class="anchor" aria-hidden="true" href="#核心挑战">#</a></h2>
+<p>实时的冲突解决是很大的问题，主流算法：</p>
+<ul>
+<li>Operational transformation (OT)
+<ul>
+<li>Google Doc 使用这种算法；</li>
+</ul>
+</li>
+<li>Differential Synchronization (DS)</li>
+<li>Conflict-free replicated data type (CRDT)
+<ul>
+<li>适用于实时并发编辑场景；</li>
+</ul>
+</li>
+</ul>
+<h1 id="进程与线程的区别是什么">进程与线程的区别是什么？<a hidden class="anchor" aria-hidden="true" href="#进程与线程的区别是什么">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1518615214316425216">https://twitter.com/alexxubyte/status/1518615214316425216</a></p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/program_vs_process_vs_thread.jpeg" alt=""  />
+</p>
+<h2 id="program">Program<a hidden class="anchor" aria-hidden="true" href="#program">#</a></h2>
+<p>程序 <code>program</code> 是一个保存在磁盘的可执行文件，内部包含一系列指令。一个程序可以对应多个进程，比如<code>Chrome</code>的每个<code>tab</code>都是一个进程。</p>
+<h2 id="process">Process<a hidden class="anchor" aria-hidden="true" href="#process">#</a></h2>
+<p>一个进程 <code>process</code> 意味着程序在运行态。当程序加载到内存进入活动态，程序就变成了进程。进程持有一些核心资源：</p>
+<ul>
+<li>寄存器 <code>register</code></li>
+<li>计数器 <code>program counter</code></li>
+<li>栈 <code>stack</code></li>
+<li><code>file handles</code></li>
+<li><code>sockets</code></li>
+<li><code>device handles</code></li>
+</ul>
+<h2 id="thread">Thread<a hidden class="anchor" aria-hidden="true" href="#thread">#</a></h2>
+<p>线程是进程运行的最小单位。</p>
+<p>编程语言级别的线程对应一个内核态的线程。<code>OS scheduler</code>为线程抢占式分配时间片，提供并发功能。多线程可运行在多处理器上。</p>
+<h2 id="coroutine">Coroutine<a hidden class="anchor" aria-hidden="true" href="#coroutine">#</a></h2>
+<p>像Golang、Kotlin这种语言支持了协程 <code>coroutine</code>，协程是封装级别更高的api，内部依然是线程池，程序员使用编程语言调度协程，函数内决定并发任务何时暂停、继续。</p>
+<p>协程相对来说更轻量级，使用更小的开销（没有<code>OS scheduler</code>调度的开销），实现了并发的语义。</p>
+<h2 id="对比-1">对比<a hidden class="anchor" aria-hidden="true" href="#对比-1">#</a></h2>
+<ul>
+<li>进程通常是独立的，而线程作为进程的子集存在；</li>
+<li>每个进程拥有子集的内存空间，而线程与进程共享内存；</li>
+<li>进程操作相对重量级：
+<ul>
+<li>创建、终止开销较大；</li>
+<li>上下文切换开销较大；</li>
+<li>线程间通信效率更高；</li>
+</ul>
+</li>
+<li>协程相对更轻量级：
+<ul>
+<li>比线程使用更少内存，每个线程需要单独的栈空间，协程则不是；</li>
+<li>没有系统调度开销；</li>
+</ul>
+</li>
+</ul>
+<h1 id="发送邮件背后发生了什么">发送邮件背后发生了什么？<a hidden class="anchor" aria-hidden="true" href="#发送邮件背后发生了什么">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1501963751397871625">https://twitter.com/alexxubyte/status/1501963751397871625</a></p>
+<p>解析赵四给刘能发送邮件背后的过程。</p>
+<blockquote>
+<p>赵四对应Alice</p>
+<p>刘能对应Bob</p>
+</blockquote>
+<h2 id="用户主流程">用户主流程<a hidden class="anchor" aria-hidden="true" href="#用户主流程">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/behind_send_a_mail.jpeg" alt=""  />
+</p>
+<ol>
+<li>赵四登录他的<code>Outlook</code>客户，写好邮件，点击发送。邮件首先发到<code>Outlook</code>服务端，客户端与服务端交互的协议为<code>SMTP</code>；</li>
+<li><code>Outlook</code>服务端查一遍<code>DNS</code>，找到刘能的<code>SMTP</code>服务地址「<code>Gmail</code>」，将邮件发给<code>Gmail</code>服务端；</li>
+<li><code>Gmail</code>服务端存储邮件内容，此时刘能可以查到邮件；</li>
+<li>当刘能打开手机<code>Gmail</code>App时，客户端使用<code>IMAP/POP</code>协议从服务端拉取邮件；</li>
+</ol>
+<h2 id="邮件发送流程">邮件发送流程<a hidden class="anchor" aria-hidden="true" href="#邮件发送流程">#</a></h2>
+<p><a href="https://twitter.com/alexxubyte/status/1488195702308040704">https://twitter.com/alexxubyte/status/1488195702308040704</a>
+<img loading="lazy" src="/posts/english/translation/twitter/alexxu/email_sending_flow.jpeg" alt=""  />
+</p>
+<ol>
+<li>赵四写好邮件，发送，请求首先经过负载均衡器<code>load balancer</code>;</li>
+<li><code>load balancer</code>处理一些限流、路由逻辑，请求转给web后端；</li>
+<li>web后端处理：
+<ol>
+<li>校验</li>
+<li>检查接收人邮箱地址是否与发送人一样，如果已有就直接存储，此时用户直接通过<code>RESTful</code>接口查到邮件，不需后续流程</li>
+</ol>
+</li>
+<li>消息队列
+<ol>
+<li>基础校验通过后，邮件被放入<code>outgoing</code>队列</li>
+<li>校验未通过，邮件被放入<code>error</code>队列</li>
+</ol>
+</li>
+<li><code>SMTP</code>worker从<code>outgoing</code>队列拉取邮件，并且判定是否有垃圾邮件、病毒</li>
+<li><code>outgoing</code>邮件存储在已发送文件夹下</li>
+<li><code>SMTP</code>worker发送邮件给接收者服务端</li>
+</ol>
+<p>要点：</p>
+<ol>
+<li><code>outgoing</code>队列中的每条消息都携带了创建邮件所需的元信息</li>
+<li>分布式mq对于异步邮件处理是很重要的组件</li>
+<li>需要仔细检查<code>outgoing</code>队列中的消息量，一旦有大量邮件阻塞，需要分析原因：
+<ol>
+<li>接收人的服务端不可用了，这种情况一般过段时间进行重试，指数型补偿是不错的重试策略「1,2,4,8逐步变慢节奏」</li>
+<li>负责发邮件的消费者不够了，这种情况需要增多消费者</li>
+</ol>
+</li>
+</ol>
+<h2 id="邮件接收流程">邮件接收流程<a hidden class="anchor" aria-hidden="true" href="#邮件接收流程">#</a></h2>
+<p><a href="https://twitter.com/alexxubyte/status/1488561820423970820">https://twitter.com/alexxubyte/status/1488561820423970820</a>
+<img loading="lazy" src="/posts/english/translation/twitter/alexxu/email_receive_flow.jpeg" alt=""  />
+</p>
+<ol>
+<li>赵四那边发来的邮件首先经过<code>SMTP</code> <code>load balancer</code></li>
+<li><code>load balancer</code>在<code>SMTP</code>服务器间做流量负载，在<code>SMTP</code>连接级别可以配置邮件接收策略，在这一步，非法的邮件被拦截</li>
+<li>如果附件过大，会将附件放到附件存储</li>
+<li>邮件被放入接收邮件队列
+<ol>
+<li>队列将邮件处理与<code>SMTP</code>服务端解耦，两端可根据对应负载进行拓展</li>
+<li>队列在邮件量激增时，扮演了缓存的角色</li>
+</ol>
+</li>
+<li>邮件处理<code>worker</code>处理多种逻辑：过滤垃圾邮件、拦截病毒</li>
+<li>邮件信息存在数据库、缓存、对象存储等多种介质中</li>
+<li>如果刘能这时候在线，邮件会直接推给实时服务端</li>
+<li>实时服务端使用<code>WebSocket</code>协议，刘能可以直接感知到邮件变化</li>
+<li>如果刘能这时候离线，邮件存到存储层，当刘能打开客户端上线后，<code>webemail</code>客户端使用<code>RESTful</code>连接到服务端，将邮件从存储层拉到客户端</li>
+</ol>
+<h1 id="设计一个指标收集监控告警系统">设计一个指标收集、监控、告警系统<a hidden class="anchor" aria-hidden="true" href="#设计一个指标收集监控告警系统">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1481679754008825857">https://twitter.com/alexxubyte/status/1481679754008825857</a></p>
+<h2 id="背景-6">背景<a hidden class="anchor" aria-hidden="true" href="#背景-6">#</a></h2>
+<p>收集指标、监控、告警，是分布式架构系统中保持高可用非常重要的一环。
+<img loading="lazy" src="/posts/english/translation/twitter/alexxu/metrics_monitoring_alerting.jpeg" alt=""  />
+</p>
+<h2 id="方案-2">方案<a hidden class="anchor" aria-hidden="true" href="#方案-2">#</a></h2>
+<h3 id="metrics-source-指标源">Metrics source 指标源<a hidden class="anchor" aria-hidden="true" href="#metrics-source-指标源">#</a></h3>
+<ul>
+<li>应用服务</li>
+<li>数据库</li>
+<li>消息队列</li>
+</ul>
+<h3 id="metrics-collector-指标收集器">Metrics collector 指标收集器<a hidden class="anchor" aria-hidden="true" href="#metrics-collector-指标收集器">#</a></h3>
+<ul>
+<li>收集指标数据，将其写入 tsdb 时序数据库</li>
+</ul>
+<h4 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h4>
+<p><a href="https://twitter.com/alexxubyte/status/1484578136842850312">https://twitter.com/alexxubyte/status/1484578136842850312</a></p>
+<h4 id="pull收集方式">pull收集方式<a hidden class="anchor" aria-hidden="true" href="#pull收集方式">#</a></h4>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/metrics_collect_pull.jpeg" alt=""  />
+</p>
+<p>要点：</p>
+<ul>
+<li>定期拉取</li>
+<li>专门的组件负责</li>
+<li>使用<code>HTTP</code>协议从<code>source</code>拉取</li>
+<li>服务发现
+<ul>
+<li>简单场景下我们只需一个文件来维护<code>source</code>的地址信息，少量变更时也可以通过手工修改文件进行服务的上下线</li>
+<li>复杂情况下我们需要服务发现组件，来帮我们自动更新、通知服务的变更
+<ul>
+<li>Kubernetes, Zookeeper</li>
+<li>Figure 3 解释了注册服务、更新服务、拉数据的过程
+<ul>
+<li>通过服务发现组件拉取服务端的配置元数据（pull需要的内部信息）
+<ul>
+<li>ip地址</li>
+<li>超时时间</li>
+<li>重试参数</li>
+<li>etc</li>
+</ul>
+</li>
+<li>通过预定义的<code>HTTP</code>接口拉取数据，如<code>/metrics</code>
+<ul>
+<li>可通过依赖、库的方式暴露对应<code>endpoint</code></li>
+<li>如 Figure 3 ，对应拉取的服务是一个web后端</li>
+</ul>
+</li>
+<li>可选项：collector注册服务变更通知
+<ul>
+<li>当服务<code>endpoint</code>变更时可自动更新接口信息</li>
+<li>最简单的方式就是定期轮询</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="push收集方式">push收集方式<a hidden class="anchor" aria-hidden="true" href="#push收集方式">#</a></h4>
+<p>tbd</p>
+<h3 id="time-series-database-时序数据库">Time-series database 时序数据库<a hidden class="anchor" aria-hidden="true" href="#time-series-database-时序数据库">#</a></h3>
+<ul>
+<li>以时间序列存储归集数据</li>
+<li>提供UI界面，供分析、聚合数据</li>
+<li>基于<code>label</code>创建索引，加快<code>label</code>维度的聚合查询</li>
+<li>实例：prometheus</li>
+</ul>
+<h3 id="kafka">Kafka<a hidden class="anchor" aria-hidden="true" href="#kafka">#</a></h3>
+<ul>
+<li>一款高可用、支持大数据拓展的分布式消息平台</li>
+<li>将数据收集、数据处理解耦</li>
+</ul>
+<h3 id="consumers">Consumers<a hidden class="anchor" aria-hidden="true" href="#consumers">#</a></h3>
+<ul>
+<li>消费者通常使用流式系统，如<code>Apache Storm, Flink and Spark</code>，下一步将数据推到<code>tsdb</code></li>
+</ul>
+<h3 id="query-service-查询服务">Query Service 查询服务<a hidden class="anchor" aria-hidden="true" href="#query-service-查询服务">#</a></h3>
+<ul>
+<li>作为UI系统，方便用户从<code>tsdb</code>查询数据</li>
+<li>可以内部做一层简单封装转发，也可以使用<code>tsdb</code>提供的界面系统</li>
+</ul>
+<h3 id="alerting-system-告警系统">Alerting system 告警系统<a hidden class="anchor" aria-hidden="true" href="#alerting-system-告警系统">#</a></h3>
+<ul>
+<li>向多个系统发送告警通知</li>
+</ul>
+<h3 id="visualization-system-可视化大盘系统">Visualization system 可视化大盘系统<a hidden class="anchor" aria-hidden="true" href="#visualization-system-可视化大盘系统">#</a></h3>
+<ul>
+<li>以图表的方式展示指标</li>
+</ul>
+<h1 id="如何解决对账问题">如何解决对账问题？<a hidden class="anchor" aria-hidden="true" href="#如何解决对账问题">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1480957044047835141">https://twitter.com/alexxubyte/status/1480957044047835141</a></p>
+<h2 id="背景-7">背景<a hidden class="anchor" aria-hidden="true" href="#背景-7">#</a></h2>
+<p>在支付系统中，对账是比较繁琐、痛苦的一个环节，服务目标是对齐不同系统间的金额，过程中会产生很多复杂问题。</p>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/reconciliation_in_payment.jpeg" alt=""  />
+
+比如我们使用<code>PayPal</code>买了一块200的表：</p>
+<ul>
+<li>电商网站应该会记录一笔200金额的订单；</li>
+<li>同时生成一条与<code>PayPal</code>的交易账单；</li>
+<li>总账服务会为买方记录一笔200的借记出账，为卖方记录一笔200的入账，此为「复式簿记」<code>double-entry bookkeeping</code>；</li>
+</ul>
+<h2 id="问题">问题<a hidden class="anchor" aria-hidden="true" href="#问题">#</a></h2>
+<h3 id="数据标准化">数据标准化<a hidden class="anchor" aria-hidden="true" href="#数据标准化">#</a></h3>
+<p>在不同系统间对比数据时，数据格式不同。</p>
+<p>解决：增加一个转换层转换格式。</p>
+<h3 id="大数据量">大数据量<a hidden class="anchor" aria-hidden="true" href="#大数据量">#</a></h3>
+<p>解决：
+针对不同量级的数据量，我们可以考虑：</p>
+<ul>
+<li>定时分批处理；</li>
+<li>流式系统近实时计算；</li>
+<li>其他大数据技术栈；</li>
+</ul>
+<h3 id="临界时间问题">临界时间问题<a hidden class="anchor" aria-hidden="true" href="#临界时间问题">#</a></h3>
+<p>假设我们约定 00:00:00 为一天的起始时刻。</p>
+<ul>
+<li>内部系统我们记录时间：23:59:55 ；</li>
+<li>外部系统记录时间：00:00:30 ；</li>
+</ul>
+<p>此时两个系统比对数据时，在同一天中数据不匹配了。</p>
+<p>解决：内部服务在当天批次查不到数据时，跳跃到第二天的批次拉取数据。如果还是找不到，忽略这种数据。</p>
+<h1 id="支付系统设计索引">支付系统设计索引<a hidden class="anchor" aria-hidden="true" href="#支付系统设计索引">#</a></h1>
+<ul>
+<li>Payment system
+<ul>
+<li>Payment security 安全风控</li>
+<li>Double charge 多次收费</li>
+<li>Reconciliation 对账</li>
+<li>Painful payment reconciliation</li>
+<li>Clearing &amp; settlement 清结算</li>
+<li>Foreign exchange 跨境交易</li>
+<li>SWIFT</li>
+</ul>
+</li>
+</ul>
+<p>PDF link: <a href="https://bytebyte-go.s3.amazonaws.com/LinkedInPDF_part1_payment+-+Google+Docs.pdf">https://bytebyte-go.s3.amazonaws.com/LinkedInPDF_part1_payment+-+Google+Docs.pdf</a></p>
+<h1 id="设计一个基本的股票交易系统">设计一个基本的股票交易系统<a hidden class="anchor" aria-hidden="true" href="#设计一个基本的股票交易系统">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1478796978238615553">https://twitter.com/alexxubyte/status/1478796978238615553</a></p>
+<h2 id="方案-3">方案<a hidden class="anchor" aria-hidden="true" href="#方案-3">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/design_a_stock_exchange_system.png" alt=""  />
+</p>
+<p>用户过程解析：「关键路径：交易」</p>
+<ol>
+<li>用户通过交易前台下单</li>
+<li>前台发送订单给交易后端「1/6」</li>
+<li>网关层执行：
+<ol>
+<li>校验</li>
+<li>限流</li>
+<li>认证</li>
+<li>标准化处理</li>
+<li>发送订单给订单服务</li>
+</ol>
+</li>
+<li><del>-</del></li>
+<li>4/5步校验风控规则「2/6」</li>
+<li>检查钱包余额</li>
+<li><del>-</del></li>
+<li><del>-</del></li>
+<li>订单交给匹配引擎。匹配引擎将匹配到的结果返回</li>
+<li><del>-</del></li>
+<li><del>-</del></li>
+<li><del>-</del></li>
+<li><del>-</del></li>
+<li>匹配结果一路返回给用户前台</li>
+</ol>
+<p>市场数据过程解析：</p>
+<ol>
+<li>M1-M3 发送市场数据给数据服务，包括阴阳烛图（K线）、订单，前台broker通过数据服务查询数据</li>
+</ol>
+<p>报表过程解析：</p>
+<ol>
+<li>报表服务组合需要的报表字段，处理对应后端逻辑</li>
+</ol>
+<h2 id="设计解析">设计解析<a hidden class="anchor" aria-hidden="true" href="#设计解析">#</a></h2>
+<ol>
+<li>交易为关键路径，相对来说市场数据、报表则不关键，对应我们系统设计的延迟要求不同</li>
+</ol>
+<h1 id="如何避免多次收费">如何避免多次收费？<a hidden class="anchor" aria-hidden="true" href="#如何避免多次收费">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1478409566463291395">https://twitter.com/alexxubyte/status/1478409566463291395</a></p>
+<h2 id="背景-8">背景<a hidden class="anchor" aria-hidden="true" href="#背景-8">#</a></h2>
+<p>支付系统设计实操中，面对一个常见的问题：对用户发起了多个收费。
+我们的系统需要做到<code>exactly-once</code>的语义。</p>
+<h2 id="方案-4">方案<a hidden class="anchor" aria-hidden="true" href="#方案-4">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/avoid_double_charge.jpeg" alt=""  />
+</p>
+<p>拆解<code>exactly-once</code>语义：</p>
+<ol>
+<li>请求至少执行一次，即<code>at least once</code></li>
+<li>同时满足，执行最多一次，即<code>at most once</code>「2/6」</li>
+</ol>
+<p>分别对应两种手段：</p>
+<ol>
+<li><code>Retry</code> 重试
+<ol>
+<li>重试可以解决网络错误、超时等问题，保证了至少一次的语义「3/6」</li>
+</ol>
+</li>
+<li><code>idempotency check</code> 幂等校验
+<ol>
+<li>幂等是接口设计的常见方案，客户端可以针对同一请求重复发起多次，并且保证了最终结果是一致的「4/6」</li>
+<li>在端与端间的网络通信中，幂等的key一般由客户端生成，并且在特定时刻失效，具有唯一性
+<ol>
+<li>在<code>Strip</code> <code>PayPal</code>等公司，通常使用了<code>UUID</code>作为了这个幂等唯一键，放在<code>HTTP</code>header中「/66」</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="电商购买按钮背后做了什么">电商购买按钮背后做了什么？<a hidden class="anchor" aria-hidden="true" href="#电商购买按钮背后做了什么">#</a></h1>
+<p><a href="https://twitter.com/alexxubyte/status/1478059800453779456">https://twitter.com/alexxubyte/status/1478059800453779456</a></p>
+<h2 id="过程解析-2">过程解析<a hidden class="anchor" aria-hidden="true" href="#过程解析-2">#</a></h2>
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/behind_amazon_buy_button.jpeg" alt=""  />
+</p>
+<ol>
+<li>用户点击购买按钮，系统生成一个支付事件，下游的支付服务处理这个消息</li>
+<li>支付服务使用数据库存储「支付事件」「1/6」</li>
+<li>有时候单个支付事件内包含多个支付订单。
+<ol>
+<li>比如一次支付中包含了多个商家，此时支付服务调用多个支付接口「2/6」</li>
+</ol>
+</li>
+<li>支付服务将支付单存在数据库</li>
+<li>支付服务调用外部接口<code>PSP</code>，以完成信用卡支付动作「3/6」</li>
+<li>支付成功后，支付服务将结果更新到钱包，记录每个商家拿到了多少钱</li>
+<li>钱包服务将余额更新到数据库「4/6」</li>
+<li>上一步完成后，支付服务调用总账服务，更新总账</li>
+<li>总账服务将总账记录到数据库「5/6」</li>
+<li>每晚<code>PSP</code>或者信用卡、外部支付平台向客户发送结算文件。
+<ol>
+<li>结算文件中包含了账户余额、当天发生的交易「6/6」</li>
+</ol>
+</li>
+</ol>
+<h2 id="tbd">TBD<a hidden class="anchor" aria-hidden="true" href="#tbd">#</a></h2>
+<ul>
+<li>分布式事务一致性，需要细节解析</li>
+</ul>
+<h1 id="高并发高可用低rt">高并发、高可用、低RT<a hidden class="anchor" aria-hidden="true" href="#高并发高可用低rt">#</a></h1>
+<p>high concurrency, high availability and quick responsiveness
+<a href="https://twitter.com/alexxubyte/status/1463577613595598854">https://twitter.com/alexxubyte/status/1463577613595598854</a></p>
+<h2 id="背景-9">背景<a hidden class="anchor" aria-hidden="true" href="#背景-9">#</a></h2>
+<p>电商很多活动会带来很多高发流量，系统需要交付高并发、高可用、快速响应的能力。</p>
+<h2 id="方案-5">方案<a hidden class="anchor" aria-hidden="true" href="#方案-5">#</a></h2>
+<!-- raw HTML omitted -->
+<p><img loading="lazy" src="/posts/english/translation/twitter/alexxu/ha_hc_quick_response.jpeg" alt=""  />
+</p>
+<h3 id="产品设计">产品设计<a hidden class="anchor" aria-hidden="true" href="#产品设计">#</a></h3>
+<ul>
+<li>在用户下单前使用<code>reCaptcha</code>验证码，防刷</li>
+</ul>
+<h3 id="前端设计">前端设计<a hidden class="anchor" aria-hidden="true" href="#前端设计">#</a></h3>
+<ul>
+<li>尽可能少的页面元素</li>
+<li>尽可能少的<code>JS</code>加载</li>
+<li>使用<code>CDN</code>托管静态文件</li>
+</ul>
+<h3 id="网关限流">网关限流<a hidden class="anchor" aria-hidden="true" href="#网关限流">#</a></h3>
+<ul>
+<li>防<code>DDoS</code></li>
+<li>限制可疑<code>IP</code></li>
+<li>针对单一<code>IP</code>限流</li>
+</ul>
+<h3 id="后端设计">后端设计<a hidden class="anchor" aria-hidden="true" href="#后端设计">#</a></h3>
+<ul>
+<li>针对电商活动使用单独隔离的实例资源</li>
+<li>使用消息队列<code>MQ</code>处理异步任务</li>
+<li>减少依赖的服务，减少<code>RPC</code>调用</li>
+<li>减少单点设计（提前容错）</li>
+</ul>
+<h4 id="防止超卖">防止超卖<a hidden class="anchor" aria-hidden="true" href="#防止超卖">#</a></h4>
+<ul>
+<li>下单时锁定库存</li>
+<li>支付成功后减库存</li>
+</ul>
+<h4 id="存储">存储<a hidden class="anchor" aria-hidden="true" href="#存储">#</a></h4>
+<ul>
+<li>针对电商活动使用单独隔离的缓存资源</li>
+<li>使用缓存维护库存数据</li>
+<li>数据库分批更新</li>
+</ul>
+<h2 id="设计原则">设计原则<a hidden class="anchor" aria-hidden="true" href="#设计原则">#</a></h2>
+<ol>
+<li>少就是多
+<ol>
+<li>页面更少元素</li>
+<li>对存储尽可能少的访问</li>
+<li>减少接口请求</li>
+<li>更少的服务依赖</li>
+</ol>
+</li>
+<li>最短决策路径
+<ol>
+<li>减少单一请求内依赖的服务数，或者想办法合并多个服务</li>
+</ol>
+</li>
+<li>异步处理
+<ol>
+<li>使用<code>MQ</code>处理高<code>TPS</code></li>
+</ol>
+</li>
+<li>隔离
+<ol>
+<li>隔离静态、动态资源</li>
+<li>隔离进程、服务、存储</li>
+</ol>
+</li>
+<li>防止超售
+<ol>
+<li>考虑好何时扣减库存</li>
+</ol>
+</li>
+<li>做好用户体验
+<ol>
+<li>禁止出现用户已购买成功，但是后续通知却没货</li>
+</ol>
+</li>
+</ol>
+<h2 id="tbd-1">TBD<a hidden class="anchor" aria-hidden="true" href="#tbd-1">#</a></h2>
+<ul>
+<li>超售设计需要细节</li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://redolog.github.io/tags/english/">English</a></li>
+      <li><a href="https://redolog.github.io/tags/alex-xu/">Alex Xu</a></li>
+      <li><a href="https://redolog.github.io/tags/systemdesign/">SystemDesign</a></li>
+      <li><a href="https://redolog.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">系统设计</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://redolog.github.io/posts/rd/storage/mysql/performance-optimization/cheatsheet/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>MySQL性能优化cheatsheet</span>
+  </a>
+  <a class="next" href="https://redolog.github.io/posts/rd/design/pattern/index/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>设计模式一览</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 译---Alex Xu Twitter技术文 on twitter"
+        href="https://twitter.com/intent/tweet/?text=%e8%af%91---Alex%20Xu%20Twitter%e6%8a%80%e6%9c%af%e6%96%87&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f&amp;hashtags=English%2cAlexXu%2cSystemDesign%2c%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 译---Alex Xu Twitter技术文 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f&amp;title=%e8%af%91---Alex%20Xu%20Twitter%e6%8a%80%e6%9c%af%e6%96%87&amp;summary=%e8%af%91---Alex%20Xu%20Twitter%e6%8a%80%e6%9c%af%e6%96%87&amp;source=https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 译---Alex Xu Twitter技术文 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f&title=%e8%af%91---Alex%20Xu%20Twitter%e6%8a%80%e6%9c%af%e6%96%87">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 译---Alex Xu Twitter技术文 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 译---Alex Xu Twitter技术文 on whatsapp"
+        href="https://api.whatsapp.com/send?text=%e8%af%91---Alex%20Xu%20Twitter%e6%8a%80%e6%9c%af%e6%96%87%20-%20https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share 译---Alex Xu Twitter技术文 on telegram"
+        href="https://telegram.me/share/url?text=%e8%af%91---Alex%20Xu%20Twitter%e6%8a%80%e6%9c%af%e6%96%87&amp;url=https%3a%2f%2fredolog.github.io%2fposts%2fenglish%2ftranslation%2ftwitter%2falexxu%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+
+  </footer>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+      const gitalk = new Gitalk({
+            clientID: 'bc5a91c74dda1fd92a10',
+            clientSecret: '99a821a1c27e5dc85ea3105bf9bba089d1b580ea',
+            repo: 'blog-comment',
+            owner: 'redolog',
+            admin: ['redolog'],
+            id: md5(location.pathname), 
+            distractionFreeMode: false 
+      });
+      (function () {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                  document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+                  return;
+            }
+            gitalk.render('gitalk-container');
+      })();
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://redolog.github.io/">宋惠龙的博客</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

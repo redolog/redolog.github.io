@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>simulation on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/simulation/</link>
+    <description>Recent content in simulation on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 29 Jul 2022 11:29:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/simulation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 243. 最短单词距离 模拟题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/shortest-word-distance/</link>
+      <pubDate>Fri, 29 Jul 2022 11:29:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/shortest-word-distance/</guid>
+      <description>&lt;p&gt;LeetCode 243. 最短单词距离 模拟题解，简单题理清模拟过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 14. 最长公共前缀 模拟题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/longest-common-prefix/</link>
+      <pubDate>Sat, 16 Jul 2022 16:15:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/longest-common-prefix/</guid>
+      <description>&lt;p&gt;LeetCode 14. 最长公共前缀 模拟题解。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 2000. 反转单词前缀 双指针模拟题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-prefix-of-word/</link>
+      <pubDate>Sat, 16 Jul 2022 15:42:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/reverse-prefix-of-word/</guid>
+      <description>&lt;p&gt;LeetCode 2000. 反转单词前缀 双指针模拟题解，简单题双指针写法。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

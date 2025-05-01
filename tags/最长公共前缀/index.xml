@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>最长公共前缀 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%89%8D%E7%BC%80/</link>
+    <description>Recent content in 最长公共前缀 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 16 Jul 2022 16:15:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%89%8D%E7%BC%80/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 14. 最长公共前缀 模拟题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/longest-common-prefix/</link>
+      <pubDate>Sat, 16 Jul 2022 16:15:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/longest-common-prefix/</guid>
+      <description>&lt;p&gt;LeetCode 14. 最长公共前缀 模拟题解。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

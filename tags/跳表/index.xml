@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>跳表 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E8%B7%B3%E8%A1%A8/</link>
+    <description>Recent content in 跳表 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 02 Jul 2022 00:35:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E8%B7%B3%E8%A1%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>理解并实现一致性哈希</title>
+      <link>https://redolog.github.io/posts/rd/algo/hash/consistent-hashing/</link>
+      <pubDate>Sat, 02 Jul 2022 00:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/hash/consistent-hashing/</guid>
+      <description>&lt;p&gt;从零实现一个一致性哈希算法，理解+实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跳表结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</link>
+      <pubDate>Tue, 28 Jun 2022 20:35:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/skiplist/</guid>
+      <description>&lt;p&gt;从零实现一个跳表。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>简析ES/Lucene索引的基本设计原理</title>
+      <link>https://redolog.github.io/posts/rd/storage/es/index-structure/</link>
+      <pubDate>Tue, 09 Feb 2021 09:14:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/storage/es/index-structure/</guid>
+      <description>为什么Elasticsearch/Lucene全文查询这么快？</description>
+    </item>
+    
+  </channel>
+</rss>

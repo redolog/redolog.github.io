@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Concurrent on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/concurrent/</link>
+    <description>Recent content in Concurrent on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 20 Mar 2024 20:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用分布式锁解决接口互斥性、幂等性问题两例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</link>
+      <pubDate>Wed, 20 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</guid>
+      <description>&lt;p&gt;针对近期处理的两例并发场景引发的「互斥性」「幂等性」问题进行过程分析、输出系统方案。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查mybatis ognl解析参数值并发设置字段访问性报错问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</link>
+      <pubDate>Fri, 01 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</guid>
+      <description>&lt;p&gt;年后负责一个比较老的服务，报警不少，今天排查的这个问题也只有在老版本&lt;code&gt;MyBatis&lt;/code&gt;下才有机会复现，值此宝贵的线上问题机会，记录一番。&lt;/p&gt;
+&lt;p&gt;低版本&lt;code&gt;MyBatis&lt;/code&gt;中，在高并发情况下，有概率遇到解析&lt;code&gt;private&lt;/code&gt;内部类集合解析抛错的情况。&lt;/p&gt;
+&lt;p&gt;我通过分析异常栈+搜索+分析源码的方式解决了此问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>spring-data-redis版本过低，导致并发获取数据为null问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</link>
+      <pubDate>Mon, 27 Feb 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;spring-data-redis&lt;/code&gt;版本过低，导致并发获取数据为&lt;code&gt;null&lt;/code&gt;问题一例，试用&lt;code&gt;phind.com&lt;/code&gt;AI 搜索，快速定位到了问题原因。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

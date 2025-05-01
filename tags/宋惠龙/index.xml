@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>宋惠龙 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E5%AE%8B%E6%83%A0%E9%BE%99/</link>
+    <description>Recent content in 宋惠龙 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 30 Dec 2023 17:11:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E5%AE%8B%E6%83%A0%E9%BE%99/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>宋惠龙的自我介绍</title>
+      <link>https://redolog.github.io/about/</link>
+      <pubDate>Sat, 30 Dec 2023 17:11:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/about/</guid>
+      <description>我是谁？ 我叫宋惠龙，网名一般是DragonSong，我是一名政法学院毕业的后端工程师。 生于山西平遥，求学于广东佛山，现在蚂蚁国际搬砖，毕业以</description>
+    </item>
+    
+  </channel>
+</rss>
