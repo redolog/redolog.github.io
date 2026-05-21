@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>网络 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 08 Nov 2022 12:40:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解决iCloud同步卡住的问题</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/</link>
+      <pubDate>Tue, 08 Nov 2022 12:40:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/icloud/sync-block/</guid>
+      <description>&lt;p&gt;居家办公，使用备用机搬砖，发现iCloud有文件没同步过来，排查、咨询客服后通过进入安全模式解决了问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决MacOS突然无法上网问题</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/macos/network/network-connected-but-cant-browse/</link>
+      <pubDate>Sat, 13 Aug 2022 21:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/macos/network/network-connected-but-cant-browse/</guid>
+      <description>&lt;p&gt;笔记本突然没法上网了，准确地说是能用微信但是浏览器无法上网，简单排查处理了下，这里记录下思路、过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

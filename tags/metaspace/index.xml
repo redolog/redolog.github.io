@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MetaSpace on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/metaspace/</link>
+    <description>Recent content in MetaSpace on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 15 Sep 2023 09:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/metaspace/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>aviator动态创建类过多导致元空间内存泄漏 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/jvm/memory-leak/aviator/</link>
+      <pubDate>Fri, 15 Sep 2023 09:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/jvm/memory-leak/aviator/</guid>
+      <description>&lt;p&gt;协助同事排查处理了一则&lt;code&gt;aviator&lt;/code&gt;使用不当导致元空间内存泄漏的问题，个人觉得是一则很有价值的案例，因此观摩学习一波。&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;aviator&lt;/code&gt;不启用表达式缓存的情况下，会分别在编译、解析阶段根据时间戳使用&lt;code&gt;asm&lt;/code&gt;动态生成&lt;code&gt;class&lt;/code&gt;，生成过多&lt;code&gt;class&lt;/code&gt;就会撑爆元空间，也就是内存泄漏。&lt;/p&gt;
+&lt;p&gt;除此之外，在分析过程中还发现了&lt;code&gt;aviator&lt;/code&gt;低版本的另一个泄漏问题，非常适合用来巩固&lt;code&gt;jvm&lt;/code&gt;相关知识。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

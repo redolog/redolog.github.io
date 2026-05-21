@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>设计 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E8%AE%BE%E8%AE%A1/</link>
+    <description>Recent content in 设计 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 18 Oct 2023 19:06:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用策略模式优化支付回调代码一例</title>
+      <link>https://redolog.github.io/posts/rd/design/pattern/case/pay-callback/</link>
+      <pubDate>Wed, 18 Oct 2023 19:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/pattern/case/pay-callback/</guid>
+      <description>&lt;p&gt;本文使用策略模式和模板方法模式来优化处理支付回调的代码结构，记录设计模式应用实例。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式一览</title>
+      <link>https://redolog.github.io/posts/rd/design/pattern/index/</link>
+      <pubDate>Mon, 21 Mar 2022 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/pattern/index/</guid>
+      <description>&lt;p&gt;设计模式是前辈们针对实际编码中各种问题对应解决方案的抽象总结，是一种最佳实践。因此值得每一位工程师学习借鉴。
+使用的时候重点是&lt;em&gt;识别面临的问题的场景，识破问题关键&lt;/em&gt;，挑选适当的模式进行编码。
+&lt;strong&gt;识别&lt;/strong&gt;这一步最为关键。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从零开始微服务</title>
+      <link>https://redolog.github.io/posts/rd/share/learn-micro-service-from-scratch/</link>
+      <pubDate>Wed, 26 Dec 2018 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/share/learn-micro-service-from-scratch/</guid>
+      <description>&lt;p&gt;大约是2018-12在&lt;code&gt;imageDT&lt;/code&gt;内部简单分享的一则Slide：从零开始微服务。介绍微服务出现的背景、历程以及基本的技术栈体现。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Java on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/java/</link>
+    <description>Recent content in Java on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 17 Sep 2024 17:05:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>理解AQS架构</title>
+      <link>https://redolog.github.io/posts/rd/design/aqs/architecture/</link>
+      <pubDate>Tue, 17 Sep 2024 17:05:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/aqs/architecture/</guid>
+      <description>通过本文，我会尝试用我平时学习、工作的思路，来帮助读者建立对AQS的基础认知。</description>
+    </item>
+    
+    <item>
+      <title>使用分布式锁解决接口互斥性、幂等性问题两例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</link>
+      <pubDate>Wed, 20 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/distributed-lock/exlusiveness-and-idempotence-case01/</guid>
+      <description>&lt;p&gt;针对近期处理的两例并发场景引发的「互斥性」「幂等性」问题进行过程分析、输出系统方案。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查mybatis ognl解析参数值并发设置字段访问性报错问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</link>
+      <pubDate>Fri, 01 Mar 2024 20:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/mybatis/ognl-2.7-concurrent-bug/</guid>
+      <description>&lt;p&gt;年后负责一个比较老的服务，报警不少，今天排查的这个问题也只有在老版本&lt;code&gt;MyBatis&lt;/code&gt;下才有机会复现，值此宝贵的线上问题机会，记录一番。&lt;/p&gt;
+&lt;p&gt;低版本&lt;code&gt;MyBatis&lt;/code&gt;中，在高并发情况下，有概率遇到解析&lt;code&gt;private&lt;/code&gt;内部类集合解析抛错的情况。&lt;/p&gt;
+&lt;p&gt;我通过分析异常栈+搜索+分析源码的方式解决了此问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>排查 ConcurrentModificationException 问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</link>
+      <pubDate>Wed, 21 Feb 2024 16:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/java/concurrent-modification-exception/</guid>
+      <description>&lt;p&gt;排查一则生产环境报 &lt;code&gt;ConcurrentModificationException&lt;/code&gt; 的问题。&lt;/p&gt;
+&lt;p&gt;在相对复杂的工业代码中（绕来绕去，不是简单的一个函数调用），排查「简单问题」也不是一件简单的事。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于IO我所知道的一切都在这里了</title>
+      <link>https://redolog.github.io/posts/rd/design/io/all-about-io/</link>
+      <pubDate>Tue, 06 Feb 2024 12:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/design/io/all-about-io/</guid>
+      <description>统一整理IO涉及的知识点</description>
+    </item>
+    
+    <item>
+      <title>踩坑更改了javaagent路径导致idea无法启动问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</link>
+      <pubDate>Fri, 24 Mar 2023 13:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</guid>
+      <description>&lt;p&gt;踩坑，新机器装开发环境，因手动变更了已配置好的&lt;code&gt;idea&lt;/code&gt;启动依赖的&lt;code&gt;agent&lt;/code&gt;路径，导致&lt;code&gt;jetbrains&lt;/code&gt;全系产品无法启动。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

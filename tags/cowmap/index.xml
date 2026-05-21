@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>COWMap on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/cowmap/</link>
+    <description>Recent content in COWMap on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 17 Jul 2022 21:55:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/cowmap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>COWMap结构基础实现</title>
+      <link>https://redolog.github.io/posts/rd/algo/data-structure/cow-map/</link>
+      <pubDate>Sun, 17 Jul 2022 21:55:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/data-structure/cow-map/</guid>
+      <description>&lt;p&gt;从零实现一个&lt;code&gt;CopyOnWrite&lt;/code&gt;写时复制的&lt;code&gt;map&lt;/code&gt;，同时了解写时复制的使用场景。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

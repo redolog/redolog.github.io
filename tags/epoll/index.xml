@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>EPOLL on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/epoll/</link>
+    <description>Recent content in EPOLL on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 18 Jan 2021 11:03:50 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/epoll/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【译】简析Linux IO多路复用模型</title>
+      <link>https://redolog.github.io/posts/english/translation/linux_io_multiplexing/</link>
+      <pubDate>Mon, 18 Jan 2021 11:03:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/linux_io_multiplexing/</guid>
+      <description>简析Linux下IO多路复用的设计，理解epoll的优势</description>
+    </item>
+    
+  </channel>
+</rss>

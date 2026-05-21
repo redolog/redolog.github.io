@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Alex Xu on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/alex-xu/</link>
+    <description>Recent content in Alex Xu on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 30 Apr 2022 15:32:50 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/alex-xu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>译---Alex Xu Twitter技术文</title>
+      <link>https://redolog.github.io/posts/english/translation/twitter/alexxu/</link>
+      <pubDate>Sat, 30 Apr 2022 15:32:50 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/english/translation/twitter/alexxu/</guid>
+      <description>翻译 Alex Xu 的技术 Twitter</description>
+    </item>
+    
+  </channel>
+</rss>

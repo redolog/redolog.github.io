@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>spring-data-redis on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/spring-data-redis/</link>
+    <description>Recent content in spring-data-redis on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 27 Feb 2023 21:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/spring-data-redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>spring-data-redis版本过低，导致并发获取数据为null问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</link>
+      <pubDate>Mon, 27 Feb 2023 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/redis/cacheable-anno/spring-data-redis/get_non_atomic/</guid>
+      <description>&lt;p&gt;踩坑，&lt;code&gt;spring-data-redis&lt;/code&gt;版本过低，导致并发获取数据为&lt;code&gt;null&lt;/code&gt;问题一例，试用&lt;code&gt;phind.com&lt;/code&gt;AI 搜索，快速定位到了问题原因。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

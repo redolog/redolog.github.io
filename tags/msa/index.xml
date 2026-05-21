@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>msa on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/msa/</link>
+    <description>Recent content in msa on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 26 Dec 2018 18:18:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/msa/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从零开始微服务</title>
+      <link>https://redolog.github.io/posts/rd/share/learn-micro-service-from-scratch/</link>
+      <pubDate>Wed, 26 Dec 2018 18:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/share/learn-micro-service-from-scratch/</guid>
+      <description>&lt;p&gt;大约是2018-12在&lt;code&gt;imageDT&lt;/code&gt;内部简单分享的一则Slide：从零开始微服务。介绍微服务出现的背景、历程以及基本的技术栈体现。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>pass-by-value on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/pass-by-value/</link>
+    <description>Recent content in pass-by-value on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 27 Nov 2022 21:36:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/pass-by-value/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>踩坑 Java/Golang 值传递问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/java/pass-by-value/</link>
+      <pubDate>Sun, 27 Nov 2022 21:36:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/java/pass-by-value/</guid>
+      <description>&lt;p&gt;生产环境踩坑&lt;code&gt;Java&lt;/code&gt;值传递问题一例。&lt;/p&gt;
+&lt;p&gt;在相对复杂的工业代码中（绕来绕去，不是简单的一个函数调用），即使是工作几年的工程师也可能犯这类「低级错误」，借着解决问题的机会顺带巩固下基础知识。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

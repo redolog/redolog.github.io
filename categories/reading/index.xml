@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Reading on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/categories/reading/</link>
+    <description>Recent content in Reading on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 18 Apr 2018 16:54:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/categories/reading/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>译：Software Architecture Patterns</title>
+      <link>https://redolog.github.io/posts/reading/software-architecture-patterns/</link>
+      <pubDate>Wed, 18 Apr 2018 16:54:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/reading/software-architecture-patterns/</guid>
+      <description>软件架构基本模式</description>
+    </item>
+    
+  </channel>
+</rss>

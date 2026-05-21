@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>math on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/math/</link>
+    <description>Recent content in math on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 05 Aug 2023 21:43:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 2544. Alternating Digit Sum</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/alternating-digit-sum/</link>
+      <pubDate>Sat, 05 Aug 2023 21:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/alternating-digit-sum/</guid>
+      <description>&lt;p&gt;Find mathematical patterns through observing test cases.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

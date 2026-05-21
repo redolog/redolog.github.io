@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>maxValue on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/maxvalue/</link>
+    <description>Recent content in maxValue on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 14 Jul 2022 11:22:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/maxvalue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 剑指 Offer 47. 礼物的最大价值 DP题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/gift-max-value/</link>
+      <pubDate>Thu, 14 Jul 2022 11:22:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/gift-max-value/</guid>
+      <description>&lt;p&gt;LeetCode 剑指 Offer 47. 礼物的最大价值 DP题解，熟悉简单DP问题中：子问题重叠性、无后效性、最优子结构的求解条件。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

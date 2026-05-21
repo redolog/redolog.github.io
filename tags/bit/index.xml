@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Bit on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/bit/</link>
+    <description>Recent content in Bit on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 29 Aug 2022 10:27:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/bit/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LC 1470. 重新排列数组 位运算高低位题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/shuffle-the-array/</link>
+      <pubDate>Mon, 29 Aug 2022 10:27:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/shuffle-the-array/</guid>
+      <description>&lt;p&gt;LC 1470. 重新排列数组，通过一道简单题，熟悉下int类型的高低位位运算操作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 191. 位1的个数 位运算题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/number-of-1-bits/</link>
+      <pubDate>Wed, 22 Jun 2022 10:31:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/number-of-1-bits/</guid>
+      <description>&lt;p&gt;LeetCode 191. 位1的个数，熟悉 &lt;code&gt;&amp;amp;&lt;/code&gt; 的用法。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

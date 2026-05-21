@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>多源 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E5%A4%9A%E6%BA%90/</link>
+    <description>Recent content in 多源 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 30 Jun 2022 21:00:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E5%A4%9A%E6%BA%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 994. 腐烂的橘子 多源BFS题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/rotting-oranges/</link>
+      <pubDate>Thu, 30 Jun 2022 21:00:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/rotting-oranges/</guid>
+      <description>&lt;p&gt;LeetCode 994. 腐烂的橘子 多源BFS题解，又一道多源BFS，熟悉实现多源BFS。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 542. 01 矩阵 BFS题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/01-matrix/</link>
+      <pubDate>Thu, 30 Jun 2022 18:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/01-matrix/</guid>
+      <description>&lt;p&gt;LeetCode 542. 01 矩阵 &lt;code&gt;BFS&lt;/code&gt;题解 ，熟悉&lt;code&gt;BFS&lt;/code&gt;、练习矩阵问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 1162. 地图分析 BFS四处发散题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/as-far-from-land-as-possible/</link>
+      <pubDate>Wed, 29 Jun 2022 18:43:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/as-far-from-land-as-possible/</guid>
+      <description>&lt;p&gt;LeetCode 1162. 地图分析，理解&lt;code&gt;BFS&lt;/code&gt;+四处发散。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

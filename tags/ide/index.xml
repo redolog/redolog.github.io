@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ide on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/ide/</link>
+    <description>Recent content in ide on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 24 Mar 2023 13:06:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/ide/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>踩坑更改了javaagent路径导致idea无法启动问题一例</title>
+      <link>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</link>
+      <pubDate>Fri, 24 Mar 2023 13:06:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/troubleshoot/ide/jetbrains/boot-with-java-agent/crash/</guid>
+      <description>&lt;p&gt;踩坑，新机器装开发环境，因手动变更了已配置好的&lt;code&gt;idea&lt;/code&gt;启动依赖的&lt;code&gt;agent&lt;/code&gt;路径，导致&lt;code&gt;jetbrains&lt;/code&gt;全系产品无法启动。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>findMaxLength on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/findmaxlength/</link>
+    <description>Recent content in findMaxLength on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 11 Jul 2022 15:57:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/findmaxlength/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 525. 连续数组 前缀和题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/contiguous-array/</link>
+      <pubDate>Mon, 11 Jul 2022 15:57:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/contiguous-array/</guid>
+      <description>&lt;p&gt;LeetCode 525. 连续数组 前缀和题解。加深理解前缀和思想。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

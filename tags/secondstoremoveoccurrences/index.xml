@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>secondsToRemoveOccurrences on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/secondstoremoveoccurrences/</link>
+    <description>Recent content in secondsToRemoveOccurrences on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 21 Aug 2022 14:55:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/secondstoremoveoccurrences/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LC 6157. 二进制字符串重新安排顺序需要的时间 DP题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/time-needed-to-rearrange-a-binary-string/</link>
+      <pubDate>Sun, 21 Aug 2022 14:55:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/time-needed-to-rearrange-a-binary-string/</guid>
+      <description>&lt;p&gt;LeetCode 6157. 二进制字符串重新安排顺序需要的时间 DP题解。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

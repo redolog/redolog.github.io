@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>就地算法 on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/%E5%B0%B1%E5%9C%B0%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 就地算法 on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 24 Aug 2022 00:01:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/%E5%B0%B1%E5%9C%B0%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用「原地哈希」解决一类问题</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/</link>
+      <pubDate>Wed, 24 Aug 2022 00:01:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/inplace-hash/</guid>
+      <description>&lt;p&gt;了解原地哈希思路，使用其解决LC几道代表性题目。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

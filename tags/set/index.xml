@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Set on 宋惠龙的博客</title>
+    <link>https://redolog.github.io/tags/set/</link>
+    <description>Recent content in Set on 宋惠龙的博客</description>
+    <image>
+      <url>https://redolog.github.io/avatar.png</url>
+      <link>https://redolog.github.io/avatar.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 06 Jul 2022 16:30:25 +0800</lastBuildDate><atom:link href="https://redolog.github.io/tags/set/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 1817. 查找用户活跃分钟数 Map、Set题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-the-users-active-minutes/</link>
+      <pubDate>Wed, 06 Jul 2022 16:30:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-the-users-active-minutes/</guid>
+      <description>&lt;p&gt;LeetCode 1817. 查找用户活跃分钟数 Map、Set题解，本题读懂题最重要。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 剑指 Offer 03. 数组中重复的数字 原地部分有序化题解</title>
+      <link>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-repeat-number-in-array/</link>
+      <pubDate>Sun, 12 Jun 2022 21:18:25 +0800</pubDate>
+      
+      <guid>https://redolog.github.io/posts/rd/algo/oj/leetcode/find-repeat-number-in-array/</guid>
+      <description>&lt;p&gt;LeetCode 剑指 Offer 03. 数组中重复的数字 原地部分有序化题解，理解、内化巧妙思路。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
